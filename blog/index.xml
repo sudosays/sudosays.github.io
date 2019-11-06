@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Julius Stopforth&#39;s Homepage on Welcome</title>
-    <link>http://www.sudosays.com/</link>
-    <description>Recent content in Julius Stopforth&#39;s Homepage on Welcome</description>
+    <title>Blog on Welcome</title>
+    <link>http://www.sudosays.com/blog/</link>
+    <description>Recent content in Blog on Welcome</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 12 May 2017 06:09:57 +0200</lastBuildDate>
     
-	<atom:link href="http://www.sudosays.com/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.sudosays.com/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,16 +19,6 @@
       <guid>http://www.sudosays.com/blog/helloworld/</guid>
       <description>You might have found yourself here and asked yourself the following questions, “How did I get here? Why am I reading a blog about a malignant enterprise? What is the point of the universe if it’ll end in a massive heat death anyway?”, to which I have the answers (except for the first and last one).
 The Evil Company Inc is not actually about, say, maiming puppies and enslaving people, but rather about a subverting the depiction of supervillians in media.</description>
-    </item>
-    
-    <item>
-      <title>About me</title>
-      <link>http://www.sudosays.com/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://www.sudosays.com/about/</guid>
-      <description>Hey! You might be wondering who I am.
-Email jjstopforth at gmail dot com</description>
     </item>
     
   </channel>
