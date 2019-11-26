@@ -1,22 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>general on Welcome</title>
-    <link>http://www.sudosays.com/categories/general/</link>
+    <link>http://sudosays.github.io/categories/general/</link>
     <description>Recent content in general on Welcome</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 12 May 2017 06:09:57 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 23 Aug 2017 15:52:31 +0200</lastBuildDate>
     
-	<atom:link href="http://www.sudosays.com/categories/general/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://sudosays.github.io/categories/general/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Arming Henchmen: Hacking Guns</title>
+      <link>http://sudosays.github.io/blog/arming-henchmen-hacking-guns/</link>
+      <pubDate>Wed, 23 Aug 2017 15:52:31 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/arming-henchmen-hacking-guns/</guid>
+      <description>I recently watched a video on Wired about a person who found multiple ways to exploit a ‘smart gun’. You can watch that video here.
+TL;DR the gun is accompanied by a watch that, when it is close enough to the gun, allows it to shoot. The hacker is able to not only make the gun fire without having the watch nearby, but is also able to jam the signals between the watch and gun and prevent it from firing.</description>
+    </item>
+    
+    <item>
       <title>Hello, World!</title>
-      <link>http://www.sudosays.com/blog/helloworld/</link>
+      <link>http://sudosays.github.io/blog/helloworld/</link>
       <pubDate>Fri, 12 May 2017 06:09:57 +0200</pubDate>
       
-      <guid>http://www.sudosays.com/blog/helloworld/</guid>
+      <guid>http://sudosays.github.io/blog/helloworld/</guid>
       <description>You might have found yourself here and asked yourself the following questions, “How did I get here? Why am I reading a blog about a malignant enterprise? What is the point of the universe if it’ll end in a massive heat death anyway?”, to which I have the answers (except for the first and last one).
 The Evil Company Inc is not actually about, say, maiming puppies and enslaving people, but rather about a subverting the depiction of supervillians in media.</description>
     </item>

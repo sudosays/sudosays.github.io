@@ -1,38 +1,68 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://www.sudosays.com/blog/</loc>
+    <loc>http://sudosays.github.io/blog/</loc>
+    <lastmod>2017-11-14T00:03:12+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/</loc>
+    <lastmod>2017-11-14T00:03:12+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/</loc>
+    <lastmod>2017-11-14T00:03:12+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/tools/</loc>
+    <lastmod>2017-11-14T00:03:12+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/vim/</loc>
+    <lastmod>2017-11-14T00:03:12+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/blog/vim-leadership-revisited/</loc>
+    <lastmod>2017-11-14T00:03:12+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/blog/arming-henchmen-hacking-guns/</loc>
+    <lastmod>2017-08-23T15:52:31+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/general/</loc>
+    <lastmod>2017-08-23T15:52:31+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/opinion/</loc>
+    <lastmod>2017-08-23T15:52:31+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/blog/being-a-leader-in-vim/</loc>
+    <lastmod>2017-05-26T13:42:25+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/blog/helloworld/</loc>
     <lastmod>2017-05-12T06:09:57+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://www.sudosays.com/categories/</loc>
-    <lastmod>2017-05-12T06:09:57+02:00</lastmod>
+    <loc>http://sudosays.github.io/about/</loc>
   </url>
   
   <url>
-    <loc>http://www.sudosays.com/categories/general/</loc>
-    <lastmod>2017-05-12T06:09:57+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.sudosays.com/blog/helloworld/</loc>
-    <lastmod>2017-05-12T06:09:57+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.sudosays.com/</loc>
-    <lastmod>2017-05-12T06:09:57+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.sudosays.com/about/</loc>
-  </url>
-  
-  <url>
-    <loc>http://www.sudosays.com/tags/</loc>
+    <loc>http://sudosays.github.io/tags/</loc>
   </url>
   
 </urlset>

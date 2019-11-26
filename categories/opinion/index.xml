@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>opinion on Welcome</title>
+    <link>http://sudosays.github.io/categories/opinion/</link>
+    <description>Recent content in opinion on Welcome</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 23 Aug 2017 15:52:31 +0200</lastBuildDate>
+    
+	<atom:link href="http://sudosays.github.io/categories/opinion/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Arming Henchmen: Hacking Guns</title>
+      <link>http://sudosays.github.io/blog/arming-henchmen-hacking-guns/</link>
+      <pubDate>Wed, 23 Aug 2017 15:52:31 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/arming-henchmen-hacking-guns/</guid>
+      <description>I recently watched a video on Wired about a person who found multiple ways to exploit a ‘smart gun’. You can watch that video here.
+TL;DR the gun is accompanied by a watch that, when it is close enough to the gun, allows it to shoot. The hacker is able to not only make the gun fire without having the watch nearby, but is also able to jam the signals between the watch and gun and prevent it from firing.</description>
+    </item>
+    
+  </channel>
+</rss>
