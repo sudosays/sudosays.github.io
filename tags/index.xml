@@ -6,9 +6,28 @@
     <description>Recent content in Tags on Welcome</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sat, 10 Aug 2019 10:29:37 +0200</lastBuildDate>
     
 	<atom:link href="http://sudosays.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>devlog</title>
+      <link>http://sudosays.github.io/tags/devlog/</link>
+      <pubDate>Sat, 10 Aug 2019 10:29:37 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/devlog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>long</title>
+      <link>http://sudosays.github.io/tags/long/</link>
+      <pubDate>Sat, 10 Aug 2019 10:29:37 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/long/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

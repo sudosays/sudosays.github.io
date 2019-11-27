@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="/css/style.css" rel="stylesheet">
+    <title>Devlog #1: Tempo</title>
+</head>
+
+
+<body>
+
+    <div id="header">
+         
+    </div>
+
+
+<div id="main">
+
+    <h1>Devlog #1: Tempo</h1>
+
+    <span class="post-date">Wednesday, Feb 13, 2019</span>
+
+    <p>In my <a href="http://sudosays.github.io/blog/devlog-tempo/">last devlog</a> for my productivity
+app Tempo, I discussed how I had created a CustomView for my Task object, how I
+would add them directly to my main ConstraintLayout, and how I fixed the layout
+by using LayoutParams.</p>
+
+<p>In this post, I set out thinking how I was going to discuss implementing the
+“Add Task” functionality and managing the list of tasks in the MainActivity.
+However, fate it seems is not without a sense of irony. I knew that I wanted
+the tasks lined up into some sort of queue where it would start from the last
+task added and work backwards through the queue while the user is in the “flow
+state”. With Kotlin as my choice for this project I used a MutableList that
+holds my custom Task objects.</p>
+
+<p>Creating the MutableList was easy enough by adding the following to the top of
+the MainActivity class:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">private</span> <span style="color:#007020;font-weight:bold">val</span> taskMutableList = mutableListOf&lt;Task&gt;()</code></pre></div>
+<p>In this case <code>taskMutableList</code> is a <code>val</code> because we are creating the
+MutableList object itself only once and then using its methods to modify it.
+This way it ensures that we will not keep re-creating, replacing, or throwing
+away the MutableList every time we want to change the contents.</p>
+
+<p>Once I had that in place and started to think about how I was going to keep
+track of all the TaskViews on screen and scrolling them etc. etc. I immediately
+started to look for an improvement to the way I was displaying or managing the
+view. In comes the ListView (and by extension Adapters) to the rescue.</p>
+
+<p>The ListView connects to an Adapter (such as an ArrayAdapter) that
+manages/controls access to a specific data source. In my case, I wanted to
+allow the ListView to display the contents of my taskMutableList and handle all
+of the layout and spacing for me. Naïvely, I added the ListView to my
+MainActivity and said something along the lines of:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">taskListView.addView(TaskView(Task))</code></pre></div>
+<p>After which the project, unsurprisingly, failed to compile.</p>
+
+<figure>
+    <img src="/imgs/meme-surprisedpikachu.png" height="250px"/> <figcaption>
+            <p>
+                    <a href="https://knowyourmeme.com/memes/surprised-pikachu">Courtesy of knowyourmeme.com</a></p>
+        </figcaption>
+</figure>
+
+
+<p>To get it to work I implemented <code>TaskArrayAdapter</code> that extends the default
+ArrayAdapter and overrides the <code>getView()</code> method in order to return my own
+TaskView to be displayed in the ListView. The actual TaskArrayAdapter’s
+<code>getView</code> looks something like this:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">override</span> <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">getView</span>(position: Int, convertView: View?, parent: ViewGroup?): View {
+    <span style="color:#007020;font-weight:bold">val</span> taskView = TaskView(parent<span style="color:#666">!!</span>.context)
+    taskView.populate(getItem(position))
+    <span style="color:#007020;font-weight:bold">return</span> taskView
+}</code></pre></div>
+<p>Once again, our nifty <code>populate</code> is being used to fill the TaskView easily.</p>
+
+<p>After creating the adapter, all that was left was to connect it to the ListView
+in the MainActivity by first creating the adapter, and then setting the
+ListView’s adapter:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">listViewAdapter = TaskArrayAdapter(<span style="color:#007020;font-weight:bold">this</span>, R.layout.view_task, taskMutableList)
+taskListView.adapter = listViewAdapter</code></pre></div>
+<p>Now all we need to do when we want to update the list is to call
+<code>notifyDataSetChanged()</code> on our <code>listViewAdapter</code> and the view should automatically
+update itself. With the new system in place I stress tested it by adding a
+bunch of tasks and was pleasantly surprised by how nicely it works using
+Adapters. You can see how it looks below.</p>
+
+<figure><a href="/imgs/devlog1-tempo-screenshot-tasklist.png">
+    <img src="/imgs/devlog1-tempo-screenshot-tasklist.png"
+         alt="Screenshot showing a list of tasks that is scrollable." height="250px"/> </a><figcaption>
+            <p>Screenshot showing a list of tasks that is scrollable.</p>
+        </figcaption>
+</figure>
+
+
+<p>Although the layout is not perfect at this stage, it is functionally much
+better that before. As always, I will post an update when I work on it again,
+but until then, stay evil.</p>
+
+
+</div>
+
+</body>
+
+</html>
+

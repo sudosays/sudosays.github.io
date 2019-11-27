@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog on Welcome</title>
-    <link>http://sudosays.github.io/blog/</link>
-    <description>Recent content in Blog on Welcome</description>
+    <title>development on Welcome</title>
+    <link>http://sudosays.github.io/categories/development/</link>
+    <description>Recent content in development on Welcome</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 10 Aug 2019 10:29:37 +0200</lastBuildDate>
     
-	<atom:link href="http://sudosays.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://sudosays.github.io/categories/development/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -58,47 +58,6 @@ In this post, I set out thinking how I was going to discuss implementing the “
       <guid>http://sudosays.github.io/blog/devlog-tempo/</guid>
       <description>As a supervillain, I would like to ensure that my minions and peons are working at maximum efficiency. The following post (and probably series) describes my journey in creating a tool that will help them stay productive.
 This leads me to a question: What tomatoes, egg timers, and university have in common? They are all part of Francesco Cirillo’s Pomodoro technique that aims to manage time and tasks efficiently. The basics are that you have indivisible units of working time separated by short breaks and that you focus solely on the task at hand during a working unit.</description>
-    </item>
-    
-    <item>
-      <title>Vim Leadership Revisited</title>
-      <link>http://sudosays.github.io/blog/vim-leadership-revisited/</link>
-      <pubDate>Tue, 14 Nov 2017 00:03:12 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/blog/vim-leadership-revisited/</guid>
-      <description>A while ago I wrote about my discovery of using the leader key in vim (you can read that here). Now, after using it for a while I would like to revisit it and share my experiences and what I have learned.
-First of all, do not use the spacebar for your leader key, and second of all beware your timeouts.
-Vim on timeout After a while of using a custom leader key I started noticing that vim would lag for approximately a second every now and then.</description>
-    </item>
-    
-    <item>
-      <title>Arming Henchmen: Hacking Guns</title>
-      <link>http://sudosays.github.io/blog/arming-henchmen-hacking-guns/</link>
-      <pubDate>Wed, 23 Aug 2017 15:52:31 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/blog/arming-henchmen-hacking-guns/</guid>
-      <description>I recently watched a video on Wired about a person who found multiple ways to exploit a ‘smart gun’. You can watch that video here.
-TL;DR the gun is accompanied by a watch that, when it is close enough to the gun, allows it to shoot. The hacker is able to not only make the gun fire without having the watch nearby, but is also able to jam the signals between the watch and gun and prevent it from firing.</description>
-    </item>
-    
-    <item>
-      <title>Being a Leader in Vim</title>
-      <link>http://sudosays.github.io/blog/being-a-leader-in-vim/</link>
-      <pubDate>Fri, 26 May 2017 13:42:25 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/blog/being-a-leader-in-vim/</guid>
-      <description>As far as using IDEs go, I wouldn’t say I’ve been around the block, but I’ve seen my fair share. It was only when I started running Arch Linux that I first switched to vim. At this point you might be expecting me to sing vim’s praises and how every developer worth their salt should be using it. I’m not going to.
-The learning curve for vim is steep. It took me a long time to wrap my head around what the different modes meant, and everyday I use it I learn something new.</description>
-    </item>
-    
-    <item>
-      <title>Hello, World!</title>
-      <link>http://sudosays.github.io/blog/helloworld/</link>
-      <pubDate>Fri, 12 May 2017 06:09:57 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/blog/helloworld/</guid>
-      <description>You might have found yourself here and asked yourself the following questions, “How did I get here? Why am I reading a blog about a malignant enterprise? What is the point of the universe if it’ll end in a massive heat death anyway?”, to which I have the answers (except for the first and last one).
-The Evil Company Inc is not actually about, say, maiming puppies and enslaving people, but rather about a subverting the depiction of supervillians in media.</description>
     </item>
     
   </channel>

@@ -24,29 +24,74 @@ blockquote {
 pre {
 
     padding: 5px;
+    border-radius: 5px; 
+    overflow: auto;
+}
+
+figure { 
+    width: auto;
+    text-align: center;
+}
+
+figure img {
+    margin:0 auto;
+}
+
+figure figcaption {
+    text-align:center;
+    color: #a3a3a3;
 
 }
 
-figure {
-    margin:0 auto;
-    width: inherit;
+p {
+    margin: 0 auto;
+    width: 72ch;
+}
+
+table {
+    margin: 1.6em auto;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    padding: 5px;    
+    border-bottom: 1px solid #f3f3f3;
+}
+
+tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+tr {
+    border: 1px solid #f3f3f3;
+}
+
+th {
+    background-color: #1DA1F2;
+    color: #fff;
+    border: 1px solid #1da1f2;
 }
 
 <!-- Custom CSS Classes -->
 
-p {
-    margin: 0 auto;
-    width: 80ch;
+.tag {
+    border: none;
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    background-color: #f3f3f3;
 }
 
+
 #main {
-    
     margin: 0 auto;
     box-shadow: 0px 0px 30px 6px #d3d3d3;
-    width: 80ch; 
+    max-width: 700px; 
     height:inherit;
     padding: 5px 20px;
     border-radius: 7px 7px 0 0;
 }
 
-
+.post-date {
+    color: #a3a3a3;
+    font-size:smaller;
+}
