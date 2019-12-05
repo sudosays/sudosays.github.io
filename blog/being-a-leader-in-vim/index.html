@@ -2,119 +2,115 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/style.css" rel="stylesheet">
+    <link rel="icon" type="img/png" href="/imgs/favicon.ico">
     <title>Being a Leader in Vim</title>
 </head>
 
 
 <body>
 
-    <div id="header">
-         
-    </div>
+    <header class="header-parallax">
+    
+        <h1><a href="http://sudosays.github.io/">Evil Inc.</a></h1>
+
+        <nav class="top-nav-list"> 
+            <a href="http://sudosays.github.io/ ">Home</a> 
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="">Projects</a>
+            
+        </nav>
+
+    </header>
 
 
 <div id="main">
 
-    <h1>Being a Leader in Vim</h1>
+    <h1 class="post-title">Being a Leader in Vim</h1>
 
     <span class="post-date">Friday, May 26, 2017</span>
 
     
-
-<p>As far as using IDEs go, I wouldn’t say I’ve been around the block, but I’ve
+    <div class="post-content">
+    <p>As far as using IDEs go, I wouldn’t say I’ve been around the block, but I’ve
 seen my fair share. It was only when I started running <a href="https://www.archlinux.org/">Arch
 Linux</a> that I first switched to
 <a href="http://www.vim.org/">vim</a>. At this point you might be expecting me to sing
 vim’s praises and how every developer worth their salt should be using it. I’m
 not going to.</p>
-
 <p>The learning curve for vim is steep. It took me a long time to wrap my head
 around what the different modes meant, and everyday I use it I learn something
 new. Hopefully, from now on I’ll be sharing those discoveries with you, dear
 reader.</p>
-
 <p>I also didn’t stay with vim once I started using it. I switched between vim,
 <a href="http://spacemacs.org/">spacemacs</a> (which is great, I highly recommend you give
 it a spin), IntelliJ IDEA, Visual Studio, and a whole plethora of others.</p>
-
 <p>But now I’m back on the vim train. And I’ve discovered the leader key.</p>
-
 <h2 id="what-does-a-leader-do">What does a leader do?</h2>
-
 <p>The leader key is essentially a prefix that you can set for remapping keys/key
 sequences in vim. The notion is strongly implemented in spacemacs where almost
 every command is started by pressing <code>&lt;Space&gt;</code>. In, vim, this means that you can
 remap a whole bunch of commands that you can run easily by pressing the leader
 key followed by your mapping.</p>
-
 <p>For example, if my leader key is <code>&lt;Space&gt;</code> and I can have vim exit whenever I
 press <code>&lt;Space&gt;q</code> by mapping it to the vim command <code>:q</code>.</p>
-
 <p>This means that you can set custom key sequences (not just keys) to execute any
 kind of vim command. Literally any command you can execute in vim.</p>
-
 <p>Any. Command.</p>
-
 <h2 id="how-to-use-the-leader-key">How to use the leader key</h2>
-
 <p>In your <code>.vimrc</code> file you first designate which key to set as the leader key
 with:</p>
-
 <pre><code>let mapleader=&quot;{key here}&quot;
 
-</code></pre>
-
-<p>Personally, I would recommend the <code>&lt;Space&gt;</code> key as it is really comfortable to
+</code></pre><p>Personally, I would recommend the <code>&lt;Space&gt;</code> key as it is really comfortable to
 use.</p>
-
 <p>Then you can remap any sequence to a command in the form of:</p>
-
 <pre><code>[nnore]map &lt;leader&gt;{key sequence} :{vim command}&lt;CR&gt;
-</code></pre>
-
-<p>For example, if I want to exit vim, saving all the files before I do so I would
+</code></pre><p>For example, if I want to exit vim, saving all the files before I do so I would
 have the following:</p>
-
 <pre><code>nnoremap &lt;leader&gt;qq :wqa&lt;CR&gt;
-</code></pre>
-
-<p>Why are you using <code>nnoremap</code> and not just <code>map</code>?</p>
-
+</code></pre><p>Why are you using <code>nnoremap</code> and not just <code>map</code>?</p>
 <p>Using <code>nnoremap</code> instead of <code>map</code> just means that the sequences you’ve set in your
 <code>.vimrc</code> file will be mapped explicitly as is for the normal mode in vim. By
 setting it for normal mode only I’m making sure that the leader key only works
 in the normal mode for vim and not the insert or visual modes.</p>
-
 <p>And that’s it for my knowledge of vim leader key use. I’ll leave a list of my
 current remappings below for you to use should you wish. This has been a very
 brief and shallow dip into the abyss that is vim and vim customization. If you
 want me to do a whole series on getting into vim and my experiences please let
 me know either here or on twitter!</p>
-
 <h2 id="remappings">Remappings</h2>
-
 <p>Set the leader key</p>
-
 <pre><code>let mapleader=&quot;&lt;Space&gt;&quot;
-</code></pre>
-
-<p>Quit and save all files</p>
-
+</code></pre><p>Quit and save all files</p>
 <pre><code>nnoremap &lt;leader&gt;qq :wqa&lt;CR&gt;
-</code></pre>
-
-<p>Edit <code>.vimrc</code> file</p>
-
+</code></pre><p>Edit <code>.vimrc</code> file</p>
 <pre><code>nnoremap &lt;leader&gt;fed :e $MYVIMRC&lt;CR&gt;
-</code></pre>
-
-<p>Reload <code>.vimrc</code> file</p>
-
+</code></pre><p>Reload <code>.vimrc</code> file</p>
 <pre><code>nnoremap &lt;leader&gt;fer :source $MYVIMRC&lt;CR&gt;
 </code></pre>
 
+    </div>
 
+    <div class="post-footer">
+
+        <hr>
+        <button class="post-nav left">
+            
+            <a href="http://sudosays.github.io/blog/helloworld/">&larr;&nbsp;&nbsp;previous Hello, World!</a>
+            
+        </button>
+
+        <button class="post-nav right">
+            
+                <a href="http://sudosays.github.io/blog/arming-henchmen-hacking-guns/">next Arming Henchmen: Hacking Guns&nbsp&nbsp&rarr;</a>
+            
+        </button>
+
+    </div>
 </div>
 
 </body>

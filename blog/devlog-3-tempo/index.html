@@ -2,49 +2,57 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/style.css" rel="stylesheet">
+    <link rel="icon" type="img/png" href="/imgs/favicon.ico">
     <title>Devlog #3: Tempo</title>
 </head>
 
 
 <body>
 
-    <div id="header">
-         
-    </div>
+    <header class="header-parallax">
+    
+        <h1><a href="http://sudosays.github.io/">Evil Inc.</a></h1>
+
+        <nav class="top-nav-list"> 
+            <a href="http://sudosays.github.io/ ">Home</a> 
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="">Projects</a>
+            
+        </nav>
+
+    </header>
 
 
 <div id="main">
 
-    <h1>Devlog #3: Tempo</h1>
+    <h1 class="post-title">Devlog #3: Tempo</h1>
 
     <span class="post-date">Thursday, Jun 13, 2019</span>
 
     
-
-<p>At the end of the <a href="http://sudosays.github.io/blog/devlog-2-tempo/"> previous devlog </a> I used
+    <div class="post-content">
+    <p>At the end of the <a href="http://sudosays.github.io/blog/devlog-2-tempo/"> previous devlog </a> I used
 AsyncTasks to implement the very basic “Add Task” functionality. Next I set to
 work getting the other most important feature working: the “flow mode”. The
 flow mode is where the Pomodorro technique I discussed in the very <a href="http://sudosays.github.io/blog/devlog-tempo/">first
 devlog</a> is applied. All it shows is a timer and
 the task you are supposed to be focusing on.</p>
-
 <p>Now like the esteemed ex-convict Martha Stewart, I had already prepared a lot
 of the logic for the flow activity before this point.</p>
-
 <p>In short, I used three different CountdownTimers that would start one another
 when they finished. I was not running any of this in a worker thread, or a
 background service, since the CountdownTimers create their own threads to
 separate them from the UI thread. In the end this choice became first a curse
 and then a blessing.</p>
-
 <h2 id="issue-1-zombie-tasks">Issue 1: Zombie Tasks</h2>
-
 <p>While the logic was really easy to implement, I had envisioned that tasks that
 were completed in flow would be “burned” and disappear from the task list in
 the MainActivity. This was easy enough to achieve by deleting the task from the
 database (and task list) once the timer for that task was completed.</p>
-
 <p>However, when I entered the flow activity, allowed a task to count down, and
 then returned to the MainActivity, the task list would not reflect that I had
 completed my task (and remove it from the list). While I thought about using
@@ -52,7 +60,6 @@ the same <code>startActivityForResult</code> method that I used for adding tasks
 little more complicated since the user could quit the flow activity at any time
 by pressing the back button or quitting the app entirely. Regardless of what
 the user did, the task list would need to be updated appropriately.</p>
-
 <p>What I ended up doing was learning more about how to work with the <a href="https://developer.android.com/guide/components/activities/activity-lifecycle">activity
 lifecycle</a>.
 In essence, when I started my flow activity, my main activity would be paused
@@ -62,27 +69,24 @@ I needed to implement either <code>onResume</code> or <code>onRestart</code>. Si
 fullscreen activity, either method worked for me, however if you were to have a
 Fragment come into the foreground (with your activity visible in the
 background) there would be a difference in when <code>onPause</code> and <code>onStop</code> are called.</p>
-
 <p>The code in my MainActivity ended up looking something like this:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">override</span> <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">onResume</span>() {
-    <span style="color:#007020;font-weight:bold">super</span>.onResume()
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">override</span> <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">onResume</span>() {
+    <span style="color:#069;font-weight:bold">super</span>.onResume()
     reloadTasks()
 }
 
-<span style="color:#007020;font-weight:bold">private</span> <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">reloadTasks</span>() {
+<span style="color:#069;font-weight:bold">private</span> <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">reloadTasks</span>() {
     taskMutableList.clear()
-    taskMutableList.addAll(TaskFetchASync(db).execute().<span style="color:#007020;font-weight:bold">get</span>())
+    taskMutableList.addAll(TaskFetchASync(db).execute().<span style="color:#069;font-weight:bold">get</span>())
     listViewAdapter.notifyDataSetChanged()
-}</code></pre></div>
-<p>This means that every time I returned to the MainActivity after moving to a new
+}
+</code></pre></div><p>This means that every time I returned to the MainActivity after moving to a new
 activity, the TaskList would be updated with the latest state of the database.
 A cool side effect of this is that should the database be updated in the
 background (or synchronised with an online one) the new changes will be
 immediately reflected whenever the MainActivity is resumed or opened for the
 first time.</p>
-
 <h2 id="issue-2-ghost-tasks">Issue 2: Ghost Tasks</h2>
-
 <p>While I had fixed the issue of completed tasks not disappearing from the list
 once completed. I ran into the opposite problem with my tasks starting to
 disappear from the list when not even finished. When the FlowActivity was
@@ -90,12 +94,10 @@ started, and the user returned to the MainActivity prematurely, the idea was
 that the countdown for the task would reset because the entire idea for the
 task timer was to be an atomic, indivisible thing. Not completing a task means
 that the user will need to restart it.</p>
-
 <p>However, that was not the case. These “ghost tasks” would start to disappear
 from the main list despite the FlowActivity being killed. The problem also
 stemmed from an incomplete understanding of the activity lifecycle and how that
 relates to using something such as CountdownTimers.</p>
-
 <figure>
     <img src="/imgs/countdown.webp"/> <figcaption>
             <p>
@@ -103,25 +105,39 @@ relates to using something such as CountdownTimers.</p>
         </figcaption>
 </figure>
 
-
 <p>Essentially, the timers will continue regardless of the state of the activity
 and it is up to you to reset them. To fix this I added an <code>OnStop</code> to the
 FlowActivity that automatically cancels all of the timers. Once again, properly
 understanding the activity lifecycle proved helpful.</p>
-
 <p>With these bugs out of the way, the app is currently in a state where the core
 user story loop works: Adding tasks, doing a flow of tasks, and returning to
 the main task list (prematurely or otherwise). However, that does not mean I am
 nearly close to finished. This is essentially in “proof of concept” stage,
 lacking all pomp and polish as well as a few other core features such as
 editing the task list or editing tasks themselves.</p>
-
 <p>As a final note, for my own records I will include the commit hash/hashes that
 fixed the bugs described above.</p>
-
 <p>Until next time, study hard, be evil.</p>
 
 
+    </div>
+
+    <div class="post-footer">
+
+        <hr>
+        <button class="post-nav left">
+            
+            <a href="http://sudosays.github.io/blog/devlog-2-tempo/">&larr;&nbsp;&nbsp;previous Devlog #2: Tempo</a>
+            
+        </button>
+
+        <button class="post-nav right">
+            
+                <a href="http://sudosays.github.io/blog/devlog-4-tempo/">next Devlog #4: Tempo&nbsp&nbsp&rarr;</a>
+            
+        </button>
+
+    </div>
 </div>
 
 </body>

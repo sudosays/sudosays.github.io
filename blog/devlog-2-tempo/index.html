@@ -2,28 +2,40 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/style.css" rel="stylesheet">
+    <link rel="icon" type="img/png" href="/imgs/favicon.ico">
     <title>Devlog #2: Tempo</title>
 </head>
 
 
 <body>
 
-    <div id="header">
-         
-    </div>
+    <header class="header-parallax">
+    
+        <h1><a href="http://sudosays.github.io/">Evil Inc.</a></h1>
+
+        <nav class="top-nav-list"> 
+            <a href="http://sudosays.github.io/ ">Home</a> 
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="">Projects</a>
+            
+        </nav>
+
+    </header>
 
 
 <div id="main">
 
-    <h1>Devlog #2: Tempo</h1>
+    <h1 class="post-title">Devlog #2: Tempo</h1>
 
     <span class="post-date">Thursday, Feb 21, 2019</span>
 
     
-
-<p>At this stage the first major functionality of the app has been implemented.</p>
-
+    <div class="post-content">
+    <p>At this stage the first major functionality of the app has been implemented.</p>
 <p>With this devlog I cover how I added data persistence of the tasks as well as
 the “Add Task” functionality. I used the
 <a href="https://developer.android.com/topic/libraries/architecture/room">Room</a> library
@@ -32,50 +44,42 @@ some stumbling blocks and learning points along the way. Regardless, I would
 highly recommend using Room so as to not get bogged down with how to query data
 from the SQLite database and increasing your chances of mucking something up
 “accidentally”.</p>
-
 <p>Below you can see the results of adding a task to the app.</p>
-
 <figure>
     <img src="/imgs/devlog-2-tempo-screenshot-addtask.png" height="250px"/> 
 </figure>
 
-
 <h2 id="getting-roomy">Getting Roomy</h2>
-
 <blockquote>
-<p>&lsquo;… nonetheless I had some stumbling blocks and learning points along the way&rsquo;</p>
-
+<p>&rsquo;… nonetheless I had some stumbling blocks and learning points along the way&rsquo;</p>
 <p>- me, earlier</p>
 </blockquote>
-
 <p>I found implementing Room deceptively straightforward since I add only had to
 add annotations to my already existing Task object like so:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Entity (tableName = <span style="color:#4070a0">&#34;tasks&#34;</span>)
-<span style="color:#007020;font-weight:bold">data</span> <span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">Task</span>(@PrimaryKey(autoGenerate = <span style="color:#007020;font-weight:bold">true</span>) <span style="color:#007020;font-weight:bold">var</span> uid :Int,
-                @ColumnInfo(name = <span style="color:#4070a0">&#34;task_name&#34;</span>) <span style="color:#007020;font-weight:bold">var</span> name:String,
-                @ColumnInfo(name = <span style="color:#4070a0">&#34;task_duration&#34;</span>) <span style="color:#007020;font-weight:bold">var</span> duration:Float)</code></pre></div>
-<p>Then I needed only to make a data access object (for interfacing with the
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Entity (tableName = <span style="color:#c30">&#34;tasks&#34;</span>)
+<span style="color:#069;font-weight:bold">data</span> <span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">Task</span>(@PrimaryKey(autoGenerate = <span style="color:#069;font-weight:bold">true</span>) <span style="color:#069;font-weight:bold">var</span> uid :Int,
+                @ColumnInfo(name = <span style="color:#c30">&#34;task_name&#34;</span>) <span style="color:#069;font-weight:bold">var</span> name:String,
+                @ColumnInfo(name = <span style="color:#c30">&#34;task_duration&#34;</span>) <span style="color:#069;font-weight:bold">var</span> duration:Float)
+</code></pre></div><p>Then I needed only to make a data access object (for interfacing with the
 database) and extend the Room database into a TaskDatabase. The task data
 access object (DAO) contains the query annotations for accessing the database
 in specific, controlled ways. For example, I wanted to be able to pull all the
 tasks in the task database at once into a MutableList which meant that one of
 the functions looked something like this:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Dao
-<span style="color:#007020;font-weight:bold">interface</span> <span style="color:#0e84b5;font-weight:bold">TaskDao</span> {
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Dao
+<span style="color:#069;font-weight:bold">interface</span> <span style="color:#0a8;font-weight:bold">TaskDao</span> {
 
-    @Query(<span style="color:#4070a0">&#34;SELECT * FROM tasks&#34;</span>)
-    <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">getAll</span>(): MutableList&lt;Task&gt;
+    @Query(<span style="color:#c30">&#34;SELECT * FROM tasks&#34;</span>)
+    <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">getAll</span>(): MutableList&lt;Task&gt;
 
-    <span style="color:#60a0b0;font-style:italic">//Other functions here...</span></code></pre></div>
-<p>After that I thought I was all set, but alas it was not to be. Turns out I ran
+    <span style="color:#09f;font-style:italic">//Other functions here...
+</span></code></pre></div><p>After that I thought I was all set, but alas it was not to be. Turns out I ran
 into two different compile-time problems: one regarding my annotations, and the
 other when trying to build the database instance at runtime.</p>
-
 <p>The first error was that my annotations were not generating the correct classes
 at compile time, and so the compiler would complain that my abstract
 TaskDatabase class was being used without an implementation. This was caused by
 my inability to heed the following warning at the bottom of the documentation:</p>
-
 <figure>
     <img src="/imgs/devlog-2-tempo-androiddocumentation.png"
          alt="An important warning in the Android documentation"/> <figcaption>
@@ -83,35 +87,31 @@ my inability to heed the following warning at the bottom of the documentation:</
         </figcaption>
 </figure>
 
-
 <p>The second error was that when I was building my database as a top level member
 of the MainActivity, I needed to pass the applicationContext somehow, but the
 problem was that the applicationContext did not yet exist when I tried to build
 the database using:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">val</span> db = Room.databaseBuilder(
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">val</span> db = Room.databaseBuilder(
             context.applicationContext,
-            TaskDatabase<span style="color:#666">::</span><span style="color:#007020;font-weight:bold">class</span>.java, <span style="color:#4070a0">&#34;taskdb&#34;</span>).build() </code></pre></div>
-<p>My aim was to have one db instance that I could then access the data from
+            TaskDatabase<span style="color:#555">::</span><span style="color:#069;font-weight:bold">class</span>.java, <span style="color:#c30">&#34;taskdb&#34;</span>).build() 
+</code></pre></div><p>My aim was to have one db instance that I could then access the data from
 repeatedly instead of creating a new TaskDatabase instance everytime I wanted
 to access data. Enter the companion object.</p>
-
 <p>In Kotlin, a companion object is a singleton tied to the class rather than the
 instances of that class. This meant that I can declare a companion object for
 the TaskDatabase and only need to pass the applicationContext when I want to
 get the singleton instance. So I added the following to the TaskDatabase:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">companion</span> <span style="color:#007020;font-weight:bold">object</span> {
-    <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">getInstance</span>(context: Context): TaskDatabase =
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">companion</span> <span style="color:#069;font-weight:bold">object</span> {
+    <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">getInstance</span>(context: Context): TaskDatabase =
             Room.databaseBuilder(context.applicationContext,   
-            TaskDatabase<span style="color:#666">::</span><span style="color:#007020;font-weight:bold">class</span>.java, <span style="color:#4070a0">&#34;taskdb&#34;</span>).build()
-}</code></pre></div>
-<p>Thereafter, I could access the instance of the database easily (and more cleanly) with the following:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">db = TaskDatabase.getInstance(<span style="color:#007020;font-weight:bold">this</span>)</code></pre></div>
-<p>In the line above, this is the activity context itself from which we extract
+            TaskDatabase<span style="color:#555">::</span><span style="color:#069;font-weight:bold">class</span>.java, <span style="color:#c30">&#34;taskdb&#34;</span>).build()
+}
+</code></pre></div><p>Thereafter, I could access the instance of the database easily (and more cleanly) with the following:</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">db = TaskDatabase.getInstance(<span style="color:#069;font-weight:bold">this</span>)
+</code></pre></div><p>In the line above, this is the activity context itself from which we extract
 the applicationContext.</p>
-
 <p>With this done, I thought it would be smooth sailing from here on out, but yet
 again…</p>
-
 <figure>
     <img src="/imgs/meme-youthoughtwrong.gif" height="250px"/> <figcaption>
             <p>
@@ -119,115 +119,119 @@ again…</p>
         </figcaption>
 </figure>
 
-
 <h2 id="no-stop-ui-pls">No stop UI pls</h2>
-
 <p>Android has a strict (and good) policy of not allowing anything to block the UI
 thread which is the main/default thread in an activity. This helps make sure
 that the app UI stays responsive while you try to, say, fetch tasks from a
 database.</p>
-
 <p>Although my app would compile and launch, it would be killed when I tried to
 load the tasks from the database because the UI thread would block for a second
 and Android would think my app was being unresponsive and kill it. To fix this
 issue I would need to offload my data loading into a non-UI worker thread.
 Thank goodness for
 <a href="https://developer.android.com/reference/android/os/AsyncTask">AsyncTasks</a>.</p>
-
 <p>AsyncTasks provide an easy way to use Thread and Handlers in order to complete
 short tasks (for long running tasks you should be looking at Services). So, for
 example, I wanted to fetch all the tasks from the database and return it in a
 MutableList. For this I extended AsyncTask and created TaskFetchAsync with the
 following:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">TaskFetchAsync</span> (<span style="color:#007020;font-weight:bold">val</span> db: TaskDatabase) : AsyncTask&lt;Void, Void, MutableList&lt;Task&gt;&gt; (){
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">TaskFetchAsync</span> (<span style="color:#069;font-weight:bold">val</span> db: TaskDatabase) : AsyncTask&lt;Void, Void, MutableList&lt;Task&gt;&gt; (){
 
-    <span style="color:#007020;font-weight:bold">override</span> <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">doInBackground</span>(<span style="color:#007020;font-weight:bold">vararg</span> p0: Void?): MutableList&lt;Task&gt;? {
-        <span style="color:#007020;font-weight:bold">val</span> taskList = db.taskDao().getAll()
-        <span style="color:#007020;font-weight:bold">return</span> taskList
+    <span style="color:#069;font-weight:bold">override</span> <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">doInBackground</span>(<span style="color:#069;font-weight:bold">vararg</span> p0: Void?): MutableList&lt;Task&gt;? {
+        <span style="color:#069;font-weight:bold">val</span> taskList = db.taskDao().getAll()
+        <span style="color:#069;font-weight:bold">return</span> taskList
     }
 
-    <span style="color:#007020;font-weight:bold">override</span> <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">onPostExecute</span>(result: MutableList&lt;Task&gt;?) {
-        <span style="color:#007020;font-weight:bold">super</span>.onPostExecute(result)
+    <span style="color:#069;font-weight:bold">override</span> <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">onPostExecute</span>(result: MutableList&lt;Task&gt;?) {
+        <span style="color:#069;font-weight:bold">super</span>.onPostExecute(result)
     }
-}</code></pre></div>
-<p>In the class declaration, you can see that the TaskFetchAsync takes a database
+}
+</code></pre></div><p>In the class declaration, you can see that the TaskFetchAsync takes a database
 instance in the constructor, while we also mention that it returns a
 MutableList containing Task objects.</p>
-
 <p>Next, we fetch the tasks using our database instance’s taskDao and finally
 return the result. Using the AsyncTask was really straightforward since all we
 would need to do is:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">taskMutableList.addAll(TaskFetchASync(db).execute().<span style="color:#007020;font-weight:bold">get</span>())</code></pre></div>
-<p>That said, one thing I did do was give the db instance as a constructor
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">taskMutableList.addAll(TaskFetchASync(db).execute().<span style="color:#069;font-weight:bold">get</span>())
+</code></pre></div><p>That said, one thing I did do was give the db instance as a constructor
 variable instead of declaring it as a parameter. This is because the parameters
 (taken in whenever <code>TaskFetchAsync.execute()</code> is called are generally something
 that needs to be acted on, or may change the task execution in some way. This
 became evident when I created another AsyncTask for inserting new tasks into
 the database.</p>
-
 <h2 id="insert-a-sink">Insert A Sink</h2>
-
 <p>The final hurdle was to complete the functionality of the AddTask activity. On
 the MainActivity, when the “Add Task” button is pressed it should take the user
 to the AddTask activity where they can enter the new task information. If the
 user then saves the new task to the database it should notify the
 listViewAdapter I mentioned in my <a href="http://sudosays.github.io/blog/devlog-1-tempo/">previous devlog</a> to update the ListView with
 our newly added task.</p>
-
 <p>In order to save the new task to the database I also used an AsyncTask that I
 called TaskInsertAsync that looked like the following:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">TaskInsertAsync</span>(<span style="color:#007020;font-weight:bold">val</span> db: TaskDatabase) : AsyncTask&lt;Task, Void, Boolean&gt; (){
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">TaskInsertAsync</span>(<span style="color:#069;font-weight:bold">val</span> db: TaskDatabase) : AsyncTask&lt;Task, Void, Boolean&gt; (){
 
-    <span style="color:#007020;font-weight:bold">override</span> <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">doInBackground</span>(<span style="color:#007020;font-weight:bold">vararg</span> p0: Task): Boolean {
+    <span style="color:#069;font-weight:bold">override</span> <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">doInBackground</span>(<span style="color:#069;font-weight:bold">vararg</span> p0: Task): Boolean {
         db.taskDao().insertAll(*p0)
-        <span style="color:#007020;font-weight:bold">return</span> <span style="color:#007020;font-weight:bold">true</span>
+        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">true</span>
     }
-    <span style="color:#60a0b0;font-style:italic">// Other stuff...
-</span><span style="color:#60a0b0;font-style:italic"></span>}</code></pre></div>
-<p>What is notable here is that <code>taskDao().insertAll()</code> takes <code>vararg task: Task</code>
+    <span style="color:#09f;font-style:italic">// Other stuff...
+</span><span style="color:#09f;font-style:italic"></span>}
+</code></pre></div><p>What is notable here is that <code>taskDao().insertAll()</code> takes <code>vararg task: Task</code>
 which <code>p0</code> is. Unfortunately, <code>p0</code> is actually viewed as an array, while the
 method is looking for a distinct, separate Task objects to pass to
 <code>insertAll()</code> and so we needed to use <a href="https://kotlinlang.org/docs/reference/functions.html#variable-number-of-arguments-varargs">Kotlin’s spread
 operator</a>(*).</p>
-
 <p>Finally came the question of how to know when a new task was added
 successfully. Enter startActivityForResult.</p>
-
 <p>With startActivityForResult, we needed to declare a request code (a simple Int)
 and then implement <code>onActivityResult</code> to handle the result. This was simple
 enough and ended up looking something like this:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">override</span> <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">onActivityResult</span>(requestCode: Int, resultCode: Int, <span style="color:#007020;font-weight:bold">data</span>: Intent)
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">override</span> <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">onActivityResult</span>(requestCode: Int, resultCode: Int, <span style="color:#069;font-weight:bold">data</span>: Intent)
 {
-    <span style="color:#007020;font-weight:bold">if</span> (requestCode == ADD_TASK_REQUEST)
+    <span style="color:#069;font-weight:bold">if</span> (requestCode == ADD_TASK_REQUEST)
     {
-        <span style="color:#007020;font-weight:bold">if</span> (resultCode == Activity.RESULT_OK)
+        <span style="color:#069;font-weight:bold">if</span> (resultCode == Activity.RESULT_OK)
         {
             taskMutableList.clear()
-            taskMutableList.addAll(TaskFetchASync(db).execute().<span style="color:#007020;font-weight:bold">get</span>())
+            taskMutableList.addAll(TaskFetchASync(db).execute().<span style="color:#069;font-weight:bold">get</span>())
             listViewAdapter.notifyDataSetChanged()
         }
     }
-}</code></pre></div>
-<p>It is to be noted that our AddTask activity did not need to handle the request
+}
+</code></pre></div><p>It is to be noted that our AddTask activity did not need to handle the request
 code. Only our MainActivity had the request code declared and would handle it
 when the activity returned.</p>
-
 <p>With all that done, the app could now persist data, fetch it, and add new tasks
 to the database. It also represents the first “real” functionality that is
 user-facing and so is a milestone I was pretty excited by!</p>
-
 <p>As always, I will be back with another devlog describing all the times I shot
 myself in the foot and how I then fixed it. I shall leave you, the reader, with
 the following quote:</p>
-
 <blockquote>
-<p>&lsquo;Give a man a program, frustrate him for a day.
+<p>'Give a man a program, frustrate him for a day.
 Teach a man to program, frustrate him for a lifetime.&rsquo;</p>
-
 <p>- Muhammad Waseem</p>
 </blockquote>
 
 
+    </div>
+
+    <div class="post-footer">
+
+        <hr>
+        <button class="post-nav left">
+            
+            <a href="http://sudosays.github.io/blog/devlog-1-tempo/">&larr;&nbsp;&nbsp;previous Devlog #1: Tempo</a>
+            
+        </button>
+
+        <button class="post-nav right">
+            
+                <a href="http://sudosays.github.io/blog/devlog-3-tempo/">next Devlog #3: Tempo&nbsp&nbsp&rarr;</a>
+            
+        </button>
+
+    </div>
 </div>
 
 </body>

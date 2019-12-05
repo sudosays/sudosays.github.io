@@ -1,8 +1,102 @@
-html {
+@font-face {
+  font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: 100;
+  src: url('/fonts/merriweather-v21-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Merriweather Regular'), local('Merriweather-Regular'),
+       url('/fonts/merriweather-v21-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('/fonts/merriweather-v21-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('/fonts/merriweather-v21-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('/fonts/merriweather-v21-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('/fonts/merriweather-v21-latin-regular.svg#Merriweather') format('svg'); /* Legacy iOS */
+}
 
-    font-family: "Helvetica", sans-serif;
+@font-face {
+  font-family: 'Concert One';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/concert-one-v10-latin-regular.eot'); 
+  src: local('Concert One'), local('ConcertOne-Regular'),
+       url('/fonts/concert-one-v10-latin-regular.eot?#iefix') format('embedded-opentype'),  
+       url('/fonts/concert-one-v10-latin-regular.woff2') format('woff2'), 
+       url('/fonts/concert-one-v10-latin-regular.woff') format('woff'), 
+       url('/fonts/concert-one-v10-latin-regular.ttf') format('truetype'), 
+       url('/fonts/concert-one-v10-latin-regular.svg#ConcertOne') format('svg'); 
+}
+
+/* quicksand-regular - latin */
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/quicksand-v19-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('/fonts/quicksand-v19-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('/fonts/quicksand-v19-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('/fonts/quicksand-v19-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('/fonts/quicksand-v19-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('/fonts/quicksand-v19-latin-regular.svg#Quicksand') format('svg'); /* Legacy iOS */
+}
+
+
+.header-parallax {
+  /* The image used */
+  background-image: url("/imgs/hobbes_ascii.png");
+
+  /* Set a specific height */
+  height: 150px;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+<!-- Core CSS -->
+
+html {
+    padding: 0px;
     background-color: #FFF;
     line-height:1.6em;
+    font-family: "Merriweather";
+}
+
+body {
+    margin: 0 auto;
+    padding: 0;
+
+}
+
+header {
+    margin: 0 auto; 
+    background-color:#909090;
+    height:150px;
+    color: #fff;
+    margin-bottom: 20px;
+    padding: 2em;
+}
+
+header h1 {
+    
+    font-family: "Merriweather", "Serif";
+    font-size: xx-large;
+    font-weight: 800;
+
+}
+
+header a {
+    
+    color:inherit;
+
+}
+
+header a:visited {
+    color: inherit;
+}
+h1 h2 h3 {
+
+    font-family: "Concert One", "Sans-Serif";
 }
 
 a:visited {
@@ -12,7 +106,7 @@ a:visited {
 }
 
 a {
-
+    text-decoration: none;
     color: #1DA1F2;
 }
 
@@ -45,7 +139,11 @@ figure figcaption {
 
 p {
     margin: 0 auto;
-    width: 72ch;
+    max-width: 72ch;
+    overflow-wrap:break-word;
+    margin-top:1.2em;
+    text-align: justify;
+    hyphens: auto;
 }
 
 table {
@@ -72,7 +170,27 @@ th {
     border: 1px solid #1da1f2;
 }
 
+hr{
+    margin-top:1em;
+	border-top: 1px dashed #8c8b8b;
+	border-bottom: 1px dashed #fff;
+}
+
+
 <!-- Custom CSS Classes -->
+
+
+.top-nav-list {
+
+    display: inline-block;
+    list-style-type: none;
+    text-align:center;
+}
+
+.top-nav-list a {
+    font-family: "Quicksand";
+}
+
 
 .tag {
     border: none;
@@ -81,17 +199,93 @@ th {
     background-color: #f3f3f3;
 }
 
+.project-progress {
+    border: none;
+    padding: 0.2em 00.5em;
+    border-radius: 4px;
+    background-color: #f3f3f3;
+}
+
 
 #main {
     margin: 0 auto;
-    box-shadow: 0px 0px 30px 6px #d3d3d3;
+    box-shadow: 0px 10px 30px 6px #d3d3d3;
     max-width: 700px; 
     height:inherit;
     padding: 5px 20px;
     border-radius: 7px 7px 0 0;
+    font-family: "Merriweather";
+}
+
+.post-title {
+
+    font-family: "Quicksand";
+
 }
 
 .post-date {
-    color: #a3a3a3;
-    font-size:smaller;
+    color: #a0a0a0;
+    font-family: "Quicksand";
+}
+
+.post-content {
+    font-family: 'Merriweather';
+}
+
+.post-content p {
+
+    font-size: 18px;
+    line-height: 1.5em;
+}
+
+.post-footer {
+
+    height: 50px;
+
+}
+
+.post-footer a {
+    font-size: smaller;
+    font-family: "Quicksand";
+    height: 150px;
+}
+
+.post-nav {
+    border: none;
+    padding: 0.2em 00.5em;
+    border-radius: 4px;
+    background-color: inherit;
+    margin: auto 0;
+}
+
+.post-nav:hover {
+
+    background-color: #f3f3f3;
+
+}
+
+.left {
+
+    float:left;
+
+}
+
+.right {
+
+    float: right;
+}
+
+.read-more {
+    background-color: #fff;
+    border: none;
+    border-radius: 8px ;
+    padding:3px 5px;
+    margin-top: 0.5em;
+    font-family: inherit; 
+}
+
+.homepage-title {
+
+    font-family:"Quicksand";
+
 }

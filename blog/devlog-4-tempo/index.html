@@ -2,62 +2,68 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/style.css" rel="stylesheet">
+    <link rel="icon" type="img/png" href="/imgs/favicon.ico">
     <title>Devlog #4: Tempo</title>
 </head>
 
 
 <body>
 
-    <div id="header">
-         
-    </div>
+    <header class="header-parallax">
+    
+        <h1><a href="http://sudosays.github.io/">Evil Inc.</a></h1>
+
+        <nav class="top-nav-list"> 
+            <a href="http://sudosays.github.io/ ">Home</a> 
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="">Projects</a>
+            
+        </nav>
+
+    </header>
 
 
 <div id="main">
 
-    <h1>Devlog #4: Tempo</h1>
+    <h1 class="post-title">Devlog #4: Tempo</h1>
 
     <span class="post-date">Saturday, Aug 10, 2019</span>
 
     
-
-<p>First of all, let me apologise in advance. This is going to be a somewhat
+    <div class="post-content">
+    <p>First of all, let me apologise in advance. This is going to be a somewhat
 lengthy one. I had gotten caught up in the development and rounding out of the
 features, and neglected to report on the progress. However, as it currently
 stands, the app is in a functional state. So much so that I have been using it
 consistently in my daily life already, despite some missing features that make
 it a bit frustrating to use.</p>
-
 <p>In this devlog, I will be covering how I added user settings to control the
 lengths of the tasks and breaks, as well as some interesting bugs and how I
 overcame them.</p>
-
 <h2 id="setting-things-right">Setting Things Right</h2>
-
 <p>A key feature of the app is that the user is able to adjust the lengths of the
 task sessions, and the long and short breaks in between. Since we are following
 the principles of the Pomodorro technique the suggested times for these are as
 follows:</p>
-
 <ul>
 <li>Task sessions are traditionally 25 minutes</li>
 <li>Short breaks are 3-5 minutes</li>
 <li>Long breaks are 15-30 minutes long</li>
 </ul>
-
 <p>However, I would like the users to be able to increase or decrease these times
 according to what works best for them and are still within reasonable limits.
 For example, we don’t want someone to say work for 1 minute, have a 15 minute
 short break, followed by a long break of 1 hour since that undermines the
 balance of work to rest that allows the brain maximise the overall time spent
 on task.</p>
-
 <p>Therefore I opted for a “sliding scale” design for setting each length from
 “shorter” to “longer” which hopefully will promote a feeling of control in the
 user, but ultimately keep them balanced in terms of the ratio between work and
 rest.</p>
-
 <figure>
     <img src="/imgs/devlog-4-tempo-screenshot-settingssliders.png"
          alt="Screenshot showing the sliders used for adjusting the lengths." height="250px"/> <figcaption>
@@ -65,22 +71,17 @@ rest.</p>
         </figcaption>
 </figure>
 
-
 <p>As you can see above, each slider (a SeekBar widget) only has three settings.
 This is intentionally done to reduce the search space for the user to find an
 optimal overall setting for the app since altogether there are 27 possible
 combinations of settings. I used a bit of code to convert the actual SeekBar
 values (specified as integers from 0 to max) into actual times relating to the
 type of setting.</p>
-
 <pre><code>settingBaseLength + (settingSeekBar.progress*settingIncrement)
-</code></pre>
-
-<p>This means that in future, if it is necessary for users to have finer control
+</code></pre><p>This means that in future, if it is necessary for users to have finer control
 over a given setting all that needs to be adjusted is the number of notches for
 the slider and that setting’s increment value. Currently the base values and
 increments are as follows:</p>
-
 <table>
 <thead>
 <tr>
@@ -89,20 +90,17 @@ increments are as follows:</p>
 <th>Increment length(min)</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>Task</td>
 <td>20</td>
 <td>5</td>
 </tr>
-
 <tr>
 <td>Short break</td>
 <td>3</td>
 <td>2</td>
 </tr>
-
 <tr>
 <td>Long break</td>
 <td>20</td>
@@ -110,30 +108,28 @@ increments are as follows:</p>
 </tr>
 </tbody>
 </table>
-
 <p>These numbers are all loaded from ‘default_lengths.xml‘ so that if adjustments
 are needed, one only needs to touch the resource file.</p>
-
 <p>With the higher level design out of the way, let’s talk implementation. The
 official documentation suggests using a SharedPreferences file that stores
 key-value pairs. However, initially I made the mistake of thinking that I
 needed to use a Preferences file since I only needed one preference file for
 the app and only the settings activity would write to it. I was wrong.
 Initially it looked something like this in my FlowSettings activity:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">with(<span style="color:#007020;font-weight:bold">this</span>.getPreferences(Context.MODE_PRIVATE).edit())
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">with(<span style="color:#069;font-weight:bold">this</span>.getPreferences(Context.MODE_PRIVATE).edit())
 {
     putInt(getString(R.string.task_length_key), taskLength + (taskTimeSeekBar.progress*taskIncrement))
     putInt(getString(R.string.short_break_key), shortBreakLength + (shortBreakSeekBar.progress*shortBreakIncrement))
     putInt(getString(R.string.long_break_key), longBreakLength + (longBreakSeekBar.progress*longBreakIncrement))
     apply()
-}</code></pre></div>
-<p>As soon as I tried to load the settings from the Flow activity with the
+}
+</code></pre></div><p>As soon as I tried to load the settings from the Flow activity with the
 following:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">val</span> settings = <span style="color:#007020;font-weight:bold">this</span>.getPreferences(Context.MODE_PRIVATE)
-<span style="color:#007020;font-weight:bold">val</span> taskLength = settings.getInt(..., fallback)
-<span style="color:#007020;font-weight:bold">val</span> shortBreakLength = settings.getInt(..., fallback)
-<span style="color:#007020;font-weight:bold">val</span> longBreakLength = settings.getInt(..., fallback)</code></pre></div>
-<p>I found that they were all defaulting to the fallbacks I set. They key issue?
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">val</span> settings = <span style="color:#069;font-weight:bold">this</span>.getPreferences(Context.MODE_PRIVATE)
+<span style="color:#069;font-weight:bold">val</span> taskLength = settings.getInt(..., fallback)
+<span style="color:#069;font-weight:bold">val</span> shortBreakLength = settings.getInt(..., fallback)
+<span style="color:#069;font-weight:bold">val</span> longBreakLength = settings.getInt(..., fallback)
+</code></pre></div><p>I found that they were all defaulting to the fallbacks I set. They key issue?
 using getPreferences instead of getSharedPreferences. The former requires no
 filename, but creates a unique preferences file for a single activity to be
 used only by that activity. This meant that I was writing to and reading from
@@ -142,9 +138,7 @@ Instead, the getSharedPreferences works by supplying a filename, thereby
 ensuring that activities can access the same preferences file. All it took was
 that one change and my settings were now saving and loading correctly across
 activities.</p>
-
 <h2 id="activity-stacked">Activity Stacked</h2>
-
 <p>I noticed a strange behaviour when testing the adding of tasks that when I went
 to add a task, and canceled (returning me to the main activity) I could press
 back to go to the add task activity again. To make this even stranger, I could
@@ -152,16 +146,14 @@ then press back again and navigate round to the main activity. This was wrong
 since I wanted the user to exit/minimise the app when they pressed the back
 button on the main activity. The answer to this behaviour turned out to lead to
 a good catch!</p>
-
 <p>Originally, in my AddTask activity when the user presses cancel the following
 code was executed:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">cancel</span>(view: View)
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">cancel</span>(view: View)
 {
-    <span style="color:#007020;font-weight:bold">val</span> intent = Intent(<span style="color:#007020;font-weight:bold">this</span>, MainActivity<span style="color:#666">::</span><span style="color:#007020;font-weight:bold">class</span>.java)
+    <span style="color:#069;font-weight:bold">val</span> intent = Intent(<span style="color:#069;font-weight:bold">this</span>, MainActivity<span style="color:#555">::</span><span style="color:#069;font-weight:bold">class</span>.java)
     startActivity(intent)
-}</code></pre></div>
-<p>Now I could go to AddTask, hit cancel and… crash the app. Reliably.</p>
-
+}
+</code></pre></div><p>Now I could go to AddTask, hit cancel and… crash the app. Reliably.</p>
 <p>You might have already noticed my mistake, which seemed so simple once I
 figured it out. By calling startActivity() I was not “returning” to the main
 activity, but instead starting another instance of it. Therefore, when I
@@ -169,14 +161,12 @@ followed it by finishing the AddTask activity and tried to navigate back, it
 would crash because the activity that started it would no longer exists. This
 also meant that there was no way to navigate back to the original instance of
 MainActivity. The figure below shows the “activity stack” I was creating.</p>
-
 <figure>
     <img src="/imgs/devlog-4-tempo-activitystacking.svg"
          alt="The resulting activity stack from using successive startActivities." height="400px"/> <figcaption>
             <p>The resulting activity stack from using successive startActivities.</p>
         </figcaption>
 </figure>
-
 
 <p>To fix this issue, I needed only to remove the all of the startActivity calls
 from the AddTasks activity since it is not actually supposed to start an
@@ -186,46 +176,38 @@ the AddTask activity. It turns out that if you look at the figure above, you
 will notice that I start the AddTaskActivity for a result. And when I canceled
 the process and just called finish, no activity result had been set causing the
 crash. To fix this, finallly, my cancel function now looks something like this:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">cancel</span>(view: View)
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">cancel</span>(view: View)
 {
     setResult(Activity.RESULT_OK, Intent())
     finish()
-}</code></pre></div>
-<p>After checking the other activities spawned by the main activity, I ensured
+}
+</code></pre></div><p>After checking the other activities spawned by the main activity, I ensured
 that all of them, on termination only call finish and set an activity result if
 they have to.</p>
-
 <h2 id="small-bugs-big-problems">Small Bugs, Big Problems</h2>
-
 <p>Once I had addressed the main implementation and app crashing fixes, that left
 a few less noticeable bugs to clean up.</p>
-
 <h3 id="ephemeral-tasks">Ephemeral Tasks</h3>
-
 <p>As soon as I started really using my app, I noticed that tasks for which I had
 assigned multiple sessions were only lasting one. Easily fixed by ensuring that
 once a task session has finished, we update the task and if there are still
 more sessions left schedule for the next session. Furthermore, we also update
 the task database to ensure that the “expended” task sessions are reflected
 even when the flow is stopped prematurely.</p>
-
 <p>Adding an update rule to the TaskDao was straightforward enough with:</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Dao
-<span style="color:#007020;font-weight:bold">interface</span> <span style="color:#0e84b5;font-weight:bold">TaskDao</span> {
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Dao
+<span style="color:#069;font-weight:bold">interface</span> <span style="color:#0a8;font-weight:bold">TaskDao</span> {
 ...
     @Update
-    <span style="color:#007020;font-weight:bold">fun</span> <span style="color:#06287e">updateTask</span>(task: Task)
+    <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">updateTask</span>(task: Task)
 ...
-}</code></pre></div>
-<p>As well as including an TaskUpdateAsync for committing changes to the Room database in a non-blocking way as discussed in <a href="http://sudosays.github.io/blog/devlog-2-tempo/">this devlog</a>.</p>
-
+}
+</code></pre></div><p>As well as including an TaskUpdateAsync for committing changes to the Room database in a non-blocking way as discussed in <a href="http://sudosays.github.io/blog/devlog-2-tempo/">this devlog</a>.</p>
 <h3 id="null-safety">Null Safety</h3>
-
 <p>Finally, a problem of oversight and something that I would not have caught
 during my testing was when an empty task would be saved. Since I knew how I
 wanted the user to enter information I did not explicitly think about and test
 this case, but when I stumbled upon it the app crashed beautifully.</p>
-
 <p>Now, I could use Kotlin’s null-safety systems such as the
 <a href="https://kotlinlang.org/docs/reference/null-safety.html">let</a> statement, but
 this is not helpful to the user to understand what is going on as it doesn’t
@@ -233,7 +215,6 @@ even give feedback. Instead, I checked for incomplete data entry and sent the
 user a toast to let them know that they had performed an illegal operation.
 This way is more in line with <a href="https://www.nngroup.com/articles/ten-usability-heuristics/">Nielsen’s Usability
 Heuristics</a>.</p>
-
 <figure>
     <img src="/imgs/devlog-4-tempo-screenshot-toast.png"
          alt="Screenshot showing the prompt to the user when they try to save an incomplete task." height="250px"/> <figcaption>
@@ -241,9 +222,7 @@ Heuristics</a>.</p>
         </figcaption>
 </figure>
 
-
 <h2 id="wrapping-up">Wrapping up</h2>
-
 <p>All this work has left the app in a useable state where the core function can
 be performed: adding tasks, changing settings, and getting into and out of flow
 correctly. However, the app is still very rough and intuitive features like
@@ -252,6 +231,22 @@ Regardless, I am happy with the progress so far and excited to see what comes
 next.</p>
 
 
+    </div>
+
+    <div class="post-footer">
+
+        <hr>
+        <button class="post-nav left">
+            
+            <a href="http://sudosays.github.io/blog/devlog-3-tempo/">&larr;&nbsp;&nbsp;previous Devlog #3: Tempo</a>
+            
+        </button>
+
+        <button class="post-nav right">
+            
+        </button>
+
+    </div>
 </div>
 
 </body>
