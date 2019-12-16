@@ -26,8 +26,7 @@
       <pubDate>Thu, 13 Jun 2019 11:37:33 +0200</pubDate>
       
       <guid>http://sudosays.github.io/blog/devlog-3-tempo/</guid>
-      <description>At the end of the previous devlog  I used AsyncTasks to implement the very basic “Add Task” functionality. Next I set to work getting the other most important feature working: the “flow mode”. The flow mode is where the Pomodorro technique I discussed in the very first devlog is applied. All it shows is a timer and the task you are supposed to be focusing on.
-Now like the esteemed ex-convict Martha Stewart, I had already prepared a lot of the logic for the flow activity before this point.</description>
+      <description>At the end of the previous devlog  I used AsyncTasks to implement the very basic “Add Task” functionality. Next I set to work getting the other most important feature working: the “flow mode”. The flow mode is where the Pomodorro technique I discussed in the very first devlog is applied.</description>
     </item>
     
     <item>
@@ -37,7 +36,7 @@ Now like the esteemed ex-convict Martha Stewart, I had already prepared a lot of
       
       <guid>http://sudosays.github.io/blog/devlog-2-tempo/</guid>
       <description>At this stage the first major functionality of the app has been implemented.
-With this devlog I cover how I added data persistence of the tasks as well as the “Add Task” functionality. I used the Room library that comes as part of Android Jetpack for expediency, but nonetheless I had some stumbling blocks and learning points along the way. Regardless, I would highly recommend using Room so as to not get bogged down with how to query data from the SQLite database and increasing your chances of mucking something up “accidentally”.</description>
+With this devlog I cover how I added data persistence of the tasks as well as the “Add Task” functionality. I used the Room library that comes as part of Android Jetpack for expediency, but nonetheless I had some stumbling blocks and learning points along the way.</description>
     </item>
     
     <item>
@@ -47,7 +46,7 @@ With this devlog I cover how I added data persistence of the tasks as well as th
       
       <guid>http://sudosays.github.io/blog/devlog-1-tempo/</guid>
       <description>In my last devlog for my productivity app Tempo, I discussed how I had created a CustomView for my Task object, how I would add them directly to my main ConstraintLayout, and how I fixed the layout by using LayoutParams.
-In this post, I set out thinking how I was going to discuss implementing the “Add Task” functionality and managing the list of tasks in the MainActivity. However, fate it seems is not without a sense of irony.</description>
+In this post, I set out thinking how I was going to discuss implementing the “Add Task” functionality and managing the list of tasks in the MainActivity.</description>
     </item>
     
     <item>
@@ -57,7 +56,7 @@ In this post, I set out thinking how I was going to discuss implementing the “
       
       <guid>http://sudosays.github.io/blog/devlog-tempo/</guid>
       <description>As a supervillain, I would like to ensure that my minions and peons are working at maximum efficiency. The following post (and probably series) describes my journey in creating a tool that will help them stay productive.
-This leads me to a question: What tomatoes, egg timers, and university have in common? They are all part of Francesco Cirillo’s Pomodoro technique that aims to manage time and tasks efficiently. The basics are that you have indivisible units of working time separated by short breaks and that you focus solely on the task at hand during a working unit.</description>
+This leads me to a question: What tomatoes, egg timers, and university have in common?</description>
     </item>
     
   </channel>

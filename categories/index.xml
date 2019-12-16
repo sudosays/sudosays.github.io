@@ -6,10 +6,28 @@
     <description>Recent content in Categories on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 10 Aug 2019 10:29:37 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 16 Dec 2019 18:45:21 +0200</lastBuildDate>
     
 	<atom:link href="http://sudosays.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>adventure</title>
+      <link>http://sudosays.github.io/categories/adventure/</link>
+      <pubDate>Mon, 16 Dec 2019 18:45:21 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/categories/adventure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>life</title>
+      <link>http://sudosays.github.io/categories/life/</link>
+      <pubDate>Mon, 16 Dec 2019 18:45:21 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/categories/life/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>android</title>

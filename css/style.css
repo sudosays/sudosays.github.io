@@ -70,7 +70,7 @@ body {
 
 header {
     margin: 0 auto; 
-    background-color:#909090;
+    background-color:#272727;
     height:150px;
     color: #fff;
     margin-bottom: 20px;
@@ -287,5 +287,11 @@ hr{
 .homepage-title {
 
     font-family:"Quicksand";
+
+}
+
+.panorama img{
+
+    transform: rotate(-90deg);
 
 }

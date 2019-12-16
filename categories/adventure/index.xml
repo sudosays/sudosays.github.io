@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>adventure on Evil Inc.</title>
+    <link>http://sudosays.github.io/categories/adventure/</link>
+    <description>Recent content in adventure on Evil Inc.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 Dec 2019 18:45:21 +0200</lastBuildDate>
+    
+	<atom:link href="http://sudosays.github.io/categories/adventure/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>UltraTrail 2019</title>
+      <link>http://sudosays.github.io/blog/ultratrail-2019/</link>
+      <pubDate>Mon, 16 Dec 2019 18:45:21 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/ultratrail-2019/</guid>
+      <description>On the 30th of November this year I ran the 35km Ultra Trail in Cape Town.
+At a glance, it took me a total of 8 hours 15 minutes to complete with an average pace of 13:53 min/km. According to my running watch, I burned 4583 calories with an average heart rate of 156bpm and a max heart rate of 186bpm over the entire 8+ hours.</description>
+    </item>
+    
+  </channel>
+</rss>
