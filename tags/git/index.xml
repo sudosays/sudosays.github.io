@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on Evil Inc.</title>
+    <link>http://sudosays.github.io/tags/git/</link>
+    <description>Recent content in git on Evil Inc.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 12 Feb 2020 15:20:38 +0200</lastBuildDate>
+    
+	<atom:link href="http://sudosays.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Commitunism</title>
+      <link>http://sudosays.github.io/blog/commitunism/</link>
+      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/commitunism/</guid>
+      <description>In my 2020 vision, I mentioned that this year I wanted to contribute to an open source project and I am happy to announce that my first ever pull request was merged. This post mainly concerns my experience of the contribution process and my thoughts throughout rather than an in depth technical report.</description>
+    </item>
+    
+  </channel>
+</rss>

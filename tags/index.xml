@@ -6,17 +6,44 @@
     <description>Recent content in Tags on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Jan 2020 13:09:09 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 12 Feb 2020 15:20:38 +0200</lastBuildDate>
     
 	<atom:link href="http://sudosays.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>devlog</title>
+      <link>http://sudosays.github.io/tags/devlog/</link>
+      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/devlog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>http://sudosays.github.io/tags/git/</link>
+      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>growth</title>
       <link>http://sudosays.github.io/tags/growth/</link>
-      <pubDate>Mon, 06 Jan 2020 13:09:09 +0200</pubDate>
+      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
       
       <guid>http://sudosays.github.io/tags/growth/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>open source</title>
+      <link>http://sudosays.github.io/tags/open-source/</link>
+      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/open-source/</guid>
       <description></description>
     </item>
     
@@ -35,15 +62,6 @@
       <pubDate>Mon, 16 Dec 2019 18:45:21 +0200</pubDate>
       
       <guid>http://sudosays.github.io/tags/outdoors/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>devlog</title>
-      <link>http://sudosays.github.io/tags/devlog/</link>
-      <pubDate>Sat, 10 Aug 2019 10:29:37 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/tags/devlog/</guid>
       <description></description>
     </item>
     

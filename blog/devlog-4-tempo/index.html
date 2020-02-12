@@ -44,7 +44,7 @@ it a bit frustrating to use.</p>
 <p>In this devlog, I will be covering how I added user settings to control the
 lengths of the tasks and breaks, as well as some interesting bugs and how I
 overcame them.</p>
-<h2 id="setting-things-right">Setting Things Right</h2>
+<h2 id="setting-things-right-">Setting Things Right</h2>
 <p>A key feature of the app is that the user is able to adjust the lengths of the
 task sessions, and the long and short breaks in between. Since we are following
 the principles of the Pomodorro technique the suggested times for these are as
@@ -138,7 +138,7 @@ Instead, the getSharedPreferences works by supplying a filename, thereby
 ensuring that activities can access the same preferences file. All it took was
 that one change and my settings were now saving and loading correctly across
 activities.</p>
-<h2 id="activity-stacked">Activity Stacked</h2>
+<h2 id="activity-stacked-">Activity Stacked</h2>
 <p>I noticed a strange behaviour when testing the adding of tasks that when I went
 to add a task, and canceled (returning me to the main activity) I could press
 back to go to the add task activity again. To make this even stranger, I could
@@ -184,10 +184,10 @@ crash. To fix this, finallly, my cancel function now looks something like this:<
 </code></pre></div><p>After checking the other activities spawned by the main activity, I ensured
 that all of them, on termination only call finish and set an activity result if
 they have to.</p>
-<h2 id="small-bugs-big-problems">Small Bugs, Big Problems</h2>
+<h2 id="small-bugs-big-problems-">Small Bugs, Big Problems</h2>
 <p>Once I had addressed the main implementation and app crashing fixes, that left
 a few less noticeable bugs to clean up.</p>
-<h3 id="ephemeral-tasks">Ephemeral Tasks</h3>
+<h3 id="ephemeral-tasks-">Ephemeral Tasks</h3>
 <p>As soon as I started really using my app, I noticed that tasks for which I had
 assigned multiple sessions were only lasting one. Easily fixed by ensuring that
 once a task session has finished, we update the task and if there are still
@@ -203,7 +203,7 @@ even when the flow is stopped prematurely.</p>
 ...
 }
 </code></pre></div><p>As well as including an TaskUpdateAsync for committing changes to the Room database in a non-blocking way as discussed in <a href="http://sudosays.github.io/blog/devlog-2-tempo/">this devlog</a>.</p>
-<h3 id="null-safety">Null Safety</h3>
+<h3 id="null-safety-">Null Safety</h3>
 <p>Finally, a problem of oversight and something that I would not have caught
 during my testing was when an empty task would be saved. Since I knew how I
 wanted the user to enter information I did not explicitly think about and test
@@ -222,7 +222,7 @@ Heuristics</a>.</p>
         </figcaption>
 </figure>
 
-<h2 id="wrapping-up">Wrapping up</h2>
+<h2 id="wrapping-up-">Wrapping up</h2>
 <p>All this work has left the app in a useable state where the core function can
 be performed: adding tasks, changing settings, and getting into and out of flow
 correctly. However, the app is still very rough and intuitive features like

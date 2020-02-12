@@ -6,10 +6,19 @@
     <description>Recent content in growth on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Jan 2020 13:09:09 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 12 Feb 2020 15:20:38 +0200</lastBuildDate>
     
 	<atom:link href="http://sudosays.github.io/tags/growth/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Commitunism</title>
+      <link>http://sudosays.github.io/blog/commitunism/</link>
+      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/commitunism/</guid>
+      <description>In my 2020 vision, I mentioned that this year I wanted to contribute to an open source project and I am happy to announce that my first ever pull request was merged. This post mainly concerns my experience of the contribution process and my thoughts throughout rather than an in depth technical report.</description>
+    </item>
     
     <item>
       <title>Book Review - The Organised Mind</title>
@@ -17,7 +26,7 @@
       <pubDate>Mon, 06 Jan 2020 13:09:09 +0200</pubDate>
       
       <guid>http://sudosays.github.io/blog/book-review-the-organised-mind/</guid>
-      <description>Last night I finally managed to finish Daniel Levitin&#39;s The Organised Mind and while that phrasing might make it sound like this book was a drag, it was the exact opposite. It is so densely packed with revelation after revelation, that to read it in a rush is to do yourself an injustice.</description>
+      <description>Last night I finally managed to finish Daniel Levitin&amp;rsquo;s The Organised Mind and while that phrasing might make it sound like this book was a drag, it was the exact opposite. It is so densely packed with revelation after revelation, that to read it in a rush is to do yourself an injustice.</description>
     </item>
     
     <item>
@@ -26,7 +35,7 @@
       <pubDate>Sat, 04 Jan 2020 19:56:13 +0200</pubDate>
       
       <guid>http://sudosays.github.io/blog/2020-vision/</guid>
-      <description>While normally I would keep my New Year&#39;s resolutions to myself, blogging more is one of them. If I could control how this year will turn out for me I would summarise it in one word: growth. My aim this year is to extend myself in as many aspects as I can while ensuring lasting impact.</description>
+      <description>While normally I would keep my New Year&amp;rsquo;s resolutions to myself, blogging more is one of them. If I could control how this year will turn out for me I would summarise it in one word: growth. My aim this year is to extend myself in as many aspects as I can while ensuring lasting impact.</description>
     </item>
     
   </channel>

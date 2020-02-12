@@ -6,10 +6,28 @@
     <description>Recent content in Categories on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Jan 2020 13:09:09 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 12 Feb 2020 15:20:38 +0200</lastBuildDate>
     
 	<atom:link href="http://sudosays.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>development</title>
+      <link>http://sudosays.github.io/categories/development/</link>
+      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/categories/development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tools</title>
+      <link>http://sudosays.github.io/categories/tools/</link>
+      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/categories/tools/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>misc</title>
@@ -44,24 +62,6 @@
       <pubDate>Sat, 10 Aug 2019 10:29:37 +0200</pubDate>
       
       <guid>http://sudosays.github.io/categories/android/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>development</title>
-      <link>http://sudosays.github.io/categories/development/</link>
-      <pubDate>Sat, 10 Aug 2019 10:29:37 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/categories/development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tools</title>
-      <link>http://sudosays.github.io/categories/tools/</link>
-      <pubDate>Tue, 14 Nov 2017 00:03:12 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/categories/tools/</guid>
       <description></description>
     </item>
     
