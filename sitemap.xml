@@ -3,13 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://sudosays.github.io/blog/be-static-to-go-faster/</loc>
+    <lastmod>2020-02-25T16:50:02+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://sudosays.github.io/blog/</loc>
-    <lastmod>2020-02-12T15:20:38+02:00</lastmod>
+    <lastmod>2020-02-25T16:50:02+02:00</lastmod>
   </url>
   
   <url>
     <loc>http://sudosays.github.io/categories/</loc>
-    <lastmod>2020-02-12T15:20:38+02:00</lastmod>
+    <lastmod>2020-02-25T16:50:02+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/devops/</loc>
+    <lastmod>2020-02-25T16:50:02+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/tools/</loc>
+    <lastmod>2020-02-25T16:50:02+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/</loc>
+    <lastmod>2020-02-25T16:50:02+02:00</lastmod>
   </url>
   
   <url>
@@ -44,16 +64,6 @@
   
   <url>
     <loc>http://sudosays.github.io/tags/</loc>
-    <lastmod>2020-02-12T15:20:38+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/categories/tools/</loc>
-    <lastmod>2020-02-12T15:20:38+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/</loc>
     <lastmod>2020-02-12T15:20:38+02:00</lastmod>
   </url>
   

@@ -6,10 +6,19 @@
     <description>Recent content in tools on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Feb 2020 15:20:38 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 25 Feb 2020 16:50:02 +0200</lastBuildDate>
     
 	<atom:link href="http://sudosays.github.io/categories/tools/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Be Static to Go Faster</title>
+      <link>http://sudosays.github.io/blog/be-static-to-go-faster/</link>
+      <pubDate>Tue, 25 Feb 2020 16:50:02 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/be-static-to-go-faster/</guid>
+      <description>One of the important factors in being a supervillain is that you need to be able to get your word out there. This can be for multiple reasons such as recruiting henchmen, drawing the ire of heroes, networking with other supervillains, and the list goes on. For an incipient supervillain such as myself, this comes in the form of my blog.</description>
+    </item>
     
     <item>
       <title>Commitunism</title>
