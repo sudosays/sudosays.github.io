@@ -143,15 +143,5 @@ TL;DR the gun is accompanied by a watch that, when it is close enough to the gun
       <description>You might have found yourself here and asked yourself the following questions, “How did I get here? Why am I reading a blog about a malignant enterprise? What is the point of the universe if it’ll end in a massive heat death anyway?”, to which I have the answers (except for the first and last one).</description>
     </item>
     
-    <item>
-      <title>About me</title>
-      <link>http://sudosays.github.io/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://sudosays.github.io/about/</guid>
-      <description>Hey! You might be wondering who I am.
-Email julius at sudosays dot com</description>
-    </item>
-    
   </channel>
 </rss>
