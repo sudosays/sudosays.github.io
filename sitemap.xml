@@ -3,6 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://sudosays.github.io/categories/app/</loc>
+    <lastmod>2020-03-05T11:57:28+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/</loc>
+    <lastmod>2020-03-05T11:57:28+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/productivity/</loc>
+    <lastmod>2020-03-05T11:57:28+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/projects/</loc>
+    <lastmod>2020-03-05T11:57:28+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/projects/tempo/</loc>
+    <lastmod>2020-03-05T11:57:28+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/</loc>
+    <lastmod>2020-03-05T11:57:28+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://sudosays.github.io/blog/be-static-to-go-faster/</loc>
     <lastmod>2020-02-25T16:50:02+02:00</lastmod>
   </url>
@@ -13,22 +43,12 @@
   </url>
   
   <url>
-    <loc>http://sudosays.github.io/categories/</loc>
-    <lastmod>2020-02-25T16:50:02+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://sudosays.github.io/categories/devops/</loc>
     <lastmod>2020-02-25T16:50:02+02:00</lastmod>
   </url>
   
   <url>
     <loc>http://sudosays.github.io/categories/tools/</loc>
-    <lastmod>2020-02-25T16:50:02+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/</loc>
     <lastmod>2020-02-25T16:50:02+02:00</lastmod>
   </url>
   
@@ -114,6 +134,11 @@
   
   <url>
     <loc>http://sudosays.github.io/blog/devlog-4-tempo/</loc>
+    <lastmod>2019-08-10T10:29:37+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/tags/tempo/</loc>
     <lastmod>2019-08-10T10:29:37+02:00</lastmod>
   </url>
   

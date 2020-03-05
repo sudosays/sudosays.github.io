@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on Evil Inc.</title>
+    <link>http://sudosays.github.io/projects/</link>
+    <description>Recent content in Projects on Evil Inc.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Mar 2020 11:56:28 +0200</lastBuildDate>
+    
+	<atom:link href="http://sudosays.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Tempo</title>
+      <link>http://sudosays.github.io/projects/tempo/</link>
+      <pubDate>Thu, 05 Mar 2020 11:56:28 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/projects/tempo/</guid>
+      <description>This is my personal productivity app. It started from trying to merge the Pomodoro technique with a to-do list so that I could budget and plan my time. Other productivity apps I had used in the past featured either a timer only, or a to-do list, but not both. Furthermore, I use this to help keep me in a flow state by reducing the amount of effort I need to structure my work.</description>
+    </item>
+    
+  </channel>
+</rss>

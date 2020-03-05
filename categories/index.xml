@@ -6,10 +6,28 @@
     <description>Recent content in Categories on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 Feb 2020 16:50:02 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 05 Mar 2020 11:56:28 +0200</lastBuildDate>
     
 	<atom:link href="http://sudosays.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>app</title>
+      <link>http://sudosays.github.io/categories/app/</link>
+      <pubDate>Thu, 05 Mar 2020 11:56:28 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/categories/app/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>productivity</title>
+      <link>http://sudosays.github.io/categories/productivity/</link>
+      <pubDate>Thu, 05 Mar 2020 11:56:28 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/categories/productivity/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>devops</title>
