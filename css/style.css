@@ -38,7 +38,6 @@
        url('/fonts/quicksand-v19-latin-regular.svg#Quicksand') format('svg'); /* Legacy iOS */
 }
 
-
 .header-parallax {
   /* The image used */
   background-image: url("/imgs/hobbes_ascii.png");
@@ -65,7 +64,8 @@ html {
 body {
     margin: 0 auto;
     padding: 0;
-
+    background-color: #fefdfd;
+    color:#404040;
 }
 
 header {
@@ -81,7 +81,7 @@ header h1 {
     
     font-family: "Merriweather", "Serif";
     font-size: xx-large;
-    font-weight: 800;
+    font-weight: 400;
 
 }
 
@@ -142,8 +142,9 @@ p {
     max-width: 72ch;
     overflow-wrap:break-word;
     margin-top:1.2em;
-    text-align: justify;
+    text-align: left;
     hyphens: auto;
+    line-height:1.6;
 }
 
 table {
@@ -209,11 +210,9 @@ hr{
 
 #main {
     margin: 0 auto;
-    box-shadow: 0px 10px 30px 6px #d3d3d3;
     max-width: 700px; 
     height:inherit;
     padding: 5px 20px;
-    border-radius: 7px 7px 0 0;
     font-family: "Merriweather";
 }
 
@@ -229,13 +228,12 @@ hr{
 }
 
 .post-content {
-    font-family: 'Merriweather';
+    font-family: "Merriweather", serif;
 }
 
 .post-content p {
-
-    font-size: 18px;
-    line-height: 1.5em;
+    font-size: 12pt;
+    line-height: 1.9;
 }
 
 .post-footer {
@@ -286,7 +284,7 @@ hr{
 
 .homepage-title {
 
-    font-family:"Quicksand";
+    font-family:"Merriweather";
 
 }
 
