@@ -6,10 +6,19 @@
     <description>Recent content in Blog on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 Feb 2020 16:50:02 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 21 Jun 2020 17:34:50 +0200</lastBuildDate>
     
 	<atom:link href="http://sudosays.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Status Update, June 2020</title>
+      <link>http://sudosays.github.io/blog/status-update-june-2020/</link>
+      <pubDate>Sun, 21 Jun 2020 17:34:50 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/status-update-june-2020/</guid>
+      <description>This post is inspired by the status updates of Drew DeVault (who remains a large inspiration for keeping this blog as a whole). This entry is a bit late, but better than never. In future I think I will also try to update at the middle of each month. This is also a chance to add updates from my life that do not warrant a full post here or may seem unrelated to the spirit of this blog.</description>
+    </item>
     
     <item>
       <title>Be Static to Go Faster</title>

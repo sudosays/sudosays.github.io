@@ -40,10 +40,10 @@
 
 .header-parallax {
   /* The image used */
-  background-image: url("/imgs/hobbes_ascii.png");
+  /*background-image: url("/imgs/hobbes_ascii.png");*/
 
   /* Set a specific height */
-  height: 150px;
+  height: 100px;
 
   /* Create the parallax scrolling effect */
   background-attachment: fixed;
@@ -234,6 +234,11 @@ hr{
 .post-content p {
     font-size: 12pt;
     line-height: 1.9;
+}
+
+.post-content a {
+    text-decoration: underline;
+    color: #1DA1F2;
 }
 
 .post-footer {

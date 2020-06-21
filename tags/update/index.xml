@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>update on Evil Inc.</title>
+    <link>http://sudosays.github.io/tags/update/</link>
+    <description>Recent content in update on Evil Inc.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 21 Jun 2020 17:34:50 +0200</lastBuildDate>
+    
+	<atom:link href="http://sudosays.github.io/tags/update/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Status Update, June 2020</title>
+      <link>http://sudosays.github.io/blog/status-update-june-2020/</link>
+      <pubDate>Sun, 21 Jun 2020 17:34:50 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/status-update-june-2020/</guid>
+      <description>This post is inspired by the status updates of Drew DeVault (who remains a large inspiration for keeping this blog as a whole). This entry is a bit late, but better than never. In future I think I will also try to update at the middle of each month. This is also a chance to add updates from my life that do not warrant a full post here or may seem unrelated to the spirit of this blog.</description>
+    </item>
+    
+  </channel>
+</rss>
