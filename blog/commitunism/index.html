@@ -59,7 +59,7 @@ achievable thing to fix.</p>
 <p>At first, I was tempted to comment on the issue that I could look into it, but
 a teacher of mine once told me, &ldquo;talk is cheap&rdquo;, and so I decided to instead
 produce a solution first.</p>
-<h2 id="doing-my-homework-">Doing My Homework</h2>
+<h2 id="doing-my-homework">Doing My Homework</h2>
 <p>Although I had a vague idea of what the process was for contributing to
 open source projects, I also know that each project might have a subtly
 different workflow for contributions. As a result, I made sure to read the
@@ -69,7 +69,7 @@ project from source, which meant understanding the build system and
 dependencies. Luckily, working with lots of build systems (and even writing my
 own makefiles) meant that it went smoothly and soon I had a workflow figured
 out.</p>
-<h2 id="finding-the-problem-">Finding the Problem</h2>
+<h2 id="finding-the-problem">Finding the Problem</h2>
 <p>At this point, I had reached the limit of my comfort zone. The project is
 written in Go which I had very little experience with having only completed
 the Tour of Go previously. Furthermore, I was not at all familiar with the
@@ -89,7 +89,7 @@ being served, but if I was really clever I would have added the <code>-n</code> 
 
 cmd/internal/cli/build.go:268: question := &quot;Build target already exists. Do you want to overwrite? [N/y] &quot;
 
-</code></pre><h2 id="initial-solve-">Initial Solve</h2>
+</code></pre><h2 id="initial-solve">Initial Solve</h2>
 <p>My first thought about solving this was to check if the build target file had
 the <code>.def</code> extension that denotes it as a build file. However, there were two
 big issues with this approach: it depended on the name of the file rather than
@@ -133,7 +133,7 @@ cases, and builds passed, it also reflected multiple commits on the main issue
 conversation. Although unexpected, this is very useful for connecting commits
 to issues automagically.</p>
 <p>Excited and thrilled, I opened a pull request and waited for a review.</p>
-<h2 id="feedback-loop-">Feedback Loop</h2>
+<h2 id="feedback-loop">Feedback Loop</h2>
 <p>The pull review process was also a novel experience for me. Initially I was
 worried that my changes would be outright rejected, and my PR tanked. Instead,
 there was a back and forth discussion between myself and <a href="https://github.com/dctrud">David
@@ -143,7 +143,7 @@ view &mdash; in a solution that was greater than something I could have achieved
 myself. I would incorporate suggested changes and neaten up my code which ended
 up in a total of three commits for the pull request. The review process felt
 very welcoming and collaborative.</p>
-<h2 id="victory-">Victory</h2>
+<h2 id="victory">Victory</h2>
 <p>With all suggestions incorporated, continuous integration and build tests
 passed, my PR finally passed review and was merged into the master branch.</p>
 <p>While I believe that the contribution I made was definitely beneficial to

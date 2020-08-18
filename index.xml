@@ -6,13 +6,22 @@
     <description>Recent content in Welcome traveler! on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Jul 2020 14:41:45 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2020 15:32:29 +0200</lastBuildDate>
     
 	<atom:link href="http://sudosays.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Status Update July 2020</title>
+      <title>Status Update, August 2020</title>
+      <link>http://sudosays.github.io/blog/status-update-august-2020/</link>
+      <pubDate>Tue, 18 Aug 2020 15:32:29 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/status-update-august-2020/</guid>
+      <description>Yet again it is time for another update. The past month I have been incredibly busy. I have recently taken up a lecturing position for a Java course at a local university. While entirely online/remote, the work is quite time consuming if not overly difficult. I have found it interesting to develop an effective workflow and schedule, and to find the relevant tools that allow me to do so.</description>
+    </item>
+    
+    <item>
+      <title>Status Update, July 2020</title>
       <link>http://sudosays.github.io/blog/status-update-july-2020/</link>
       <pubDate>Wed, 15 Jul 2020 14:41:45 +0200</pubDate>
       

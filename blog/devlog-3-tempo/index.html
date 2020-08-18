@@ -50,7 +50,7 @@ when they finished. I was not running any of this in a worker thread, or a
 background service, since the CountdownTimers create their own threads to
 separate them from the UI thread. In the end this choice became first a curse
 and then a blessing.</p>
-<h2 id="issue-1-zombie-tasks-">Issue 1: Zombie Tasks</h2>
+<h2 id="issue-1-zombie-tasks">Issue 1: Zombie Tasks</h2>
 <p>While the logic was really easy to implement, I had envisioned that tasks that
 were completed in flow would be “burned” and disappear from the task list in
 the MainActivity. This was easy enough to achieve by deleting the task from the
@@ -88,7 +88,7 @@ A cool side effect of this is that should the database be updated in the
 background (or synchronised with an online one) the new changes will be
 immediately reflected whenever the MainActivity is resumed or opened for the
 first time.</p>
-<h2 id="issue-2-ghost-tasks-">Issue 2: Ghost Tasks</h2>
+<h2 id="issue-2-ghost-tasks">Issue 2: Ghost Tasks</h2>
 <p>While I had fixed the issue of completed tasks not disappearing from the list
 once completed. I ran into the opposite problem with my tasks starting to
 disappear from the list when not even finished. When the FlowActivity was
