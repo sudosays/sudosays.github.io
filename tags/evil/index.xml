@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>evil on Evil Inc.</title>
+    <link>http://sudosays.github.io/tags/evil/</link>
+    <description>Recent content in evil on Evil Inc.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 31 Aug 2020 15:33:54 +0200</lastBuildDate>
+    
+	<atom:link href="http://sudosays.github.io/tags/evil/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Deathrolling for Gold</title>
+      <link>http://sudosays.github.io/blog/deathrolling-for-gold/</link>
+      <pubDate>Mon, 31 Aug 2020 15:33:54 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/deathrolling-for-gold/</guid>
+      <description>Money is the root of all evil. Our evil endeavors can only succeed if we are well funded. More so, our funds should come from either an untraceable or laundered source. While cryptocurrency is a viable payment method that seems reasonably untraceable, let us not stake our funds on a somewhat volatile market.</description>
+    </item>
+    
+  </channel>
+</rss>

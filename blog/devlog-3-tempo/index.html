@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/style.css" rel="stylesheet">
     <link rel="icon" type="img/png" href="/imgs/favicon.ico">
@@ -72,16 +73,16 @@ fullscreen activity, either method worked for me, however if you were to have a
 Fragment come into the foreground (with your activity visible in the
 background) there would be a difference in when <code>onPause</code> and <code>onStop</code> are called.</p>
 <p>The code in my MainActivity ended up looking something like this:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">override</span> <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">onResume</span>() {
-    <span style="color:#069;font-weight:bold">super</span>.onResume()
-    reloadTasks()
-}
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">onResume</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#204a87;font-weight:bold">super</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">onResume</span><span style="color:#000;font-weight:bold">()</span>
+    <span style="color:#000">reloadTasks</span><span style="color:#000;font-weight:bold">()</span>
+<span style="color:#000;font-weight:bold">}</span>
 
-<span style="color:#069;font-weight:bold">private</span> <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">reloadTasks</span>() {
-    taskMutableList.clear()
-    taskMutableList.addAll(TaskFetchASync(db).execute().<span style="color:#069;font-weight:bold">get</span>())
-    listViewAdapter.notifyDataSetChanged()
-}
+<span style="color:#204a87;font-weight:bold">private</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">reloadTasks</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">clear</span><span style="color:#000;font-weight:bold">()</span>
+    <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addAll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">TaskFetchASync</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">db</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">execute</span><span style="color:#000;font-weight:bold">().</span><span style="color:#204a87;font-weight:bold">get</span><span style="color:#000;font-weight:bold">())</span>
+    <span style="color:#000">listViewAdapter</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">notifyDataSetChanged</span><span style="color:#000;font-weight:bold">()</span>
+<span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>This means that every time I returned to the MainActivity after moving to a new
 activity, the TaskList would be updated with the latest state of the database.
 A cool side effect of this is that should the database be updated in the

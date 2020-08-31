@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/style.css" rel="stylesheet">
     <link rel="icon" type="img/png" href="/imgs/favicon.ico">
@@ -63,9 +64,9 @@ This is where I fell in love with Kotlin.</p>
 <p>Kotlin Android Extensions allows you to use “view binding” which completely
 eliminates the need for using “findViewById()”. This is done by importing the
 views in a layout using the following code:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">
-<span style="color:#09f;font-style:italic">// Using R.layout.activity_main from the &#39;main&#39; source set
-</span><span style="color:#09f;font-style:italic"></span><span style="color:#069;font-weight:bold">import</span> <span style="color:#0cf;font-weight:bold">kotlinx.android.synthetic.main.activity_main.*</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">
+<span style="color:#8f5902;font-style:italic">// Using R.layout.activity_main from the &#39;main&#39; source set
+</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">kotlinx.android.synthetic.main.activity_main.*</span>
 
 </code></pre></div><p>However, when I started this I was unaware of how wonderful Kotlin is. In fact,
 I was completely new to Kotlin, and had forgotten most of my Android knowledge
@@ -106,7 +107,7 @@ added TaskView below.</p>
 adding it to the main ConstraintLayout of the activity. However, I was not
 setting the LayoutParams of the view once it was inflated. All I needed was to
 add the following line to my TaskView’s constructor (right after inflating it):</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">    <span style="color:#069;font-weight:bold">this</span>.layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">    <span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">layoutParams</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">LayoutParams</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ViewGroup</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">LayoutParams</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MATCH_PARENT</span><span style="color:#000;font-weight:bold">,</span><span style="color:#000">ViewGroup</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">LayoutParams</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">WRAP_CONTENT</span><span style="color:#000;font-weight:bold">)</span>
 </code></pre></div><p>Now, when I added a new TaskView from code it looked like the following:</p>
 <figure><a href="/imgs/devlog-tempo-screenshot-taskview-fixed.png">
     <img src="/imgs/devlog-tempo-screenshot-taskview-fixed.png"

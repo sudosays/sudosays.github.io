@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/style.css" rel="stylesheet">
     <link rel="icon" type="img/png" href="/imgs/favicon.ico">
@@ -118,19 +119,19 @@ key-value pairs. However, initially I made the mistake of thinking that I
 needed to use a Preferences file since I only needed one preference file for
 the app and only the settings activity would write to it. I was wrong.
 Initially it looked something like this in my FlowSettings activity:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">with(<span style="color:#069;font-weight:bold">this</span>.getPreferences(Context.MODE_PRIVATE).edit())
-{
-    putInt(getString(R.string.task_length_key), taskLength + (taskTimeSeekBar.progress*taskIncrement))
-    putInt(getString(R.string.short_break_key), shortBreakLength + (shortBreakSeekBar.progress*shortBreakIncrement))
-    putInt(getString(R.string.long_break_key), longBreakLength + (longBreakSeekBar.progress*longBreakIncrement))
-    apply()
-}
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">with</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getPreferences</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MODE_PRIVATE</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">edit</span><span style="color:#000;font-weight:bold">())</span>
+<span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">putInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">getString</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">R</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">string</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">task_length_key</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">taskLength</span> <span style="color:#000;font-weight:bold">+</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">taskTimeSeekBar</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">progress</span><span style="color:#000;font-weight:bold">*</span><span style="color:#000">taskIncrement</span><span style="color:#000;font-weight:bold">))</span>
+    <span style="color:#000">putInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">getString</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">R</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">string</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">short_break_key</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">shortBreakLength</span> <span style="color:#000;font-weight:bold">+</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">shortBreakSeekBar</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">progress</span><span style="color:#000;font-weight:bold">*</span><span style="color:#000">shortBreakIncrement</span><span style="color:#000;font-weight:bold">))</span>
+    <span style="color:#000">putInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">getString</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">R</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">string</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">long_break_key</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">longBreakLength</span> <span style="color:#000;font-weight:bold">+</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">longBreakSeekBar</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">progress</span><span style="color:#000;font-weight:bold">*</span><span style="color:#000">longBreakIncrement</span><span style="color:#000;font-weight:bold">))</span>
+    <span style="color:#000">apply</span><span style="color:#000;font-weight:bold">()</span>
+<span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>As soon as I tried to load the settings from the Flow activity with the
 following:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">val</span> settings = <span style="color:#069;font-weight:bold">this</span>.getPreferences(Context.MODE_PRIVATE)
-<span style="color:#069;font-weight:bold">val</span> taskLength = settings.getInt(..., fallback)
-<span style="color:#069;font-weight:bold">val</span> shortBreakLength = settings.getInt(..., fallback)
-<span style="color:#069;font-weight:bold">val</span> longBreakLength = settings.getInt(..., fallback)
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">settings</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getPreferences</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MODE_PRIVATE</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">taskLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(...,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">shortBreakLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(...,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">longBreakLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(...,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
 </code></pre></div><p>I found that they were all defaulting to the fallbacks I set. They key issue?
 using getPreferences instead of getSharedPreferences. The former requires no
 filename, but creates a unique preferences file for a single activity to be
@@ -150,11 +151,11 @@ button on the main activity. The answer to this behaviour turned out to lead to
 a good catch!</p>
 <p>Originally, in my AddTask activity when the user presses cancel the following
 code was executed:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">cancel</span>(view: View)
-{
-    <span style="color:#069;font-weight:bold">val</span> intent = Intent(<span style="color:#069;font-weight:bold">this</span>, MainActivity<span style="color:#555">::</span><span style="color:#069;font-weight:bold">class</span>.java)
-    startActivity(intent)
-}
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">cancel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">view</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">View</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">intent</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">Intent</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">MainActivity</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#204a87;font-weight:bold">class</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">java</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#000">startActivity</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">intent</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>Now I could go to AddTask, hit cancel and… crash the app. Reliably.</p>
 <p>You might have already noticed my mistake, which seemed so simple once I
 figured it out. By calling startActivity() I was not “returning” to the main
@@ -178,11 +179,11 @@ the AddTask activity. It turns out that if you look at the figure above, you
 will notice that I start the AddTaskActivity for a result. And when I canceled
 the process and just called finish, no activity result had been set causing the
 crash. To fix this, finallly, my cancel function now looks something like this:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">cancel</span>(view: View)
-{
-    setResult(Activity.RESULT_OK, Intent())
-    finish()
-}
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">cancel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">view</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">View</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">setResult</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Activity</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">RESULT_OK</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Intent</span><span style="color:#000;font-weight:bold">())</span>
+    <span style="color:#000">finish</span><span style="color:#000;font-weight:bold">()</span>
+<span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>After checking the other activities spawned by the main activity, I ensured
 that all of them, on termination only call finish and set an activity result if
 they have to.</p>
@@ -197,13 +198,13 @@ more sessions left schedule for the next session. Furthermore, we also update
 the task database to ensure that the “expended” task sessions are reflected
 even when the flow is stopped prematurely.</p>
 <p>Adding an update rule to the TaskDao was straightforward enough with:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Dao
-<span style="color:#069;font-weight:bold">interface</span> <span style="color:#0a8;font-weight:bold">TaskDao</span> {
-...
-    @Update
-    <span style="color:#069;font-weight:bold">fun</span> <span style="color:#c0f">updateTask</span>(task: Task)
-...
-}
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">@Dao</span>
+<span style="color:#204a87;font-weight:bold">interface</span> <span style="color:#000">TaskDao</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="color:#000;font-weight:bold">...</span>
+    <span style="color:#000">@Update</span>
+    <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">updateTask</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">task</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Task</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">...</span>
+<span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>As well as including an TaskUpdateAsync for committing changes to the Room database in a non-blocking way as discussed in <a href="http://sudosays.github.io/blog/devlog-2-tempo/">this devlog</a>.</p>
 <h3 id="null-safety">Null Safety</h3>
 <p>Finally, a problem of oversight and something that I would not have caught
