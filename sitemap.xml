@@ -4,12 +4,47 @@
   
   <url>
     <loc>http://sudosays.github.io/blog/</loc>
-    <lastmod>2020-08-31T15:33:54+02:00</lastmod>
+    <lastmod>2020-12-31T20:59:06+02:00</lastmod>
   </url>
   
   <url>
     <loc>http://sudosays.github.io/categories/</loc>
-    <lastmod>2020-08-31T15:33:54+02:00</lastmod>
+    <lastmod>2020-12-31T20:59:06+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/general/</loc>
+    <lastmod>2020-12-31T20:59:06+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/tags/growth/</loc>
+    <lastmod>2020-12-31T20:59:06+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/blog/hindsight-2020/</loc>
+    <lastmod>2020-12-31T20:59:06+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/categories/life/</loc>
+    <lastmod>2020-12-31T20:59:06+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/tags/</loc>
+    <lastmod>2020-12-31T20:59:06+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/tags/update/</loc>
+    <lastmod>2020-12-31T20:59:06+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sudosays.github.io/</loc>
+    <lastmod>2020-12-31T20:59:06+02:00</lastmod>
   </url>
   
   <url>
@@ -48,32 +83,7 @@
   </url>
   
   <url>
-    <loc>http://sudosays.github.io/tags/</loc>
-    <lastmod>2020-08-31T15:33:54+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/</loc>
-    <lastmod>2020-08-31T15:33:54+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/categories/general/</loc>
-    <lastmod>2020-08-18T15:32:29+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/categories/life/</loc>
-    <lastmod>2020-08-18T15:32:29+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://sudosays.github.io/blog/status-update-august-2020/</loc>
-    <lastmod>2020-08-18T15:32:29+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/tags/update/</loc>
     <lastmod>2020-08-18T15:32:29+02:00</lastmod>
   </url>
   
@@ -139,11 +149,6 @@
   
   <url>
     <loc>http://sudosays.github.io/tags/git/</loc>
-    <lastmod>2020-02-12T15:20:38+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/tags/growth/</loc>
     <lastmod>2020-02-12T15:20:38+02:00</lastmod>
   </url>
   

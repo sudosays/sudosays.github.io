@@ -6,11 +6,7 @@
     <description>Recent content in android on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 10 Aug 2019 10:29:37 +0200</lastBuildDate>
-    
-	<atom:link href="http://sudosays.github.io/categories/android/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 10 Aug 2019 10:29:37 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/android/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Devlog #4: Tempo</title>
       <link>http://sudosays.github.io/blog/devlog-4-tempo/</link>

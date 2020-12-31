@@ -6,10 +6,24 @@
     <description>Recent content in Tags on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 31 Aug 2020 15:33:54 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 31 Dec 2020 20:59:06 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>growth</title>
+      <link>http://sudosays.github.io/tags/growth/</link>
+      <pubDate>Thu, 31 Dec 2020 20:59:06 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/growth/</guid>
+      <description></description>
+    </item>
     
-	<atom:link href="http://sudosays.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    
+    <item>
+      <title>update</title>
+      <link>http://sudosays.github.io/tags/update/</link>
+      <pubDate>Thu, 31 Dec 2020 20:59:06 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/update/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>evil</title>
@@ -48,15 +62,6 @@
     </item>
     
     <item>
-      <title>update</title>
-      <link>http://sudosays.github.io/tags/update/</link>
-      <pubDate>Tue, 18 Aug 2020 15:32:29 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/tags/update/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>devlog</title>
       <link>http://sudosays.github.io/tags/devlog/</link>
       <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
@@ -71,15 +76,6 @@
       <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
       
       <guid>http://sudosays.github.io/tags/git/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>growth</title>
-      <link>http://sudosays.github.io/tags/growth/</link>
-      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/tags/growth/</guid>
       <description></description>
     </item>
     

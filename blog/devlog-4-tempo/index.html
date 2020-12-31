@@ -129,9 +129,9 @@ Initially it looked something like this in my FlowSettings activity:</p>
 </code></pre></div><p>As soon as I tried to load the settings from the Flow activity with the
 following:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">settings</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getPreferences</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MODE_PRIVATE</span><span style="color:#000;font-weight:bold">)</span>
-<span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">taskLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(...,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
-<span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">shortBreakLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(...,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
-<span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">longBreakLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(...,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">taskLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">..</span><span style="color:#000;font-weight:bold">.,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">shortBreakLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">..</span><span style="color:#000;font-weight:bold">.,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">longBreakLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">..</span><span style="color:#000;font-weight:bold">.,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
 </code></pre></div><p>I found that they were all defaulting to the fallbacks I set. They key issue?
 using getPreferences instead of getSharedPreferences. The former requires no
 filename, but creates a unique preferences file for a single activity to be
@@ -198,12 +198,12 @@ more sessions left schedule for the next session. Furthermore, we also update
 the task database to ensure that the “expended” task sessions are reflected
 even when the flow is stopped prematurely.</p>
 <p>Adding an update rule to the TaskDao was straightforward enough with:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">@Dao</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#5c35cc;font-weight:bold">@Dao</span>
 <span style="color:#204a87;font-weight:bold">interface</span> <span style="color:#000">TaskDao</span> <span style="color:#000;font-weight:bold">{</span>
-<span style="color:#000;font-weight:bold">...</span>
-    <span style="color:#000">@Update</span>
+<span style="color:#ce5c00;font-weight:bold">..</span><span style="color:#000;font-weight:bold">.</span>
+    <span style="color:#5c35cc;font-weight:bold">@Update</span>
     <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">updateTask</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">task</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Task</span><span style="color:#000;font-weight:bold">)</span>
-<span style="color:#000;font-weight:bold">...</span>
+<span style="color:#ce5c00;font-weight:bold">..</span><span style="color:#000;font-weight:bold">.</span>
 <span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>As well as including an TaskUpdateAsync for committing changes to the Room database in a non-blocking way as discussed in <a href="http://sudosays.github.io/blog/devlog-2-tempo/">this devlog</a>.</p>
 <h3 id="null-safety">Null Safety</h3>
