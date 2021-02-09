@@ -15,6 +15,19 @@
         url('/fonts/atkinson/Atkinson-Hyperlegible-Regular-102.woff') format('woff');
 }
 
+@font-face {
+    font-family: 'Inconsolata';
+    src: url('/fonts/inconsolata/Inconsolata-Regular.eot');
+    src: url('/fonts/inconsolata/Inconsolata-Regular.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/inconsolata/Inconsolata-Regular.woff2') format('woff2'),
+        url('/fonts/inconsolata/Inconsolata-Regular.woff') format('woff'),
+        url('/fonts/inconsolata/Inconsolata-Regular.ttf') format('truetype'),
+        url('/fonts/inconsolata/Inconsolata-Regular.svg#Inconsolata-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 .header-parallax {
 
   /* Set a specific height */
@@ -33,7 +46,7 @@ html {
     padding: 0px;
     background-color: #FFF;
     line-height:1.6em;
-    font-family: "Atkinson";
+    font-family: "Atkinson", serif;
 }
 
 body {
@@ -52,7 +65,7 @@ header {
 
 header h1 {
     
-    font-family: "Chomsky", "Serif";
+    font-family: "Chomsky", serif;
     font-size: xx-large;
     font-weight: 400;
 
@@ -74,18 +87,17 @@ header a:hover {
 
 h1 h2 h3 {
 
-    font-family: "Atkinson", "Serif";
+    font-family: "Atkinson", serif;
 }
 
 a:visited {
-
-    color: #3e3e3e;
+    color: #3b88b8;
 
 }
 
 a {
-    text-decoration: none;
     color: #1DA1F2;
+    text-decoration: none;
 }
 
 blockquote {
@@ -155,6 +167,10 @@ hr{
 	border-bottom: 1px dashed #fff;
 }
 
+ul li {
+    padding-top: 0.3em;
+}
+
 
 <!-- Custom CSS Classes -->
 
@@ -167,7 +183,7 @@ hr{
 }
 
 .top-nav-list a {
-    font-family: "Atkinson";
+    font-family: "Atkinson", serif;
 }
 
 
@@ -191,22 +207,26 @@ hr{
     max-width: 700px; 
     height:inherit;
     padding: 5px 20px;
-    font-family: "Atkinson";
+    font-family: "Atkinson", serif;
 }
 
 .post-title {
 
-    font-family: "Atkinson";
+    font-family: "Atkinson", serif;
 
+}
+
+.post-title a:visited {
+    color: #3e3e3e;
 }
 
 .post-date {
     color: #a0a0a0;
-    font-family: "Atkinson";
+    font-family: "Atkinson", serif;
 }
 
 .post-content {
-    font-family: "Atkinson", Serif;
+    font-family: "Atkinson", serif;
 }
 
 .post-content p {
@@ -227,7 +247,7 @@ hr{
 
 .post-footer a {
     font-size: smaller;
-    font-family: "Atkinson";
+    font-family: "Atkinson", serif;
     height: 150px;
 }
 
@@ -267,7 +287,7 @@ hr{
 
 .homepage-title {
 
-    font-family:"Atkinson";
+    font-family:"Atkinson", serif;
 
 }
 
@@ -283,9 +303,10 @@ pre code {
 }
 
 code {
+    font-family: 'Inconsolata', monospace;
     padding: .2em;
     margin: 0;
-    font-size: 85%;
+    font-size: 95%;
     background-color: #f8f8f8;
     border-radius: 3px;
 }
