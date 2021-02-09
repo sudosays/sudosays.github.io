@@ -1,46 +1,21 @@
 @font-face {
-  font-family: 'Merriweather';
-  font-style: normal;
-  font-weight: 100;
-  src: url('/fonts/merriweather-v21-latin-regular.eot'); /* IE9 Compat Modes */
-  src: local('Merriweather Regular'), local('Merriweather-Regular'),
-       url('/fonts/merriweather-v21-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('/fonts/merriweather-v21-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-       url('/fonts/merriweather-v21-latin-regular.woff') format('woff'), /* Modern Browsers */
-       url('/fonts/merriweather-v21-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('/fonts/merriweather-v21-latin-regular.svg#Merriweather') format('svg'); /* Legacy iOS */
+    font-family: 'Chomsky';
+    font-style: normal;
+    src: local(''),
+        url('/fonts/chomsky/Chomsky.woff') format('woff');
 }
 
 @font-face {
-  font-family: 'Concert One';
-  font-style: normal;
-  font-weight: 400;
-  src: url('/fonts/concert-one-v10-latin-regular.eot'); 
-  src: local('Concert One'), local('ConcertOne-Regular'),
-       url('/fonts/concert-one-v10-latin-regular.eot?#iefix') format('embedded-opentype'),  
-       url('/fonts/concert-one-v10-latin-regular.woff2') format('woff2'), 
-       url('/fonts/concert-one-v10-latin-regular.woff') format('woff'), 
-       url('/fonts/concert-one-v10-latin-regular.ttf') format('truetype'), 
-       url('/fonts/concert-one-v10-latin-regular.svg#ConcertOne') format('svg'); 
-}
-
-/* quicksand-regular - latin */
-@font-face {
-  font-family: 'Quicksand';
-  font-style: normal;
-  font-weight: 400;
-  src: url('/fonts/quicksand-v19-latin-regular.eot'); /* IE9 Compat Modes */
-  src: local(''),
-       url('/fonts/quicksand-v19-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('/fonts/quicksand-v19-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-       url('/fonts/quicksand-v19-latin-regular.woff') format('woff'), /* Modern Browsers */
-       url('/fonts/quicksand-v19-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('/fonts/quicksand-v19-latin-regular.svg#Quicksand') format('svg'); /* Legacy iOS */
+    font-family: 'Atkinson';
+    font-style: normal;
+    src: url('/fonts/atkinson/Atkinson-Hyperlegible-Regular-102.eot');
+    src: local(''),
+        url('/fonts/atkinson/Atkinson-Hyperlegible-Regular-102.ttf') format('truetype'),
+        url('/fonts/atkinson/Atkinson-Hyperlegible-Regular-102a.woff2') format('woff2'),
+        url('/fonts/atkinson/Atkinson-Hyperlegible-Regular-102.woff') format('woff');
 }
 
 .header-parallax {
-  /* The image used */
-  /*background-image: url("/imgs/hobbes_ascii.png");*/
 
   /* Set a specific height */
   height: 100px;
@@ -58,7 +33,7 @@ html {
     padding: 0px;
     background-color: #FFF;
     line-height:1.6em;
-    font-family: "Merriweather";
+    font-family: "Atkinson";
 }
 
 body {
@@ -70,16 +45,14 @@ body {
 
 header {
     margin: 0 auto; 
-    background-color:#272727;
     height:150px;
-    color: #fff;
     margin-bottom: 20px;
     padding: 2em;
 }
 
 header h1 {
     
-    font-family: "Merriweather", "Serif";
+    font-family: "Chomsky", "Serif";
     font-size: xx-large;
     font-weight: 400;
 
@@ -94,9 +67,14 @@ header a {
 header a:visited {
     color: inherit;
 }
+
+header a:hover {
+    color: #cc1100;
+}
+
 h1 h2 h3 {
 
-    font-family: "Concert One", "Sans-Serif";
+    font-family: "Atkinson", "Serif";
 }
 
 a:visited {
@@ -189,7 +167,7 @@ hr{
 }
 
 .top-nav-list a {
-    font-family: "Quicksand";
+    font-family: "Atkinson";
 }
 
 
@@ -213,22 +191,22 @@ hr{
     max-width: 700px; 
     height:inherit;
     padding: 5px 20px;
-    font-family: "Merriweather";
+    font-family: "Atkinson";
 }
 
 .post-title {
 
-    font-family: "Quicksand";
+    font-family: "Atkinson";
 
 }
 
 .post-date {
     color: #a0a0a0;
-    font-family: "Quicksand";
+    font-family: "Atkinson";
 }
 
 .post-content {
-    font-family: "Merriweather", serif;
+    font-family: "Atkinson", Serif;
 }
 
 .post-content p {
@@ -249,7 +227,7 @@ hr{
 
 .post-footer a {
     font-size: smaller;
-    font-family: "Quicksand";
+    font-family: "Atkinson";
     height: 150px;
 }
 
@@ -289,7 +267,7 @@ hr{
 
 .homepage-title {
 
-    font-family:"Merriweather";
+    font-family:"Atkinson";
 
 }
 
@@ -298,3 +276,18 @@ hr{
     transform: rotate(-90deg);
 
 }
+
+pre,
+pre code {
+    background: none;
+}
+
+code {
+    padding: .2em;
+    margin: 0;
+    font-size: 85%;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+}
+
+
