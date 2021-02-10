@@ -6,7 +6,17 @@
     <description>Recent content in open source on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Feb 2020 15:20:38 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Jan 2021 09:22:16 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pneuma</title>
+      <link>http://sudosays.github.io/projects/pneuma/</link>
+      <pubDate>Fri, 22 Jan 2021 09:22:16 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/projects/pneuma/</guid>
+      <description>Pneuma (stylised as pneuma) is an interactive terminal frontend for managing a Hugo blog. As with Tempo, I built it for myself with the features I would like in it.
+The aim of the project is to provide a slick, minimal frontend for managing posts in a Hugo blog including the ability to edit and create new posts, as well as publish drafts.</description>
+    </item>
+    
     <item>
       <title>Commitunism</title>
       <link>http://sudosays.github.io/blog/commitunism/</link>

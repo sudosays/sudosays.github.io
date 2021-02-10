@@ -6,7 +6,34 @@
     <description>Recent content in Categories on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 20 Jan 2021 15:39:06 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 10 Feb 2021 07:40:42 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>development</title>
+      <link>http://sudosays.github.io/categories/development/</link>
+      <pubDate>Wed, 10 Feb 2021 07:40:42 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/categories/development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tools</title>
+      <link>http://sudosays.github.io/categories/tools/</link>
+      <pubDate>Wed, 10 Feb 2021 07:40:42 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/categories/tools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>productivity</title>
+      <link>http://sudosays.github.io/categories/productivity/</link>
+      <pubDate>Fri, 22 Jan 2021 09:22:16 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/categories/productivity/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>general</title>
       <link>http://sudosays.github.io/categories/general/</link>
@@ -53,38 +80,11 @@
     </item>
     
     <item>
-      <title>productivity</title>
-      <link>http://sudosays.github.io/categories/productivity/</link>
-      <pubDate>Thu, 05 Mar 2020 11:56:28 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/categories/productivity/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>devops</title>
       <link>http://sudosays.github.io/categories/devops/</link>
       <pubDate>Tue, 25 Feb 2020 16:50:02 +0200</pubDate>
       
       <guid>http://sudosays.github.io/categories/devops/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tools</title>
-      <link>http://sudosays.github.io/categories/tools/</link>
-      <pubDate>Tue, 25 Feb 2020 16:50:02 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/categories/tools/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>development</title>
-      <link>http://sudosays.github.io/categories/development/</link>
-      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/categories/development/</guid>
       <description></description>
     </item>
     

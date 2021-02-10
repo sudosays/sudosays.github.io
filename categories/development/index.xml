@@ -6,7 +6,16 @@
     <description>Recent content in development on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Feb 2020 15:20:38 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 10 Feb 2021 07:40:42 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Devlog: Pneuma</title>
+      <link>http://sudosays.github.io/blog/devlog-pneuma/</link>
+      <pubDate>Wed, 10 Feb 2021 07:40:42 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/devlog-pneuma/</guid>
+      <description>Producing propaganda takes priority for prospective pernicious persons. As a supervillian, it is important to be able to reach your audience and propagate your ideas. This blog is my version of that and for the last while I have been using the static site generator Hugo after migrating from Wordpress (see this post).</description>
+    </item>
+    
     <item>
       <title>Commitunism</title>
       <link>http://sudosays.github.io/blog/commitunism/</link>

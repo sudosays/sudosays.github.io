@@ -6,7 +6,26 @@
     <description>Recent content in tools on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 Feb 2020 16:50:02 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 10 Feb 2021 07:40:42 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Devlog: Pneuma</title>
+      <link>http://sudosays.github.io/blog/devlog-pneuma/</link>
+      <pubDate>Wed, 10 Feb 2021 07:40:42 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/blog/devlog-pneuma/</guid>
+      <description>Producing propaganda takes priority for prospective pernicious persons. As a supervillian, it is important to be able to reach your audience and propagate your ideas. This blog is my version of that and for the last while I have been using the static site generator Hugo after migrating from Wordpress (see this post).</description>
+    </item>
+    
+    <item>
+      <title>Pneuma</title>
+      <link>http://sudosays.github.io/projects/pneuma/</link>
+      <pubDate>Fri, 22 Jan 2021 09:22:16 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/projects/pneuma/</guid>
+      <description>Pneuma (stylised as pneuma) is an interactive terminal frontend for managing a Hugo blog. As with Tempo, I built it for myself with the features I would like in it.
+The aim of the project is to provide a slick, minimal frontend for managing posts in a Hugo blog including the ability to edit and create new posts, as well as publish drafts.</description>
+    </item>
+    
     <item>
       <title>Be Static to Go Faster</title>
       <link>http://sudosays.github.io/blog/be-static-to-go-faster/</link>
