@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 10 Feb 2021 07:40:42 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 18 Mar 2021 16:21:07 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>evil</title>
+      <link>http://sudosays.github.io/tags/evil/</link>
+      <pubDate>Thu, 18 Mar 2021 16:21:07 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/evil/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>long</title>
+      <link>http://sudosays.github.io/tags/long/</link>
+      <pubDate>Thu, 18 Mar 2021 16:21:07 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/long/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>open source</title>
+      <link>http://sudosays.github.io/tags/open-source/</link>
+      <pubDate>Thu, 18 Mar 2021 16:21:07 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/tags/open-source/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>devlog</title>
       <link>http://sudosays.github.io/tags/devlog/</link>
@@ -26,15 +53,6 @@
     </item>
     
     <item>
-      <title>open source</title>
-      <link>http://sudosays.github.io/tags/open-source/</link>
-      <pubDate>Fri, 22 Jan 2021 09:22:16 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/tags/open-source/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>growth</title>
       <link>http://sudosays.github.io/tags/growth/</link>
       <pubDate>Wed, 20 Jan 2021 15:39:06 +0200</pubDate>
@@ -44,11 +62,11 @@
     </item>
     
     <item>
-      <title>long</title>
-      <link>http://sudosays.github.io/tags/long/</link>
+      <title>personal</title>
+      <link>http://sudosays.github.io/tags/personal/</link>
       <pubDate>Wed, 20 Jan 2021 15:39:06 +0200</pubDate>
       
-      <guid>http://sudosays.github.io/tags/long/</guid>
+      <guid>http://sudosays.github.io/tags/personal/</guid>
       <description></description>
     </item>
     
@@ -58,15 +76,6 @@
       <pubDate>Thu, 31 Dec 2020 20:59:06 +0200</pubDate>
       
       <guid>http://sudosays.github.io/tags/update/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>evil</title>
-      <link>http://sudosays.github.io/tags/evil/</link>
-      <pubDate>Mon, 31 Aug 2020 15:33:54 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/tags/evil/</guid>
       <description></description>
     </item>
     

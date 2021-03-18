@@ -311,4 +311,8 @@ code {
     border-radius: 3px;
 }
 
-
+div.post-content div.footnotes div.footnote-definitions div.footnote-definition sup {
+    vertical-align: top;
+    position: relative;
+    float: left;
+}

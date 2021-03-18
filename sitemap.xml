@@ -1,274 +1,172 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>http://sudosays.github.io/blog/</loc>
-    <lastmod>2021-02-10T07:40:42+02:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
     <loc>http://sudosays.github.io/categories/</loc>
-    <lastmod>2021-02-10T07:40:42+02:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
     <loc>http://sudosays.github.io/categories/development/</loc>
-    <lastmod>2021-02-10T07:40:42+02:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
+    <loc>http://sudosays.github.io/tags/evil/</loc>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
+    <loc>http://sudosays.github.io/tags/long/</loc>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
+    <loc>http://sudosays.github.io/tags/open-source/</loc>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
+    <loc>http://sudosays.github.io/tags/</loc>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
+    <loc>http://sudosays.github.io/blog/the-masters-tools/</loc>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
+    <loc>http://sudosays.github.io/categories/tools/</loc>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
+    <loc>http://sudosays.github.io/</loc>
+    <lastmod>2021-03-18T16:21:07+02:00</lastmod>
+  </url><url>
     <loc>http://sudosays.github.io/tags/devlog/</loc>
     <lastmod>2021-02-10T07:40:42+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/devlog-pneuma/</loc>
     <lastmod>2021-02-10T07:40:42+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/tags/pneuma/</loc>
     <lastmod>2021-02-10T07:40:42+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/tags/</loc>
-    <lastmod>2021-02-10T07:40:42+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/categories/tools/</loc>
-    <lastmod>2021-02-10T07:40:42+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/</loc>
-    <lastmod>2021-02-10T07:40:42+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/tags/open-source/</loc>
-    <lastmod>2021-01-22T09:22:16+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/projects/pneuma/</loc>
     <lastmod>2021-01-22T09:22:16+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/productivity/</loc>
     <lastmod>2021-01-22T09:22:16+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/projects/</loc>
     <lastmod>2021-01-22T09:22:16+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/2021-the-diet/</loc>
     <lastmod>2021-01-20T15:39:06+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/general/</loc>
     <lastmod>2021-01-20T15:39:06+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/tags/growth/</loc>
     <lastmod>2021-01-20T15:39:06+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/life/</loc>
     <lastmod>2021-01-20T15:39:06+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/tags/long/</loc>
+  </url><url>
+    <loc>http://sudosays.github.io/tags/personal/</loc>
     <lastmod>2021-01-20T15:39:06+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/hindsight-2020/</loc>
     <lastmod>2020-12-31T20:59:06+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/tags/update/</loc>
     <lastmod>2020-12-31T20:59:06+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/deathrolling-for-gold/</loc>
     <lastmod>2020-08-31T15:33:54+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://sudosays.github.io/tags/evil/</loc>
-    <lastmod>2020-08-31T15:33:54+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/funny/</loc>
     <lastmod>2020-08-31T15:33:54+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/misc/</loc>
     <lastmod>2020-08-31T15:33:54+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/tags/numpy/</loc>
     <lastmod>2020-08-31T15:33:54+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/tags/statistics/</loc>
     <lastmod>2020-08-31T15:33:54+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/status-update-august-2020/</loc>
     <lastmod>2020-08-18T15:32:29+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/status-update-july-2020/</loc>
     <lastmod>2020-07-15T14:41:45+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/status-update-june-2020/</loc>
     <lastmod>2020-06-21T17:34:50+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/app/</loc>
     <lastmod>2020-03-05T11:57:28+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/projects/tempo/</loc>
     <lastmod>2020-03-05T11:57:28+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/be-static-to-go-faster/</loc>
     <lastmod>2020-02-25T16:50:02+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/devops/</loc>
     <lastmod>2020-02-25T16:50:02+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/commitunism/</loc>
     <lastmod>2020-02-12T15:20:38+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/tags/git/</loc>
     <lastmod>2020-02-12T15:20:38+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/book-review-the-organised-mind/</loc>
     <lastmod>2020-01-06T13:09:09+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/2020-vision/</loc>
     <lastmod>2020-01-04T19:56:13+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/adventure/</loc>
     <lastmod>2019-12-16T18:45:21+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/tags/outdoors/</loc>
     <lastmod>2019-12-16T18:45:21+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/ultratrail-2019/</loc>
     <lastmod>2019-12-16T18:45:21+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/android/</loc>
     <lastmod>2019-08-10T10:29:37+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/devlog-4-tempo/</loc>
     <lastmod>2019-08-10T10:29:37+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/tags/tempo/</loc>
     <lastmod>2019-08-10T10:29:37+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/devlog-3-tempo/</loc>
     <lastmod>2019-06-13T11:37:33+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/devlog-2-tempo/</loc>
     <lastmod>2019-02-21T09:55:47+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/devlog-1-tempo/</loc>
     <lastmod>2019-02-13T20:25:02+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/devlog-tempo/</loc>
     <lastmod>2018-10-26T13:25:30+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/vim/</loc>
     <lastmod>2017-11-14T00:03:12+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/vim-leadership-revisited/</loc>
     <lastmod>2017-11-14T00:03:12+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/arming-henchmen-hacking-guns/</loc>
     <lastmod>2017-08-23T15:52:31+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/categories/opinion/</loc>
     <lastmod>2017-08-23T15:52:31+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/being-a-leader-in-vim/</loc>
     <lastmod>2017-05-26T13:42:25+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/blog/helloworld/</loc>
     <lastmod>2017-05-12T06:09:57+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://sudosays.github.io/about/</loc>
   </url>
-  
 </urlset>
