@@ -6,7 +6,16 @@
     <description>Recent content in productivity on Evil Inc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Jan 2021 09:22:16 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/productivity/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 08 Apr 2021 11:57:28 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/productivity/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tempo</title>
+      <link>http://sudosays.github.io/projects/tempo/</link>
+      <pubDate>Thu, 08 Apr 2021 11:57:28 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/projects/tempo/</guid>
+      <description>This is my personal productivity app. It started from trying to merge the Pomodoro technique with a to-do list so that I could budget and plan my time. Other productivity apps I had used in the past featured either a timer only, or a to-do list, but not both. Furthermore, I use this to help keep me in a flow state by reducing the amount of effort I need to structure my work hours.</description>
+    </item>
+    
     <item>
       <title>Pneuma</title>
       <link>http://sudosays.github.io/projects/pneuma/</link>
@@ -15,15 +24,6 @@
       <guid>http://sudosays.github.io/projects/pneuma/</guid>
       <description>Pneuma (stylised as pneuma) is an interactive terminal frontend for managing a Hugo blog. As with Tempo, I built it for myself with the features I would like in it.
 The aim of the project is to provide a slick, minimal frontend for managing posts in a Hugo blog including the ability to edit and create new posts, as well as publish drafts.</description>
-    </item>
-    
-    <item>
-      <title>Tempo</title>
-      <link>http://sudosays.github.io/projects/tempo/</link>
-      <pubDate>Thu, 05 Mar 2020 11:56:28 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/projects/tempo/</guid>
-      <description>This is my personal productivity app. It started from trying to merge the Pomodoro technique with a to-do list so that I could budget and plan my time. Other productivity apps I had used in the past featured either a timer only, or a to-do list, but not both. Furthermore, I use this to help keep me in a flow state by reducing the amount of effort I need to structure my work.</description>
     </item>
     
   </channel>
