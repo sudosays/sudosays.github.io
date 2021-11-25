@@ -19,9 +19,9 @@
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
-            
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
             
@@ -73,7 +73,7 @@ fullscreen activity, either method worked for me, however if you were to have a
 Fragment come into the foreground (with your activity visible in the
 background) there would be a difference in when <code>onPause</code> and <code>onStop</code> are called.</p>
 <p>The code in my MainActivity ended up looking something like this:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">onResume</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">onResume</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
     <span style="color:#204a87;font-weight:bold">super</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">onResume</span><span style="color:#000;font-weight:bold">()</span>
     <span style="color:#000">reloadTasks</span><span style="color:#000;font-weight:bold">()</span>
 <span style="color:#000;font-weight:bold">}</span>
@@ -101,8 +101,7 @@ that the user will need to restart it.</p>
 from the main list despite the FlowActivity being killed. The problem also
 stemmed from an incomplete understanding of the activity lifecycle and how that
 relates to using something such as CountdownTimers.</p>
-<figure>
-    <img src="/imgs/countdown.webp"/> <figcaption>
+<figure><img src="/imgs/countdown.webp"/><figcaption>
             <p>
                     <a href="https://media.giphy.com/media/3o85xwpcw6OJ5FSskU/giphy.gif">Courtesy of Giphy</a></p>
         </figcaption>

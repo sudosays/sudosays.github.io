@@ -14,6 +14,230 @@
       
       <guid>http://sudosays.github.io/blog/devlog-pneuma/</guid>
       <description>Producing propaganda takes priority for prospective pernicious persons. As a supervillian, it is important to be able to reach your audience and propagate your ideas. This blog is my version of that and for the last while I have been using the static site generator Hugo after migrating from Wordpress (see this post).</description>
+      <content>
+        &lt;p&gt;Producing propaganda takes priority for prospective pernicious persons. As a
+supervillian, it is important to be able to reach your audience and propagate
+your ideas. This blog is my version of that and for the last while I have been
+using the static site generator Hugo after migrating from Wordpress (see &lt;a href=&#34;http://sudosays.github.io/blog/be-static-to-go-faster/&#34;&gt;this
+post&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;My typical workflow for writing a new post is as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Navigate to the blog working directory&lt;/li&gt;
+&lt;li&gt;Create the new post using &lt;code&gt;hugo new blog/title.md&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Edit/write the post with &lt;code&gt;vim&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Change the header data to &lt;code&gt;draft = false&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Generate the site files with &lt;code&gt;hugo&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Publish the files to Github pages with &lt;code&gt;git&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This workflow has been great, but it also has a few drawbacks. Chief of which
+is there is not really a nice overview of the posts on the site and the
+management of the posts is a bit tedious&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. Hugo has the &lt;code&gt;hugo list&lt;/code&gt; subcommand,
+but the options are: &lt;code&gt;all&lt;/code&gt;, &lt;code&gt;drafts&lt;/code&gt;, &lt;code&gt;expired&lt;/code&gt;, and &lt;code&gt;future&lt;/code&gt;. Selecting &lt;code&gt;all&lt;/code&gt;
+dumps detailed CSV data of all the posts:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;path,slug,title,date,expiryDate,publishDate,draft,permalink
+content/blog/devlog-pneuma.md,,Devlog:
+Pneuma,2021-01-22T09:40:42+02:00,0001-01-01T00:00:00Z,2021-01-22T09:40:42+02:00,true,http://sudosays.github.io/blog/devlog-pneuma/
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The above output is not really human-friendly at a glance.  Meanwhile, &lt;code&gt;hugo list drafts&lt;/code&gt; only lists the paths of the files marked as drafts.&lt;/p&gt;
+&lt;p&gt;Finally, deletion of posts is done manually, and publishing a draft requires
+opening the file to edit the header. In terms of CRUD, it is a very disjointed
+process.&lt;/p&gt;
+&lt;p&gt;To address this slight inconvenience I had an idea to write an interactive
+frontend for Hugo that will let me perform some basic management in a simple
+and straightforward way. It was not until I started writing a lot more Go and
+had a bit of free time on my hands that pneuma was born.&lt;/p&gt;
+&lt;p&gt;Below I detail some interesting challenges I have had to solve so far.&lt;/p&gt;
+&lt;h2 id=&#34;designing-the-tui&#34;&gt;Designing the TUI&lt;/h2&gt;
+&lt;p&gt;Executing the Hugo commands and parsing their input is straightforward enough
+with the &lt;code&gt;os/exec&lt;/code&gt; package, but what I wanted was an interactive user
+interface. So I had a look at some TUI based programs I enjoy, particularly
+&lt;a href=&#34;https://aerc-mail.org/&#34;&gt;&lt;code&gt;aerc&lt;/code&gt;&lt;/a&gt; by &lt;a href=&#34;https://drewdevault.com/&#34;&gt;Drew Devault&lt;/a&gt;
+and I saw that he made use of the &lt;a href=&#34;https://github.com/gdamore/tcell&#34;&gt;&lt;code&gt;tcell&lt;/code&gt;&lt;/a&gt; package by &lt;a href=&#34;http://gdamore.blogspot.com/&#34;&gt;Garrett D&amp;rsquo;Amore&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;tcell&lt;/code&gt; provides a very bare-bones approach to TUI design. Central to the
+package is the idea of a &lt;code&gt;Screen&lt;/code&gt; where you can &lt;code&gt;SetContent&lt;/code&gt; one character at a
+time and then &lt;code&gt;PollEvent&lt;/code&gt; to wait for an event. This means that &lt;code&gt;tcell&lt;/code&gt;
+promotes an event-driven approach to creating a TUI&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;What followed was a tight iteration loop, gradually building out a UI system.
+Each iteration built upon the last and the API would abstract away from lower
+level functions. This resulted in the following data structure for a UI:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;cursor&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;X&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Y&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;int&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;PneumaUI&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Screen&lt;/span&gt;      &lt;span style=&#34;color:#000&#34;&gt;tcell&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Screen&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Cursor&lt;/span&gt;      &lt;span style=&#34;color:#000&#34;&gt;cursor&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Exit&lt;/span&gt;        &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;bool&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Style&lt;/span&gt;       &lt;span style=&#34;color:#000&#34;&gt;tcell&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Style&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Mode&lt;/span&gt;        &lt;span style=&#34;color:#000&#34;&gt;Mode&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The most basic functionality is achieved with two functions: &lt;code&gt;putRune&lt;/code&gt; and
+&lt;code&gt;MoveCursor&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;PneumaUI&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;MoveCursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;x&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;error&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;w&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;h&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Screen&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Size&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+	&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;h&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+		&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;errors&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;New&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;cursor out of bounds&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+	&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+	&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Cursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;X&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;x&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Cursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Y&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;y&lt;/span&gt;
+	&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;nil&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;PneumaUI&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;putRune&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;rune&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Screen&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;SetContent&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Cursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;X&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Cursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Y&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[]&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;rune&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{},&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Style&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Building on only these two functions, emerged more sophisticated behaviours
+such as &lt;code&gt;putStr&lt;/code&gt;, &lt;code&gt;hLine&lt;/code&gt;, &lt;code&gt;vLine&lt;/code&gt;. From those, even more such as drawing
+boxes. However, as our UI became more sophisticated, drawing and managing the
+content on the screen became more complex. It was serviceable, but
+tedious.&lt;/p&gt;
+&lt;p&gt;For example, drawing a UI with some text labels would be as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;MoveCursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;PutStr&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;A string of text&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;MoveCursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;PutStr&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;Another string&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000&#34;&gt;aList&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[]&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;some&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;list&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;items&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;MoveCursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;i&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;item&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;aList&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;MoveCursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;i&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;PutStr&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;fmt&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Sprintf&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;%d: %s&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;i&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;))&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To simplify things, I wanted to have all of the content on screen added to the
+UI with a widget approach. The content of the screen can be rendered with a
+single call to &lt;code&gt;ui.Draw&lt;/code&gt; and each widget would handle its own draw logic.&lt;/p&gt;
+&lt;p&gt;In Go, we can achieve this by having a common interface which we will call
+&lt;code&gt;Drawable&lt;/code&gt;. This way we can specify a shared function signature and group
+structs that share the interface together. Now, our UI can contain a slice of
+&lt;code&gt;Drawable&lt;/code&gt; items that we iterate through and call their individual &lt;code&gt;Draw&lt;/code&gt;
+methods on.&lt;/p&gt;
+&lt;p&gt;For eaxmple, a &lt;code&gt;Label&lt;/code&gt; widget is defined as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Drawable&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Draw&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;PneumaUI&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Label&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;X&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Y&lt;/span&gt;    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;int&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Content&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;string&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;l&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Label&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Draw&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;PneumaUI&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;MoveCursor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;l&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;X&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;l&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Y&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;putString&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;l&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Content&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now all we need to do to draw our entire UI is the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;PneumaUI&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Draw&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;drawable&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Content&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+		&lt;span style=&#34;color:#000&#34;&gt;drawable&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Draw&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+	&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This means that we can add/remove widgets to our UI on demand and redraw the UI
+as needed. Also, if we want to add different widget types, they just need to
+implement the &lt;code&gt;Drawable&lt;/code&gt; interface.&lt;/p&gt;
+&lt;h2 id=&#34;interactivity-and-callbacks&#34;&gt;Interactivity and Callbacks&lt;/h2&gt;
+&lt;p&gt;The TUI is event-driven. It blocks on &lt;code&gt;tcell.Screen.PollEvent&lt;/code&gt; and so &lt;code&gt;pneuma&lt;/code&gt;
+spins on this. I have taken inspiration from a few TUI programs and developed a
+&lt;code&gt;ui.Tick()&lt;/code&gt; function that the main program repeatedly calls while waiting for
+an event. In this function, we synchronise the screen contents, update any
+state information of widgets, and then poll for events.&lt;/p&gt;
+&lt;p&gt;At first, I hardcoded commands and their behaviour into the event polling, but
+this proved really inflexible. It also tightly coupled the UI logic with the
+program logic which started forcing more and more spaghetti code into the
+project to cover different contexts and use cases.&lt;/p&gt;
+&lt;p&gt;What I wanted was a way to dynamically set the commands that can be executed
+instead of manually inputting the logic for each specific situation. While the
+project is probably small enough that I could have gotten away without it, it
+still presented an interesting problem.&lt;/p&gt;
+&lt;p&gt;My solution? Callback functions.&lt;/p&gt;
+&lt;p&gt;The approach is simple: we link certain key events to functions that we want
+called. Then when the UI polls for events, it checks if any of the key events
+in the commands list has happened and then call the appropriate function.&lt;/p&gt;
+&lt;p&gt;For my implementation I made use of Go&amp;rsquo;s &lt;code&gt;map&lt;/code&gt; data structure which has a
+lookup time of O(1). The end result looks something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;CommandKey&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Key&lt;/span&gt;  &lt;span style=&#34;color:#000&#34;&gt;tcell&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Key&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Rune&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;rune&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;Mod&lt;/span&gt;  &lt;span style=&#34;color:#000&#34;&gt;tcell&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ModMask&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;PneumaUI&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;// ...
+&lt;/span&gt;&lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#000&#34;&gt;Commands&lt;/span&gt;    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;map&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;CommandKey&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;func&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The &lt;code&gt;CommandKey&lt;/code&gt; struct is used to compare the &lt;code&gt;tcell.EventKey&lt;/code&gt; while ignoring
+the unnecessary information.&lt;/p&gt;
+&lt;p&gt;Using this approach the event polling in the TUI is much, much simpler while
+also being dynamically configurable.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;PneumaUI&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Tick&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ev&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Screen&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;PollEvent&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;().(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;tcell&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;EventKey&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;
+        &lt;span style=&#34;color:#000&#34;&gt;cmd&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;CommandKey&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Key&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ev&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Key&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(),&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Rune&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ev&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Rune&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(),&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Mod&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ev&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Modifiers&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()}&lt;/span&gt;
+        &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;callback&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ok&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Commands&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;cmd&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;];&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ok&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color:#000&#34;&gt;callback&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;// Execute the callback function
+&lt;/span&gt;&lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;&lt;/span&gt;            &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Redraw&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+        &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This means that in our main program we can dynamically configure the commands
+as needed, passing the callback functions we want.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#000&#34;&gt;editPost&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;func&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;path&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;posts&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;table&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Index&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;].&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Path&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;startEditor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#000&#34;&gt;quitCmdEventKey&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;libui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;CommandKey&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Key&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;tcell&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;KeyRune&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Rune&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;q&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Mod&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;tcell&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ModNone&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#000&#34;&gt;cmds&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#204a87&#34;&gt;make&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;map&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;libui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;CommandKey&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;func&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;())&lt;/span&gt;
+&lt;span style=&#34;color:#000&#34;&gt;cmds&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;quitCmdEventKey&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;quit&lt;/span&gt;
+&lt;span style=&#34;color:#000&#34;&gt;cmds&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;enterCmdEventKey&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;editPost&lt;/span&gt;
+
+&lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;SetCommands&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;cmds&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once the commands are set, we simply loop and tick the UI.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;ui&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Tick&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It is interesting to note that we make use of an anonymous function when we
+specify &lt;code&gt;editPost&lt;/code&gt;. This is because, while we want to call &lt;code&gt;startEditor&lt;/code&gt; we
+also want to do some work beforehand. Ultimately, we can start to compose more
+and more complicated functionality that is passed as a single command.&lt;/p&gt;
+&lt;p&gt;And that&amp;rsquo;s all for the interactivity!&lt;/p&gt;
+&lt;h3 id=&#34;issue-input-capture-and-control&#34;&gt;Issue: Input Capture and Control&lt;/h3&gt;
+&lt;p&gt;One of the persistent issues I am currently facing is when I want to edit
+files. Currently, my code is as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;startEditor&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;path&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;editorCmd&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;exec&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Command&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;vim&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;editorCmd&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Stdin&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;editorCmd&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Stdout&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;editorCmd&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Stderr&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Stdin&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Stdout&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;os&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Stderr&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;editorCmd&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Start&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;editorCmd&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Wait&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+	&lt;span style=&#34;color:#000&#34;&gt;check&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With this, I hand over the os.Std(in/out/err) files to &lt;code&gt;vim&lt;/code&gt;, but I am finding
+that &lt;code&gt;vim&lt;/code&gt; is lagging heavily. On top of that, it seems that input is also
+being captured by &lt;code&gt;pneuma&lt;/code&gt; (such as &lt;code&gt;q&lt;/code&gt;) and is quitting the program, while
+&lt;code&gt;vim&lt;/code&gt; is running. It appears to be an &lt;a href=&#34;https://github.com/golang/go/issues/37217&#34;&gt;issue in &lt;code&gt;golang&lt;/code&gt;
+itself&lt;/a&gt; when forking processes and
+trying to run them in the foreground. It might also be that &lt;code&gt;tcell&lt;/code&gt; is setting
+the terminal into a strange state that &lt;code&gt;vim&lt;/code&gt; is then trying to correct from.&lt;/p&gt;
+&lt;p&gt;Regardless, it presents an interesting an novel problem to me.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re interested in hacking on &lt;code&gt;pneuma&lt;/code&gt;, you are more than welcome to. I am
+not going to be accepting PRs at this time, but feel free to create issues and
+comments. You can find the repo at
+&lt;a href=&#34;https://github.com/sudosays/pneuma/&#34;&gt;https://github.com/sudosays/pneuma/&lt;/a&gt; or
+check out the project page &lt;a href=&#34;http://sudosays.github.io/projects/pneuma/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;As of Hugo version 0.80.0&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;From the &lt;code&gt;tcell&lt;/code&gt; documentation regarding &lt;code&gt;PollEvent&lt;/code&gt;: &amp;ldquo;Main application
+loops must spin on this to prevent the application from stalling.&amp;rdquo;&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+
+      </content>
     </item>
     
     <item>
@@ -23,6 +247,125 @@
       
       <guid>http://sudosays.github.io/blog/commitunism/</guid>
       <description>In my 2020 vision, I mentioned that this year I wanted to contribute to an open source project and I am happy to announce that my first ever pull request was merged. This post mainly concerns my experience of the contribution process and my thoughts throughout rather than an in depth technical report.</description>
+      <content>
+        &lt;p&gt;In my &lt;a href=&#34;http://sudosays.github.io/blog/2020-vision/&#34;&gt;2020 vision&lt;/a&gt;, I mentioned that this year I wanted to contribute to an
+open source project and I am happy to announce that my first ever pull
+request was &lt;a href=&#34;https://github.com/sylabs/singularity/commit/efeb67deb1519b792d021e6c305069701c5fe9a6&#34;&gt;merged&lt;/a&gt;.
+This post mainly concerns my experience of the contribution process and my
+thoughts throughout rather than an in depth technical report.&lt;/p&gt;
+&lt;p&gt;When I embarked on this journey I had a few criteria that I was looking for in
+my contribution. Specifically, I wanted to contribute something meaningful to
+both me and others which meant that I wanted:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;to contribute to a project I use or found interesting&lt;/li&gt;
+&lt;li&gt;to add value to others&#39; experience&lt;/li&gt;
+&lt;li&gt;to add value to the project&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;With those parameters I went through the Github issues of projects I liked and
+checked the &amp;ldquo;good first issue&amp;rdquo; labels until I stumbled upon &lt;a href=&#34;https://github.com/sylabs/singularity/issues/3502&#34;&gt;this one&lt;/a&gt;
+in the repository for Singularity (a containerisation tool for high performance
+computing on Linux). The issue stood out to me, because I had also stumbled
+into the same headache as the author and it seemed to me to be a very
+achievable thing to fix.&lt;/p&gt;
+&lt;p&gt;At first, I was tempted to comment on the issue that I could look into it, but
+a teacher of mine once told me, &amp;ldquo;talk is cheap&amp;rdquo;, and so I decided to instead
+produce a solution first.&lt;/p&gt;
+&lt;h2 id=&#34;doing-my-homework&#34;&gt;Doing My Homework&lt;/h2&gt;
+&lt;p&gt;Although I had a vague idea of what the process was for contributing to
+open source projects, I also know that each project might have a subtly
+different workflow for contributions. As a result, I made sure to read the
+contribution guidelines for the project, and forked the repo.&lt;/p&gt;
+&lt;p&gt;The first thing to do was to ensure that I was able to actually compile the
+project from source, which meant understanding the build system and
+dependencies. Luckily, working with lots of build systems (and even writing my
+own makefiles) meant that it went smoothly and soon I had a workflow figured
+out.&lt;/p&gt;
+&lt;h2 id=&#34;finding-the-problem&#34;&gt;Finding the Problem&lt;/h2&gt;
+&lt;p&gt;At this point, I had reached the limit of my comfort zone. The project is
+written in Go which I had very little experience with having only completed
+the Tour of Go previously. Furthermore, I was not at all familiar with the
+codebase and so my first issue was finding where the problem could actually be
+solved.&lt;/p&gt;
+&lt;p&gt;Thankfully, I am a bit lazy and instead of reading through each and every file
+to find something I ended up using a recursive &lt;code&gt;grep&lt;/code&gt; search to find the
+specific occurrence of the sanity check prompt.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ grep -r &amp;quot;Build target already exists&amp;quot;
+
+cmd/internal/cli/build.go: question := &amp;quot;Build target already exists. Do you want to overwrite? [N/y] &amp;quot;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So I dove into the &lt;code&gt;build.go&lt;/code&gt; file and found the line where the prompt was
+being served, but if I was really clever I would have added the &lt;code&gt;-n&lt;/code&gt; option to
+&lt;code&gt;grep&lt;/code&gt; which would spit out the line number as well as the file it was in.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ grep -rn &amp;quot;Build target already exists&amp;quot;
+
+cmd/internal/cli/build.go:268: question := &amp;quot;Build target already exists. Do you want to overwrite? [N/y] &amp;quot;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;initial-solve&#34;&gt;Initial Solve&lt;/h2&gt;
+&lt;p&gt;My first thought about solving this was to check if the build target file had
+the &lt;code&gt;.def&lt;/code&gt; extension that denotes it as a build file. However, there were two
+big issues with this approach: it depended on the name of the file rather than
+the content, it required introducing the &lt;code&gt;os&lt;/code&gt; package to the file which I
+thought was unnecessary.&lt;/p&gt;
+&lt;p&gt;Looking through the file for tools I could use I came across the following
+method &lt;code&gt;parser.IsValidDefinition(path string)&lt;/code&gt; which would judge a build target
+file on its content rather than its name. Furthermore, it incorporated the
+internally built tools to check definition files. This lead me to the following
+diff:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-diff&#34; data-lang=&#34;diff&#34;&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;diff --git a/cmd/internal/cli/build.go b/cmd/internal/cli/build.go
+&lt;/span&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;index fe02643162..558a7a2bfc 100644
+&lt;/span&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;--- a/cmd/internal/cli/build.go
+&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+++ b/cmd/internal/cli/build.go
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#800080;font-weight:bold&#34;&gt;@@ -265,7 +265,17 @@ func checkBuildTarget(path string) error {
+&lt;/span&gt;&lt;span style=&#34;color:#800080;font-weight:bold&#34;&gt;&lt;/span&gt; 			return fmt.Errorf(&amp;#34;only sandbox update is supported: %s is not a directory&amp;#34;, path)
+ 		}
+ 		if !buildArgs.update &amp;amp;&amp;amp; !forceOverwrite {
+&lt;span style=&#34;color:#a40000&#34;&gt;-			question := &amp;#34;Build target already exists. Do you want to overwrite? [N/y] &amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			var question string
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			isDefFile, _ := parser.IsValidDefinition(path)
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			if isDefFile {
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+				question = &amp;#34;Build target is a valid definition file that will be overwritten. Do you still want to overwrite? [N/y]&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			} else {
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+				question = &amp;#34;Build target already exists. Do you want to overwrite? [N/y] &amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			}
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+
+&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;&lt;/span&gt; 			input, err := interactive.AskYNQuestion(&amp;#34;n&amp;#34;, question)
+ 			if err != nil {
+ 				return fmt.Errorf(&amp;#34;while reading the input: %s&amp;#34;, err)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;What followed was a bit strange for me. I pushed the new commit/branch to my
+fork with the commit message &amp;ldquo;Add build command sanity check to close #3502&amp;rdquo;
+with &amp;ldquo;#3502&amp;rdquo; being the reference to the issue in the main repo. I did not
+expect this to immediately reflect on the issue in the main upstream
+repository. So when I amended my commit because I forgot to ensure all the test
+cases, and builds passed, it also reflected multiple commits on the main issue
+conversation. Although unexpected, this is very useful for connecting commits
+to issues automagically.&lt;/p&gt;
+&lt;p&gt;Excited and thrilled, I opened a pull request and waited for a review.&lt;/p&gt;
+&lt;h2 id=&#34;feedback-loop&#34;&gt;Feedback Loop&lt;/h2&gt;
+&lt;p&gt;The pull review process was also a novel experience for me. Initially I was
+worried that my changes would be outright rejected, and my PR tanked. Instead,
+there was a back and forth discussion between myself and &lt;a href=&#34;https://github.com/dctrud&#34;&gt;David
+Trudgian&lt;/a&gt; &amp;mdash; a maintainer for the project.&lt;/p&gt;
+&lt;p&gt;The conversation about how to address the problem resulted &amp;mdash; at least in my
+view &amp;mdash; in a solution that was greater than something I could have achieved by
+myself. I would incorporate suggested changes and neaten up my code which ended
+up in a total of three commits for the pull request. The review process felt
+very welcoming and collaborative.&lt;/p&gt;
+&lt;h2 id=&#34;victory&#34;&gt;Victory&lt;/h2&gt;
+&lt;p&gt;With all suggestions incorporated, continuous integration and build tests
+passed, my PR finally passed review and was merged into the master branch.&lt;/p&gt;
+&lt;p&gt;While I believe that the contribution I made was definitely beneficial to
+future users of the software, I definitely walked away from this experience
+with a lot more insight. I experienced the power of the review process, and
+that contributing to open source is not only achievable, but exciting and
+enjoyable.&lt;/p&gt;
+&lt;p&gt;I definitely plan on making more contributions to Singularity in the future,
+although I suspect not all of them will warrant a full blog post.&lt;/p&gt;
+
+      </content>
     </item>
     
     <item>
@@ -32,6 +375,200 @@
       
       <guid>http://sudosays.github.io/blog/devlog-4-tempo/</guid>
       <description>First of all, let me apologise in advance. This is going to be a somewhat lengthy one. I had gotten caught up in the development and rounding out of the features, and neglected to report on the progress. However, as it currently stands, the app is in a functional state. So much so that I have been using it consistently in my daily life already, despite some missing features that make it a bit frustrating to use.</description>
+      <content>
+        &lt;p&gt;First of all, let me apologise in advance. This is going to be a somewhat
+lengthy one. I had gotten caught up in the development and rounding out of the
+features, and neglected to report on the progress. However, as it currently
+stands, the app is in a functional state. So much so that I have been using it
+consistently in my daily life already, despite some missing features that make
+it a bit frustrating to use.&lt;/p&gt;
+&lt;p&gt;In this devlog, I will be covering how I added user settings to control the
+lengths of the tasks and breaks, as well as some interesting bugs and how I
+overcame them.&lt;/p&gt;
+&lt;h2 id=&#34;setting-things-right&#34;&gt;Setting Things Right&lt;/h2&gt;
+&lt;p&gt;A key feature of the app is that the user is able to adjust the lengths of the
+task sessions, and the long and short breaks in between. Since we are following
+the principles of the Pomodorro technique the suggested times for these are as
+follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Task sessions are traditionally 25 minutes&lt;/li&gt;
+&lt;li&gt;Short breaks are 3-5 minutes&lt;/li&gt;
+&lt;li&gt;Long breaks are 15-30 minutes long&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;However, I would like the users to be able to increase or decrease these times
+according to what works best for them and are still within reasonable limits.
+For example, we don’t want someone to say work for 1 minute, have a 15 minute
+short break, followed by a long break of 1 hour since that undermines the
+balance of work to rest that allows the brain maximise the overall time spent
+on task.&lt;/p&gt;
+&lt;p&gt;Therefore I opted for a “sliding scale” design for setting each length from
+“shorter” to “longer” which hopefully will promote a feeling of control in the
+user, but ultimately keep them balanced in terms of the ratio between work and
+rest.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/devlog-4-tempo-screenshot-settingssliders.png&#34;
+         alt=&#34;Screenshot showing the sliders used for adjusting the lengths.&#34; height=&#34;250px&#34;/&gt;&lt;figcaption&gt;
+            &lt;p&gt;Screenshot showing the sliders used for adjusting the lengths.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;As you can see above, each slider (a SeekBar widget) only has three settings.
+This is intentionally done to reduce the search space for the user to find an
+optimal overall setting for the app since altogether there are 27 possible
+combinations of settings. I used a bit of code to convert the actual SeekBar
+values (specified as integers from 0 to max) into actual times relating to the
+type of setting.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;settingBaseLength + (settingSeekBar.progress*settingIncrement)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This means that in future, if it is necessary for users to have finer control
+over a given setting all that needs to be adjusted is the number of notches for
+the slider and that setting’s increment value. Currently the base values and
+increments are as follows:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Name&lt;/th&gt;
+&lt;th&gt;Base length(min)&lt;/th&gt;
+&lt;th&gt;Increment length(min)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Task&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Short break&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Long break&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;These numbers are all loaded from ‘default_lengths.xml‘ so that if adjustments
+are needed, one only needs to touch the resource file.&lt;/p&gt;
+&lt;p&gt;With the higher level design out of the way, let’s talk implementation. The
+official documentation suggests using a SharedPreferences file that stores
+key-value pairs. However, initially I made the mistake of thinking that I
+needed to use a Preferences file since I only needed one preference file for
+the app and only the settings activity would write to it. I was wrong.
+Initially it looked something like this in my FlowSettings activity:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#000&#34;&gt;with&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getPreferences&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Context&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;MODE_PRIVATE&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;edit&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;())&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;putInt&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getString&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;R&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;task_length_key&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;),&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;taskLength&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;taskTimeSeekBar&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;progress&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;taskIncrement&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;))&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;putInt&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getString&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;R&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;short_break_key&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;),&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;shortBreakLength&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;shortBreakSeekBar&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;progress&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;shortBreakIncrement&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;))&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;putInt&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getString&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;R&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;long_break_key&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;),&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;longBreakLength&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;longBreakSeekBar&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;progress&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;longBreakIncrement&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;))&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;apply&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As soon as I tried to load the settings from the Flow activity with the
+following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;settings&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getPreferences&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Context&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;MODE_PRIVATE&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;taskLength&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;settings&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getInt&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;..&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;fallback&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;shortBreakLength&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;settings&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getInt&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;..&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;fallback&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;longBreakLength&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;settings&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getInt&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;..&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;fallback&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I found that they were all defaulting to the fallbacks I set. They key issue?
+using getPreferences instead of getSharedPreferences. The former requires no
+filename, but creates a unique preferences file for a single activity to be
+used only by that activity. This meant that I was writing to and reading from
+two different preferences files instead of one shared by all activities.
+Instead, the getSharedPreferences works by supplying a filename, thereby
+ensuring that activities can access the same preferences file. All it took was
+that one change and my settings were now saving and loading correctly across
+activities.&lt;/p&gt;
+&lt;h2 id=&#34;activity-stacked&#34;&gt;Activity Stacked&lt;/h2&gt;
+&lt;p&gt;I noticed a strange behaviour when testing the adding of tasks that when I went
+to add a task, and canceled (returning me to the main activity) I could press
+back to go to the add task activity again. To make this even stranger, I could
+then press back again and navigate round to the main activity. This was wrong
+since I wanted the user to exit/minimise the app when they pressed the back
+button on the main activity. The answer to this behaviour turned out to lead to
+a good catch!&lt;/p&gt;
+&lt;p&gt;Originally, in my AddTask activity when the user presses cancel the following
+code was executed:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;cancel&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;view&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;View&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;intent&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Intent&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;MainActivity&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;startActivity&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;intent&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now I could go to AddTask, hit cancel and… crash the app. Reliably.&lt;/p&gt;
+&lt;p&gt;You might have already noticed my mistake, which seemed so simple once I
+figured it out. By calling startActivity() I was not “returning” to the main
+activity, but instead starting another instance of it. Therefore, when I
+followed it by finishing the AddTask activity and tried to navigate back, it
+would crash because the activity that started it would no longer exists. This
+also meant that there was no way to navigate back to the original instance of
+MainActivity. The figure below shows the “activity stack” I was creating.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/devlog-4-tempo-activitystacking.svg&#34;
+         alt=&#34;The resulting activity stack from using successive startActivities.&#34; height=&#34;400px&#34;/&gt;&lt;figcaption&gt;
+            &lt;p&gt;The resulting activity stack from using successive startActivities.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;To fix this issue, I needed only to remove the all of the startActivity calls
+from the AddTasks activity since it is not actually supposed to start an
+activity, but rather just finish its job. However, that presented a crash as
+well. Again, the crash was consistent with only pressing the cancel button in
+the AddTask activity. It turns out that if you look at the figure above, you
+will notice that I start the AddTaskActivity for a result. And when I canceled
+the process and just called finish, no activity result had been set causing the
+crash. To fix this, finallly, my cancel function now looks something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;cancel&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;view&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;View&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;setResult&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Activity&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;RESULT_OK&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Intent&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;())&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;finish&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After checking the other activities spawned by the main activity, I ensured
+that all of them, on termination only call finish and set an activity result if
+they have to.&lt;/p&gt;
+&lt;h2 id=&#34;small-bugs-big-problems&#34;&gt;Small Bugs, Big Problems&lt;/h2&gt;
+&lt;p&gt;Once I had addressed the main implementation and app crashing fixes, that left
+a few less noticeable bugs to clean up.&lt;/p&gt;
+&lt;h3 id=&#34;ephemeral-tasks&#34;&gt;Ephemeral Tasks&lt;/h3&gt;
+&lt;p&gt;As soon as I started really using my app, I noticed that tasks for which I had
+assigned multiple sessions were only lasting one. Easily fixed by ensuring that
+once a task session has finished, we update the task and if there are still
+more sessions left schedule for the next session. Furthermore, we also update
+the task database to ensure that the “expended” task sessions are reflected
+even when the flow is stopped prematurely.&lt;/p&gt;
+&lt;p&gt;Adding an update rule to the TaskDao was straightforward enough with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#5c35cc;font-weight:bold&#34;&gt;@Dao&lt;/span&gt;
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskDao&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;..&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;
+    &lt;span style=&#34;color:#5c35cc;font-weight:bold&#34;&gt;@Update&lt;/span&gt;
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;updateTask&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;..&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As well as including an TaskUpdateAsync for committing changes to the Room database in a non-blocking way as discussed in &lt;a href=&#34;http://sudosays.github.io/blog/devlog-2-tempo/&#34;&gt;this devlog&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;null-safety&#34;&gt;Null Safety&lt;/h3&gt;
+&lt;p&gt;Finally, a problem of oversight and something that I would not have caught
+during my testing was when an empty task would be saved. Since I knew how I
+wanted the user to enter information I did not explicitly think about and test
+this case, but when I stumbled upon it the app crashed beautifully.&lt;/p&gt;
+&lt;p&gt;Now, I could use Kotlin’s null-safety systems such as the
+&lt;a href=&#34;https://kotlinlang.org/docs/reference/null-safety.html&#34;&gt;let&lt;/a&gt; statement, but
+this is not helpful to the user to understand what is going on as it doesn’t
+even give feedback. Instead, I checked for incomplete data entry and sent the
+user a toast to let them know that they had performed an illegal operation.
+This way is more in line with &lt;a href=&#34;https://www.nngroup.com/articles/ten-usability-heuristics/&#34;&gt;Nielsen’s Usability
+Heuristics&lt;/a&gt;.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/devlog-4-tempo-screenshot-toast.png&#34;
+         alt=&#34;Screenshot showing the prompt to the user when they try to save an incomplete task.&#34; height=&#34;250px&#34;/&gt;&lt;figcaption&gt;
+            &lt;p&gt;Screenshot showing the prompt to the user when they try to save an incomplete task.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;wrapping-up&#34;&gt;Wrapping up&lt;/h2&gt;
+&lt;p&gt;All this work has left the app in a useable state where the core function can
+be performed: adding tasks, changing settings, and getting into and out of flow
+correctly. However, the app is still very rough and intuitive features like
+task reordering, editing, and deletion still need to be implemented.
+Regardless, I am happy with the progress so far and excited to see what comes
+next.&lt;/p&gt;
+
+      </content>
     </item>
     
     <item>
@@ -41,6 +578,91 @@
       
       <guid>http://sudosays.github.io/blog/devlog-3-tempo/</guid>
       <description>At the end of the previous devlog  I used AsyncTasks to implement the very basic “Add Task” functionality. Next I set to work getting the other most important feature working: the “flow mode”. The flow mode is where the Pomodorro technique I discussed in the very first devlog is applied.</description>
+      <content>
+        &lt;p&gt;At the end of the &lt;a href=&#34;http://sudosays.github.io/blog/devlog-2-tempo/&#34;&gt; previous devlog &lt;/a&gt; I used
+AsyncTasks to implement the very basic “Add Task” functionality. Next I set to
+work getting the other most important feature working: the “flow mode”. The
+flow mode is where the Pomodorro technique I discussed in the very &lt;a href=&#34;http://sudosays.github.io/blog/devlog-tempo/&#34;&gt;first
+devlog&lt;/a&gt; is applied. All it shows is a timer and
+the task you are supposed to be focusing on.&lt;/p&gt;
+&lt;p&gt;Now like the esteemed ex-convict Martha Stewart, I had already prepared a lot
+of the logic for the flow activity before this point.&lt;/p&gt;
+&lt;p&gt;In short, I used three different CountdownTimers that would start one another
+when they finished. I was not running any of this in a worker thread, or a
+background service, since the CountdownTimers create their own threads to
+separate them from the UI thread. In the end this choice became first a curse
+and then a blessing.&lt;/p&gt;
+&lt;h2 id=&#34;issue-1-zombie-tasks&#34;&gt;Issue 1: Zombie Tasks&lt;/h2&gt;
+&lt;p&gt;While the logic was really easy to implement, I had envisioned that tasks that
+were completed in flow would be “burned” and disappear from the task list in
+the MainActivity. This was easy enough to achieve by deleting the task from the
+database (and task list) once the timer for that task was completed.&lt;/p&gt;
+&lt;p&gt;However, when I entered the flow activity, allowed a task to count down, and
+then returned to the MainActivity, the task list would not reflect that I had
+completed my task (and remove it from the list). While I thought about using
+the same &lt;code&gt;startActivityForResult&lt;/code&gt; method that I used for adding tasks, this was a
+little more complicated since the user could quit the flow activity at any time
+by pressing the back button or quitting the app entirely. Regardless of what
+the user did, the task list would need to be updated appropriately.&lt;/p&gt;
+&lt;p&gt;What I ended up doing was learning more about how to work with the &lt;a href=&#34;https://developer.android.com/guide/components/activities/activity-lifecycle&#34;&gt;activity
+lifecycle&lt;/a&gt;.
+In essence, when I started my flow activity, my main activity would be paused
+and then stopped when the activity was no longer visible. This meant that if I
+wanted to update the task list after the user returned from the flow activity,
+I needed to implement either &lt;code&gt;onResume&lt;/code&gt; or &lt;code&gt;onRestart&lt;/code&gt;. Since my flow activity is a
+fullscreen activity, either method worked for me, however if you were to have a
+Fragment come into the foreground (with your activity visible in the
+background) there would be a difference in when &lt;code&gt;onPause&lt;/code&gt; and &lt;code&gt;onStop&lt;/code&gt; are called.&lt;/p&gt;
+&lt;p&gt;The code in my MainActivity ended up looking something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;onResume&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;onResume&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;reloadTasks&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;reloadTasks&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;taskMutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;clear&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;taskMutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;addAll&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;TaskFetchASync&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;db&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;execute&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;())&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;listViewAdapter&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;notifyDataSetChanged&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This means that every time I returned to the MainActivity after moving to a new
+activity, the TaskList would be updated with the latest state of the database.
+A cool side effect of this is that should the database be updated in the
+background (or synchronised with an online one) the new changes will be
+immediately reflected whenever the MainActivity is resumed or opened for the
+first time.&lt;/p&gt;
+&lt;h2 id=&#34;issue-2-ghost-tasks&#34;&gt;Issue 2: Ghost Tasks&lt;/h2&gt;
+&lt;p&gt;While I had fixed the issue of completed tasks not disappearing from the list
+once completed. I ran into the opposite problem with my tasks starting to
+disappear from the list when not even finished. When the FlowActivity was
+started, and the user returned to the MainActivity prematurely, the idea was
+that the countdown for the task would reset because the entire idea for the
+task timer was to be an atomic, indivisible thing. Not completing a task means
+that the user will need to restart it.&lt;/p&gt;
+&lt;p&gt;However, that was not the case. These “ghost tasks” would start to disappear
+from the main list despite the FlowActivity being killed. The problem also
+stemmed from an incomplete understanding of the activity lifecycle and how that
+relates to using something such as CountdownTimers.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/countdown.webp&#34;/&gt;&lt;figcaption&gt;
+            &lt;p&gt;
+                    &lt;a href=&#34;https://media.giphy.com/media/3o85xwpcw6OJ5FSskU/giphy.gif&#34;&gt;Courtesy of Giphy&lt;/a&gt;&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Essentially, the timers will continue regardless of the state of the activity
+and it is up to you to reset them. To fix this I added an &lt;code&gt;OnStop&lt;/code&gt; to the
+FlowActivity that automatically cancels all of the timers. Once again, properly
+understanding the activity lifecycle proved helpful.&lt;/p&gt;
+&lt;p&gt;With these bugs out of the way, the app is currently in a state where the core
+user story loop works: Adding tasks, doing a flow of tasks, and returning to
+the main task list (prematurely or otherwise). However, that does not mean I am
+nearly close to finished. This is essentially in “proof of concept” stage,
+lacking all pomp and polish as well as a few other core features such as
+editing the task list or editing tasks themselves.&lt;/p&gt;
+&lt;p&gt;As a final note, for my own records I will include the commit hash/hashes that
+fixed the bugs described above.&lt;/p&gt;
+&lt;p&gt;Until next time, study hard, be evil.&lt;/p&gt;
+
+      </content>
     </item>
     
     <item>
@@ -51,6 +673,183 @@
       <guid>http://sudosays.github.io/blog/devlog-2-tempo/</guid>
       <description>At this stage the first major functionality of the app has been implemented.
 With this devlog I cover how I added data persistence of the tasks as well as the “Add Task” functionality. I used the Room library that comes as part of Android Jetpack for expediency, but nonetheless I had some stumbling blocks and learning points along the way.</description>
+      <content>
+        &lt;p&gt;At this stage the first major functionality of the app has been implemented.&lt;/p&gt;
+&lt;p&gt;With this devlog I cover how I added data persistence of the tasks as well as
+the “Add Task” functionality. I used the
+&lt;a href=&#34;https://developer.android.com/topic/libraries/architecture/room&#34;&gt;Room&lt;/a&gt; library
+that comes as part of Android Jetpack for expediency, but nonetheless I had
+some stumbling blocks and learning points along the way. Regardless, I would
+highly recommend using Room so as to not get bogged down with how to query data
+from the SQLite database and increasing your chances of mucking something up
+“accidentally”.&lt;/p&gt;
+&lt;p&gt;Below you can see the results of adding a task to the app.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/devlog-2-tempo-screenshot-addtask.png&#34; height=&#34;250px&#34;/&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;getting-roomy&#34;&gt;Getting Roomy&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;lsquo;… nonetheless I had some stumbling blocks and learning points along the way&amp;rsquo;&lt;/p&gt;
+&lt;p&gt;- me, earlier&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I found implementing Room deceptively straightforward since I add only had to
+add annotations to my already existing Task object like so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#5c35cc;font-weight:bold&#34;&gt;@Entity&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;tableName&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;tasks&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#5c35cc;font-weight:bold&#34;&gt;@PrimaryKey&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;autoGenerate&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;uid&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Int&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt;
+                &lt;span style=&#34;color:#5c35cc;font-weight:bold&#34;&gt;@ColumnInfo&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;name&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;task_name&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;String&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt;
+                &lt;span style=&#34;color:#5c35cc;font-weight:bold&#34;&gt;@ColumnInfo&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;name&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;task_duration&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;duration&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Float&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then I needed only to make a data access object (for interfacing with the
+database) and extend the Room database into a TaskDatabase. The task data
+access object (DAO) contains the query annotations for accessing the database
+in specific, controlled ways. For example, I wanted to be able to pull all the
+tasks in the task database at once into a MutableList which meant that one of
+the functions looked something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#5c35cc;font-weight:bold&#34;&gt;@Dao&lt;/span&gt;
+&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskDao&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color:#5c35cc;font-weight:bold&#34;&gt;@Query&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;SELECT * FROM tasks&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;getAll&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;():&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;MutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;//Other functions here...
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After that I thought I was all set, but alas it was not to be. Turns out I ran
+into two different compile-time problems: one regarding my annotations, and the
+other when trying to build the database instance at runtime.&lt;/p&gt;
+&lt;p&gt;The first error was that my annotations were not generating the correct classes
+at compile time, and so the compiler would complain that my abstract
+TaskDatabase class was being used without an implementation. This was caused by
+my inability to heed the following warning at the bottom of the documentation:&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/devlog-2-tempo-androiddocumentation.png&#34;
+         alt=&#34;An important warning in the Android documentation&#34;/&gt;&lt;figcaption&gt;
+            &lt;p&gt;An important warning in the Android documentation&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;The second error was that when I was building my database as a top level member
+of the MainActivity, I needed to pass the applicationContext somehow, but the
+problem was that the applicationContext did not yet exist when I tried to build
+the database using:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;db&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Room&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;databaseBuilder&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;
+            &lt;span style=&#34;color:#000&#34;&gt;context&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;applicationContext&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt;
+            &lt;span style=&#34;color:#000&#34;&gt;TaskDatabase&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;taskdb&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;My aim was to have one db instance that I could then access the data from
+repeatedly instead of creating a new TaskDatabase instance everytime I wanted
+to access data. Enter the companion object.&lt;/p&gt;
+&lt;p&gt;In Kotlin, a companion object is a singleton tied to the class rather than the
+instances of that class. This meant that I can declare a companion object for
+the TaskDatabase and only need to pass the applicationContext when I want to
+get the singleton instance. So I added the following to the TaskDatabase:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;companion&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;object&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;getInstance&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;context&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Context&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;):&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskDatabase&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt;
+            &lt;span style=&#34;color:#000&#34;&gt;Room&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;databaseBuilder&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;context&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;applicationContext&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt;   
+            &lt;span style=&#34;color:#000&#34;&gt;TaskDatabase&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;taskdb&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Thereafter, I could access the instance of the database easily (and more cleanly) with the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#000&#34;&gt;db&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskDatabase&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getInstance&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In the line above, this is the activity context itself from which we extract
+the applicationContext.&lt;/p&gt;
+&lt;p&gt;With this done, I thought it would be smooth sailing from here on out, but yet
+again…&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/meme-youthoughtwrong.gif&#34; height=&#34;250px&#34;/&gt;&lt;figcaption&gt;
+            &lt;p&gt;
+                    &lt;a href=&#34;https://media.giphy.com/media/8HqjtoyKrnfJC/source.gif&#34;&gt;Courtesy of Giphy&lt;/a&gt;&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;no-stop-ui-pls&#34;&gt;No stop UI pls&lt;/h2&gt;
+&lt;p&gt;Android has a strict (and good) policy of not allowing anything to block the UI
+thread which is the main/default thread in an activity. This helps make sure
+that the app UI stays responsive while you try to, say, fetch tasks from a
+database.&lt;/p&gt;
+&lt;p&gt;Although my app would compile and launch, it would be killed when I tried to
+load the tasks from the database because the UI thread would block for a second
+and Android would think my app was being unresponsive and kill it. To fix this
+issue I would need to offload my data loading into a non-UI worker thread.
+Thank goodness for
+&lt;a href=&#34;https://developer.android.com/reference/android/os/AsyncTask&#34;&gt;AsyncTasks&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;AsyncTasks provide an easy way to use Thread and Handlers in order to complete
+short tasks (for long running tasks you should be looking at Services). So, for
+example, I wanted to fetch all the tasks from the database and return it in a
+MutableList. For this I extended AsyncTask and created TaskFetchAsync with the
+following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskFetchAsync&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;db&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskDatabase&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;AsyncTask&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Void&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Void&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;MutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(){&lt;/span&gt;
+
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;doInBackground&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;vararg&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;p0&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Void&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;?):&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;MutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;gt;?&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;taskList&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;db&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;taskDao&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getAll&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+        &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;taskList&lt;/span&gt;
+    &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;onPostExecute&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;result&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;MutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;gt;?)&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;onPostExecute&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;result&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In the class declaration, you can see that the TaskFetchAsync takes a database
+instance in the constructor, while we also mention that it returns a
+MutableList containing Task objects.&lt;/p&gt;
+&lt;p&gt;Next, we fetch the tasks using our database instance’s taskDao and finally
+return the result. Using the AsyncTask was really straightforward since all we
+would need to do is:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#000&#34;&gt;taskMutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;addAll&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;TaskFetchASync&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;db&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;execute&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;That said, one thing I did do was give the db instance as a constructor
+variable instead of declaring it as a parameter. This is because the parameters
+(taken in whenever &lt;code&gt;TaskFetchAsync.execute()&lt;/code&gt; is called are generally something
+that needs to be acted on, or may change the task execution in some way. This
+became evident when I created another AsyncTask for inserting new tasks into
+the database.&lt;/p&gt;
+&lt;h2 id=&#34;insert-a-sink&#34;&gt;Insert A Sink&lt;/h2&gt;
+&lt;p&gt;The final hurdle was to complete the functionality of the AddTask activity. On
+the MainActivity, when the “Add Task” button is pressed it should take the user
+to the AddTask activity where they can enter the new task information. If the
+user then saves the new task to the database it should notify the
+listViewAdapter I mentioned in my &lt;a href=&#34;http://sudosays.github.io/blog/devlog-1-tempo/&#34;&gt;previous devlog&lt;/a&gt; to update the ListView with
+our newly added task.&lt;/p&gt;
+&lt;p&gt;In order to save the new task to the database I also used an AsyncTask that I
+called TaskInsertAsync that looked like the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskInsertAsync&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;db&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskDatabase&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;AsyncTask&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Void&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Boolean&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(){&lt;/span&gt;
+
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;doInBackground&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;vararg&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;p0&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;):&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Boolean&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#000&#34;&gt;db&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;taskDao&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;insertAll&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(*&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;p0&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;
+    &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;// Other stuff...
+&lt;/span&gt;&lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;What is notable here is that &lt;code&gt;taskDao().insertAll()&lt;/code&gt; takes &lt;code&gt;vararg task: Task&lt;/code&gt;
+which &lt;code&gt;p0&lt;/code&gt; is. Unfortunately, &lt;code&gt;p0&lt;/code&gt; is actually viewed as an array, while the
+method is looking for a distinct, separate Task objects to pass to
+&lt;code&gt;insertAll()&lt;/code&gt; and so we needed to use &lt;a href=&#34;https://kotlinlang.org/docs/reference/functions.html#variable-number-of-arguments-varargs&#34;&gt;Kotlin’s spread
+operator&lt;/a&gt;(*).&lt;/p&gt;
+&lt;p&gt;Finally came the question of how to know when a new task was added
+successfully. Enter startActivityForResult.&lt;/p&gt;
+&lt;p&gt;With startActivityForResult, we needed to declare a request code (a simple Int)
+and then implement &lt;code&gt;onActivityResult&lt;/code&gt; to handle the result. This was simple
+enough and ended up looking something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;onActivityResult&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;requestCode&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Int&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;resultCode&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Int&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Intent&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;requestCode&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ADD_TASK_REQUEST&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;resultCode&lt;/span&gt; &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Activity&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;RESULT_OK&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color:#000&#34;&gt;taskMutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;clear&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+            &lt;span style=&#34;color:#000&#34;&gt;taskMutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;addAll&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;TaskFetchASync&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;db&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;execute&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;())&lt;/span&gt;
+            &lt;span style=&#34;color:#000&#34;&gt;listViewAdapter&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;notifyDataSetChanged&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;()&lt;/span&gt;
+        &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It is to be noted that our AddTask activity did not need to handle the request
+code. Only our MainActivity had the request code declared and would handle it
+when the activity returned.&lt;/p&gt;
+&lt;p&gt;With all that done, the app could now persist data, fetch it, and add new tasks
+to the database. It also represents the first “real” functionality that is
+user-facing and so is a milestone I was pretty excited by!&lt;/p&gt;
+&lt;p&gt;As always, I will be back with another devlog describing all the times I shot
+myself in the foot and how I then fixed it. I shall leave you, the reader, with
+the following quote:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;lsquo;Give a man a program, frustrate him for a day.
+Teach a man to program, frustrate him for a lifetime.&amp;rsquo;&lt;/p&gt;
+&lt;p&gt;- Muhammad Waseem&lt;/p&gt;
+&lt;/blockquote&gt;
+
+      </content>
     </item>
     
     <item>
@@ -61,6 +860,73 @@ With this devlog I cover how I added data persistence of the tasks as well as th
       <guid>http://sudosays.github.io/blog/devlog-1-tempo/</guid>
       <description>In my last devlog for my productivity app Tempo, I discussed how I had created a CustomView for my Task object, how I would add them directly to my main ConstraintLayout, and how I fixed the layout by using LayoutParams.
 In this post, I set out thinking how I was going to discuss implementing the “Add Task” functionality and managing the list of tasks in the MainActivity.</description>
+      <content>
+        &lt;p&gt;In my &lt;a href=&#34;http://sudosays.github.io/blog/devlog-tempo/&#34;&gt;last devlog&lt;/a&gt; for my productivity
+app Tempo, I discussed how I had created a CustomView for my Task object, how I
+would add them directly to my main ConstraintLayout, and how I fixed the layout
+by using LayoutParams.&lt;/p&gt;
+&lt;p&gt;In this post, I set out thinking how I was going to discuss implementing the
+“Add Task” functionality and managing the list of tasks in the MainActivity.
+However, fate it seems is not without a sense of irony. I knew that I wanted
+the tasks lined up into some sort of queue where it would start from the last
+task added and work backwards through the queue while the user is in the “flow
+state”. With Kotlin as my choice for this project I used a MutableList that
+holds my custom Task objects.&lt;/p&gt;
+&lt;p&gt;Creating the MutableList was easy enough by adding the following to the top of
+the MainActivity class:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;taskMutableList&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;mutableListOf&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;&amp;gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this case &lt;code&gt;taskMutableList&lt;/code&gt; is a &lt;code&gt;val&lt;/code&gt; because we are creating the
+MutableList object itself only once and then using its methods to modify it.
+This way it ensures that we will not keep re-creating, replacing, or throwing
+away the MutableList every time we want to change the contents.&lt;/p&gt;
+&lt;p&gt;Once I had that in place and started to think about how I was going to keep
+track of all the TaskViews on screen and scrolling them etc. etc. I immediately
+started to look for an improvement to the way I was displaying or managing the
+view. In comes the ListView (and by extension Adapters) to the rescue.&lt;/p&gt;
+&lt;p&gt;The ListView connects to an Adapter (such as an ArrayAdapter) that
+manages/controls access to a specific data source. In my case, I wanted to
+allow the ListView to display the contents of my taskMutableList and handle all
+of the layout and spacing for me. Naïvely, I added the ListView to my
+MainActivity and said something along the lines of:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#000&#34;&gt;taskListView&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;addView&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;TaskView&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;Task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After which the project, unsurprisingly, failed to compile.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/meme-surprisedpikachu.png&#34; height=&#34;250px&#34;/&gt;&lt;figcaption&gt;
+            &lt;p&gt;
+                    &lt;a href=&#34;https://knowyourmeme.com/memes/surprised-pikachu&#34;&gt;Courtesy of knowyourmeme.com&lt;/a&gt;&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;To get it to work I implemented &lt;code&gt;TaskArrayAdapter&lt;/code&gt; that extends the default
+ArrayAdapter and overrides the &lt;code&gt;getView()&lt;/code&gt; method in order to return my own
+TaskView to be displayed in the ListView. The actual TaskArrayAdapter’s
+&lt;code&gt;getView&lt;/code&gt; looks something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;getView&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;position&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;Int&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;convertView&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;View&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;?,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;parent&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;ViewGroup&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;?):&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;View&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;taskView&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskView&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;parent&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;!!&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;context&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#000&#34;&gt;taskView&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;populate&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;getItem&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;position&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;))&lt;/span&gt;
+    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;taskView&lt;/span&gt;
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once again, our nifty &lt;code&gt;populate&lt;/code&gt; is being used to fill the TaskView easily.&lt;/p&gt;
+&lt;p&gt;After creating the adapter, all that was left was to connect it to the ListView
+in the MainActivity by first creating the adapter, and then setting the
+ListView’s adapter:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;color:#000&#34;&gt;listViewAdapter&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;TaskArrayAdapter&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;R&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;layout&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;view_task&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;taskMutableList&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#000&#34;&gt;taskListView&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;adapter&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;listViewAdapter&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now all we need to do when we want to update the list is to call
+&lt;code&gt;notifyDataSetChanged()&lt;/code&gt; on our &lt;code&gt;listViewAdapter&lt;/code&gt; and the view should automatically
+update itself. With the new system in place I stress tested it by adding a
+bunch of tasks and was pleasantly surprised by how nicely it works using
+Adapters. You can see how it looks below.&lt;/p&gt;
+&lt;figure&gt;&lt;a href=&#34;http://sudosays.github.io/imgs/devlog1-tempo-screenshot-tasklist.png&#34;&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/devlog1-tempo-screenshot-tasklist.png&#34;
+         alt=&#34;Screenshot showing a list of tasks that is scrollable.&#34; height=&#34;250px&#34;/&gt;&lt;/a&gt;&lt;figcaption&gt;
+            &lt;p&gt;Screenshot showing a list of tasks that is scrollable.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Although the layout is not perfect at this stage, it is functionally much
+better that before. As always, I will post an update when I work on it again,
+but until then, stay evil.&lt;/p&gt;
+
+      </content>
     </item>
     
     <item>
@@ -71,6 +937,98 @@ In this post, I set out thinking how I was going to discuss implementing the “
       <guid>http://sudosays.github.io/blog/devlog-tempo/</guid>
       <description>As a supervillain, I would like to ensure that my minions and peons are working at maximum efficiency. The following post (and probably series) describes my journey in creating a tool that will help them stay productive.
 This leads me to a question: What tomatoes, egg timers, and university have in common?</description>
+      <content>
+        &lt;p&gt;As a supervillain, I would like to ensure that my minions and peons are working
+at maximum efficiency. The following post (and probably series) describes my
+journey in creating a tool that will help them stay productive.&lt;/p&gt;
+&lt;p&gt;This leads me to a question: What tomatoes, egg timers, and university have  in
+common? They are all part of Francesco Cirillo’s &lt;a href=&#34;https://francescocirillo.com/pages/pomodoro-technique&#34;&gt;Pomodoro
+technique&lt;/a&gt; that aims to
+manage time and tasks efficiently. The basics are that you have indivisible
+units of working time separated by short breaks and that you focus solely on
+the task at hand during a working unit. For me,  this is line with achieving
+&lt;a href=&#34;http://calnewport.com/books/deep-work/&#34;&gt;Cal Newport’s “deep work”&lt;/a&gt;. I would
+recommend reading up on these two concepts as I am not going into more detail
+here; I just wanted to give some motivation as to why I chose to make this app.&lt;/p&gt;
+&lt;p&gt;With that out of the way,  let’s talk dev.&lt;/p&gt;
+&lt;p&gt;The basic idea is that a user has a list of tasks with a description and an
+associated duration (in work units). They then hit “Start” and it jumps them
+into a timer, with a description of a task, the time remaining, and the next
+upcoming task. The app automatically alternates between breaks and work, and
+continues until there are no tasks left or the user stops the timers.&lt;/p&gt;
+&lt;p&gt;I jumped into Android studio and started a new project with Kotlin support.
+This is where I fell in love with Kotlin.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If you are looking into starting Android development, I would highly recommend doing it with Kotlin only.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Kotlin Android Extensions allows you to use “view binding” which completely
+eliminates the need for using “findViewById()”. This is done by importing the
+views in a layout using the following code:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;
+&lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;// Using R.layout.activity_main from the &amp;#39;main&amp;#39; source set
+&lt;/span&gt;&lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;kotlinx.android.synthetic.main.activity_main.*&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;However, when I started this I was unaware of how wonderful Kotlin is. In fact,
+I was completely new to Kotlin, and had forgotten most of my Android knowledge
+as well. So this meant learning Android using Kotlin from pretty much the
+beginning. If you are looking into starting Android development, I would highly
+recommend doing it with Kotlin only.&lt;/p&gt;
+&lt;p&gt;Because of my inexperience I ran into a whole host of issues early on.&lt;/p&gt;
+&lt;h2 id=&#34;customviews-for-custom-classes&#34;&gt;CustomViews For Custom Classes&lt;/h2&gt;
+&lt;p&gt;What I had was a class for a Task that had a name and a duration (in work
+units) and what I wanted was a reusable UI widget that could contain all of the
+information for a single task.&lt;/p&gt;
+&lt;p&gt;To do that I implemented a CustomView and called it TaskView. The TaskView had
+its own separate layout resource and could be imported as a single unit into
+any other layout using:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;com.sudosays.tempo.TaskView
+        android:id=&amp;quot;...
+/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;By adding  a “populate” function that took a Task as an argument, I could
+dynamically create and add my custom TaskView. The way to do this is
+essentially to create a view that inflates itself from the defined XML and then
+fill in the data you want afterwards by calling the populate() function. This
+is handy because you can dynamically change the data of the view by calling
+populate with a modified Task object without having to manually alter the view
+fields one by one.&lt;/p&gt;
+&lt;h2 id=&#34;fixing-the-layout-using-layoutparams&#34;&gt;Fixing the Layout using LayoutParams&lt;/h2&gt;
+&lt;p&gt;One thing I noticed, however, is that when I added a custom view through code
+it did not expand to fill the space like the custom view I added through XML.
+The screenshot below shows the XML added TaskView on top and the dynamically
+added TaskView below.&lt;/p&gt;
+&lt;figure&gt;&lt;a href=&#34;http://sudosays.github.io/imgs/devlog-tempo-screenshot-taskview-broken.png&#34;&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/devlog-tempo-screenshot-taskview-broken.png&#34;
+         alt=&#34;Screenshot showing the two TaskViews in the main activity.&#34; height=&#34;250px&#34;/&gt;&lt;/a&gt;&lt;figcaption&gt;
+            &lt;p&gt;Screenshot showing the two TaskViews in the main activity.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This stymied me because I was already setting the constraints of the view when
+adding it to the main ConstraintLayout of the activity. However, I was not
+setting the LayoutParams of the view once it was inflated. All I needed was to
+add the following line to my TaskView’s constructor (right after inflating it):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;layoutParams&lt;/span&gt; &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;LayoutParams&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ViewGroup&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;LayoutParams&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;MATCH_PARENT&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;ViewGroup&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;LayoutParams&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;WRAP_CONTENT&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, when I added a new TaskView from code it looked like the following:&lt;/p&gt;
+&lt;figure&gt;&lt;a href=&#34;http://sudosays.github.io/imgs/devlog-tempo-screenshot-taskview-fixed.png&#34;&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/devlog-tempo-screenshot-taskview-fixed.png&#34;
+         alt=&#34;Screenshot showing the somewhat fixed TaskViews.&#34; height=&#34;250px&#34;/&gt;&lt;/a&gt;&lt;figcaption&gt;
+            &lt;p&gt;Screenshot showing the somewhat fixed TaskViews.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;As you can see the bottom view is not elevated like the top view and so does
+not cast a shadow. This is something I will leave for another day, because it
+is not super important to me right now.&lt;/p&gt;
+&lt;p&gt;Moving on, I created a custom view called EditTask that contains all the
+widgets to, well, edit a task (or create a new one). As before, it has a
+populate function and can be re-used as much as needed by embedding it into any
+layout. This means that the difference between the ‘create new task’ and ‘edit
+existing task’ boils down to whether or not the EditTask view will be populated
+and if we’ll be inserting or updating the task records.&lt;/p&gt;
+&lt;p&gt;Finally, I added a very rough layout for the ‘Flow’ activity which shows a
+timer, and the next upcoming break/task.&lt;/p&gt;
+&lt;p&gt;That’s it for this devlog, but I will keep working on it and post more updates
+as soon as I can. Till then, stay evil.&lt;/p&gt;
+
+      </content>
     </item>
     
   </channel>

@@ -19,9 +19,9 @@
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
-            
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
             
@@ -79,14 +79,14 @@ solved.</p>
 <p>Thankfully, I am a bit lazy and instead of reading through each and every file
 to find something I ended up using a recursive <code>grep</code> search to find the
 specific occurrence of the sanity check prompt.</p>
-<pre><code>$ grep -r &quot;Build target already exists&quot;
+<pre tabindex="0"><code>$ grep -r &quot;Build target already exists&quot;
 
 cmd/internal/cli/build.go: question := &quot;Build target already exists. Do you want to overwrite? [N/y] &quot;
 
 </code></pre><p>So I dove into the <code>build.go</code> file and found the line where the prompt was
 being served, but if I was really clever I would have added the <code>-n</code> option to
 <code>grep</code> which would spit out the line number as well as the file it was in.</p>
-<pre><code>$ grep -rn &quot;Build target already exists&quot;
+<pre tabindex="0"><code>$ grep -rn &quot;Build target already exists&quot;
 
 cmd/internal/cli/build.go:268: question := &quot;Build target already exists. Do you want to overwrite? [N/y] &quot;
 
@@ -101,7 +101,7 @@ method <code>parser.IsValidDefinition(path string)</code> which would judge a bu
 file on its content rather than its name. Furthermore, it incorporated the
 internally built tools to check definition files. This lead me to the following
 diff:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#000080;font-weight:bold">diff --git a/cmd/internal/cli/build.go b/cmd/internal/cli/build.go
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#000080;font-weight:bold">diff --git a/cmd/internal/cli/build.go b/cmd/internal/cli/build.go
 </span><span style="color:#000080;font-weight:bold">index fe02643162..558a7a2bfc 100644
 </span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/cmd/internal/cli/build.go
 </span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/cmd/internal/cli/build.go

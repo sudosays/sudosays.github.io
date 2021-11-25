@@ -19,9 +19,9 @@
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
-            
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
             
@@ -67,9 +67,8 @@ on task.</p>
 “shorter” to “longer” which hopefully will promote a feeling of control in the
 user, but ultimately keep them balanced in terms of the ratio between work and
 rest.</p>
-<figure>
-    <img src="/imgs/devlog-4-tempo-screenshot-settingssliders.png"
-         alt="Screenshot showing the sliders used for adjusting the lengths." height="250px"/> <figcaption>
+<figure><img src="/imgs/devlog-4-tempo-screenshot-settingssliders.png"
+         alt="Screenshot showing the sliders used for adjusting the lengths." height="250px"/><figcaption>
             <p>Screenshot showing the sliders used for adjusting the lengths.</p>
         </figcaption>
 </figure>
@@ -80,7 +79,7 @@ optimal overall setting for the app since altogether there are 27 possible
 combinations of settings. I used a bit of code to convert the actual SeekBar
 values (specified as integers from 0 to max) into actual times relating to the
 type of setting.</p>
-<pre><code>settingBaseLength + (settingSeekBar.progress*settingIncrement)
+<pre tabindex="0"><code>settingBaseLength + (settingSeekBar.progress*settingIncrement)
 </code></pre><p>This means that in future, if it is necessary for users to have finer control
 over a given setting all that needs to be adjusted is the number of notches for
 the slider and that setting’s increment value. Currently the base values and
@@ -119,7 +118,7 @@ key-value pairs. However, initially I made the mistake of thinking that I
 needed to use a Preferences file since I only needed one preference file for
 the app and only the settings activity would write to it. I was wrong.
 Initially it looked something like this in my FlowSettings activity:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">with</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getPreferences</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MODE_PRIVATE</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">edit</span><span style="color:#000;font-weight:bold">())</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">with</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getPreferences</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MODE_PRIVATE</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">edit</span><span style="color:#000;font-weight:bold">())</span>
 <span style="color:#000;font-weight:bold">{</span>
     <span style="color:#000">putInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">getString</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">R</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">string</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">task_length_key</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">taskLength</span> <span style="color:#000;font-weight:bold">+</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">taskTimeSeekBar</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">progress</span><span style="color:#000;font-weight:bold">*</span><span style="color:#000">taskIncrement</span><span style="color:#000;font-weight:bold">))</span>
     <span style="color:#000">putInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">getString</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">R</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">string</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">short_break_key</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">shortBreakLength</span> <span style="color:#000;font-weight:bold">+</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">shortBreakSeekBar</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">progress</span><span style="color:#000;font-weight:bold">*</span><span style="color:#000">shortBreakIncrement</span><span style="color:#000;font-weight:bold">))</span>
@@ -128,7 +127,7 @@ Initially it looked something like this in my FlowSettings activity:</p>
 <span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>As soon as I tried to load the settings from the Flow activity with the
 following:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">settings</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getPreferences</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MODE_PRIVATE</span><span style="color:#000;font-weight:bold">)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">settings</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getPreferences</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MODE_PRIVATE</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">taskLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">..</span><span style="color:#000;font-weight:bold">.,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">shortBreakLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">..</span><span style="color:#000;font-weight:bold">.,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">longBreakLength</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">settings</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">..</span><span style="color:#000;font-weight:bold">.,</span> <span style="color:#000">fallback</span><span style="color:#000;font-weight:bold">)</span>
@@ -151,7 +150,7 @@ button on the main activity. The answer to this behaviour turned out to lead to
 a good catch!</p>
 <p>Originally, in my AddTask activity when the user presses cancel the following
 code was executed:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">cancel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">view</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">View</span><span style="color:#000;font-weight:bold">)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">cancel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">view</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">View</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000;font-weight:bold">{</span>
     <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">intent</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">Intent</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">MainActivity</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#204a87;font-weight:bold">class</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">java</span><span style="color:#000;font-weight:bold">)</span>
     <span style="color:#000">startActivity</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">intent</span><span style="color:#000;font-weight:bold">)</span>
@@ -164,9 +163,8 @@ followed it by finishing the AddTask activity and tried to navigate back, it
 would crash because the activity that started it would no longer exists. This
 also meant that there was no way to navigate back to the original instance of
 MainActivity. The figure below shows the “activity stack” I was creating.</p>
-<figure>
-    <img src="/imgs/devlog-4-tempo-activitystacking.svg"
-         alt="The resulting activity stack from using successive startActivities." height="400px"/> <figcaption>
+<figure><img src="/imgs/devlog-4-tempo-activitystacking.svg"
+         alt="The resulting activity stack from using successive startActivities." height="400px"/><figcaption>
             <p>The resulting activity stack from using successive startActivities.</p>
         </figcaption>
 </figure>
@@ -179,7 +177,7 @@ the AddTask activity. It turns out that if you look at the figure above, you
 will notice that I start the AddTaskActivity for a result. And when I canceled
 the process and just called finish, no activity result had been set causing the
 crash. To fix this, finallly, my cancel function now looks something like this:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">cancel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">view</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">View</span><span style="color:#000;font-weight:bold">)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">cancel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">view</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">View</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000;font-weight:bold">{</span>
     <span style="color:#000">setResult</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Activity</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">RESULT_OK</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Intent</span><span style="color:#000;font-weight:bold">())</span>
     <span style="color:#000">finish</span><span style="color:#000;font-weight:bold">()</span>
@@ -198,7 +196,7 @@ more sessions left schedule for the next session. Furthermore, we also update
 the task database to ensure that the “expended” task sessions are reflected
 even when the flow is stopped prematurely.</p>
 <p>Adding an update rule to the TaskDao was straightforward enough with:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#5c35cc;font-weight:bold">@Dao</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#5c35cc;font-weight:bold">@Dao</span>
 <span style="color:#204a87;font-weight:bold">interface</span> <span style="color:#000">TaskDao</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="color:#ce5c00;font-weight:bold">..</span><span style="color:#000;font-weight:bold">.</span>
     <span style="color:#5c35cc;font-weight:bold">@Update</span>
@@ -218,9 +216,8 @@ even give feedback. Instead, I checked for incomplete data entry and sent the
 user a toast to let them know that they had performed an illegal operation.
 This way is more in line with <a href="https://www.nngroup.com/articles/ten-usability-heuristics/">Nielsen’s Usability
 Heuristics</a>.</p>
-<figure>
-    <img src="/imgs/devlog-4-tempo-screenshot-toast.png"
-         alt="Screenshot showing the prompt to the user when they try to save an incomplete task." height="250px"/> <figcaption>
+<figure><img src="/imgs/devlog-4-tempo-screenshot-toast.png"
+         alt="Screenshot showing the prompt to the user when they try to save an incomplete task." height="250px"/><figcaption>
             <p>Screenshot showing the prompt to the user when they try to save an incomplete task.</p>
         </figcaption>
 </figure>

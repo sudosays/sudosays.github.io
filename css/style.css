@@ -230,13 +230,21 @@ ul li {
 }
 
 .post-content p {
-    font-size: 12pt;
+    font-size: 14pt;
     line-height: 1.9;
 }
 
 .post-content a {
     text-decoration: underline;
     color: #1DA1F2;
+}
+
+.post-content ul li {
+    padding-top: 0;
+}
+
+.post-content ul li p {
+    margin-top: 0;
 }
 
 .post-footer {

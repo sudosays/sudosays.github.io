@@ -23,9 +23,9 @@
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
-            
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
             
@@ -82,7 +82,7 @@ maximum is 2 we have a 50% chance of losing, at 10 a 10% chance, at 100 a 1%
 chance and so on.</p>
 <p>We can check our hunch pretty easily using Python, numpy, and matplotlib with
 the following:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">roll_max</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">arange</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span><span style="color:#0000cf;font-weight:bold">50</span><span style="color:#000;font-weight:bold">)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">roll_max</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">arange</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span><span style="color:#0000cf;font-weight:bold">50</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000">p_loss</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">array</span><span style="color:#000;font-weight:bold">([</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">r</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">r</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">roll_max</span><span style="color:#000;font-weight:bold">])</span>
 
 <span style="color:#000">fig</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">figure</span><span style="color:#000;font-weight:bold">()</span>
@@ -949,7 +949,7 @@ L 388.8 34.56
 
 
 <p><em>Note:</em> With all of these examples, we have the following imports:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">numpy</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">np</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">numpy</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">np</span>
 <span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">matplotlib.pyplot</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">plt</span>
 <span style="color:#204a87;font-weight:bold">from</span> <span style="color:#000">random</span> <span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">randint</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">roll</span>
 </code></pre></div><h3 id="hunch-2-the-average-number-of-rolls-per-game-barn-is-log_2r_0-where-r_0-is-the-starting-maximum-number-10x-the-gold-wagered">Hunch #2: The average number of rolls per game (\(\bar{n}\)) is \(\log_2(r_0)\), where \(r_0\) is the starting maximum number (10x the gold wagered).</h3>
@@ -964,14 +964,14 @@ number of rolls in a game would, on average, be roughly \(\log_2{(r_0)}\)
 where \(r_0\) is the initial maximum.</p>
 <p>To check our hunch, let us simulate a whole bunch of games. Our setup is as
 follows:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">deathroll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">r_max</span><span style="color:#000;font-weight:bold">):</span>
-    <span style="color:#000">p1_turn</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#3465a4">True</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">deathroll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">r_max</span><span style="color:#000;font-weight:bold">):</span>
+    <span style="color:#000">p1_turn</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">True</span>
     <span style="color:#000">num_rolls</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span>
     <span style="color:#000">winner</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span> <span style="color:#8f5902;font-style:italic"># 1 or 2 for p1 or p2</span>
     <span style="color:#000">current_max</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">r_max</span>
     <span style="color:#000">last_roll</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span>
     
-    <span style="color:#204a87;font-weight:bold">while</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#3465a4">True</span><span style="color:#000;font-weight:bold">):</span>
+    <span style="color:#204a87;font-weight:bold">while</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">True</span><span style="color:#000;font-weight:bold">):</span>
         <span style="color:#000">last_roll</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">roll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">current_max</span><span style="color:#000;font-weight:bold">)</span>
         <span style="color:#000">num_rolls</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">1</span>
         <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">last_roll</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">:</span>
@@ -987,7 +987,7 @@ follows:</p>
                         
     <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">num_rolls</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">winner</span><span style="color:#000;font-weight:bold">)</span>
 </code></pre></div><p>With a little helper function to get a bunch of game data quickly:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">get_game_data</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">num_games</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">r_max</span><span style="color:#000;font-weight:bold">):</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">get_game_data</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">num_games</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">r_max</span><span style="color:#000;font-weight:bold">):</span>
     <span style="color:#000">num_rolls</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">zeros</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">num_games</span><span style="color:#000;font-weight:bold">)</span>
     <span style="color:#000">p1_wins</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">zeros</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">num_games</span><span style="color:#000;font-weight:bold">)</span>
     <span style="color:#000">p2_wins</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">zeros</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">num_games</span><span style="color:#000;font-weight:bold">)</span>
@@ -14418,7 +14418,7 @@ somewhere between \(\log_2{(r_0)}\) and \(\log_e{(r_0)}\).</p>
 <h3 id="hunch-3-it-is-better-to-go-second-as-your-opponent-will-be-more-likely-to-roll-a-1">Hunch #3: It is better to go second as your opponent will be more likely to roll a 1.</h3>
 <p>Luckily this hunch is a lot easier to check. All we do is see what the win rate
 is for each player over 10000 individual games per starting number.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">num_games</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">10000</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">num_games</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">10000</span>
 
 <span style="color:#000">starting_r_max</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">arange</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span><span style="color:#0000cf;font-weight:bold">1000</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000">avg_num_rolls</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">zeros</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">starting_r_max</span><span style="color:#000;font-weight:bold">))</span>
@@ -14431,11 +14431,11 @@ is for each player over 10000 individual games per starting number.</p>
     <span style="color:#000">p1_win_rate</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">count_nonzero</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">p1_wins</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">num_games</span>
     <span style="color:#000">p2_win_rate</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">count_nonzero</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">p2_wins</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">num_games</span>
 
-<span style="color:#204a87;font-weight:bold">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;P1 win rate: &#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">mean</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">p1_win_rate</span><span style="color:#000;font-weight:bold">))</span>
-<span style="color:#204a87;font-weight:bold">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;P2 win rate: &#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">mean</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">p2_win_rate</span><span style="color:#000;font-weight:bold">))</span>
+<span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;P1 win rate: &#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">mean</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">p1_win_rate</span><span style="color:#000;font-weight:bold">))</span>
+<span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;P2 win rate: &#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">np</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">mean</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">p2_win_rate</span><span style="color:#000;font-weight:bold">))</span>
 </code></pre></div><p>Finally if we take the mean win rate for each player for every starting number
 it looks like there is a slight advantage to going second, even if very small.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">P1 win rate:  0.4993275551102204
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">P1 win rate:  0.4993275551102204
 P2 win rate:  0.5006724448897796
 </code></pre></div><p>Now there is a little issue here since we are averaging averages. So let us
 take a look at the plot of our simulation:</p>
@@ -18128,7 +18128,7 @@ L 359.089063 62.336562
 to our first hunch makes sense as the chance for Player 1 to roll a 1 is much
 higher at lower numbers. It is also interesting to note that our win rates also
 changed by restricting the starting number.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">P1 win rate:  0.48281142857142856
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">P1 win rate:  0.48281142857142856
 P2 win rate:  0.5171885714285714
 </code></pre></div><p>So what does this all mean? Well it seems to us that it is generally a better
 idea to go second, and to keep our initial wagers low thereby giving us the
@@ -18144,7 +18144,7 @@ cryptocurrencies, or developing our own gambling platform.</p>
 <hr>
 <ol>
 <li id="fn:1" role="doc-endnote">
-<p>The natural logarithm where \(e \approx 2.71828\) <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>The natural logarithm where \(e \approx 2.71828\)&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>

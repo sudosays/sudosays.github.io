@@ -15,6 +15,50 @@
       <guid>http://sudosays.github.io/blog/vim-leadership-revisited/</guid>
       <description>A while ago I wrote about my discovery of using the leader key in vim (you can read that here). Now, after using it for a while I would like to revisit it and share my experiences and what I have learned.
 First of all, do not use the spacebar for your leader key, and second of all beware your timeouts.</description>
+      <content>
+        &lt;p&gt;A while ago I wrote about my discovery of using the leader key in vim (you can
+read that &lt;a href=&#34;http://sudosays.github.io/blog/being-a-leader-in-vim/&#34;&gt;here&lt;/a&gt;). Now, after using
+it for a while I would like to revisit it and share my experiences and what I
+have learned.&lt;/p&gt;
+&lt;p&gt;First of all, do not use the spacebar for your leader key, and second of all
+beware your timeouts.&lt;/p&gt;
+&lt;h2 id=&#34;vim-on-timeout&#34;&gt;Vim on timeout&lt;/h2&gt;
+&lt;p&gt;After a while of using a custom leader key I started noticing that vim would
+lag for approximately a second every now and then. At first I thought it was
+the plugins I had installed that were causing vim to render slowly,  but after
+removing them the problem persisted. Then I thought it was my fancy text
+highlighting using the cursorline settings, but after removing that too I still
+had the same problem. The only thing left in my vimrc were the leader key
+remaps.&lt;/p&gt;
+&lt;p&gt;As it turns out, vim automatically has a timeout setting that can get quite
+annoying when your leader key is &lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt;. Essentially, vim will wait until it
+is sure that it has or has not recieved a mapping before typing anything to
+screen. This meant that everytime I hit &lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt; vim would wait for up to one
+second before being sure that I did not type a custom leader mapping.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;lsquo;You should try it yourself and not just take my word for it&amp;rsquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So when I checked the vim help system I found the following two options regarding timeout:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;timeout&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ttimeout&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;timeout&lt;/code&gt; is the default behaviour of vim and it waits for an entire mapping
+whereas &lt;code&gt;ttimeout&lt;/code&gt; will timeout on key codes.&lt;/p&gt;
+&lt;p&gt;This means that I wanted &lt;code&gt;timeout&lt;/code&gt; off and &lt;code&gt;ttimeout&lt;/code&gt; on so that my vim would
+continue to add keys until it matches a mapping for the leader key. You should
+try it yourself and not just take my word for it. Run the following commands in
+vim to test them out:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;:set noto&lt;/code&gt; and &lt;code&gt;:set to&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;:set nottimeout&lt;/code&gt; and &lt;code&gt;:set ttimeout&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Try different combinations of &lt;code&gt;timeout&lt;/code&gt; and &lt;code&gt;ttimeout&lt;/code&gt; to see what best suits your
+editing style.&lt;/p&gt;
+&lt;h2 id=&#34;change-of-leadership&#34;&gt;Change of leadership&lt;/h2&gt;
+&lt;p&gt;However, I found that using comma (&#39;&lt;code&gt;,&lt;/code&gt;&#39;) instead of &lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt; was a much better
+leader key and is not too awkward to use. The nice thing about this is that you
+only have to change you leader key and all your mappings will still work.&lt;/p&gt;
+
+      </content>
     </item>
     
     <item>
@@ -24,6 +68,65 @@ First of all, do not use the spacebar for your leader key, and second of all bew
       
       <guid>http://sudosays.github.io/blog/being-a-leader-in-vim/</guid>
       <description>As far as using IDEs go, I wouldn’t say I’ve been around the block, but I’ve seen my fair share. It was only when I started running Arch Linux that I first switched to vim. At this point you might be expecting me to sing vim’s praises and how every developer worth their salt should be using it.</description>
+      <content>
+        &lt;p&gt;As far as using IDEs go, I wouldn’t say I’ve been around the block, but I’ve
+seen my fair share. It was only when I started running &lt;a href=&#34;https://www.archlinux.org/&#34;&gt;Arch
+Linux&lt;/a&gt; that I first switched to
+&lt;a href=&#34;http://www.vim.org/&#34;&gt;vim&lt;/a&gt;. At this point you might be expecting me to sing
+vim’s praises and how every developer worth their salt should be using it. I’m
+not going to.&lt;/p&gt;
+&lt;p&gt;The learning curve for vim is steep. It took me a long time to wrap my head
+around what the different modes meant, and everyday I use it I learn something
+new. Hopefully, from now on I’ll be sharing those discoveries with you, dear
+reader.&lt;/p&gt;
+&lt;p&gt;I also didn’t stay with vim once I started using it. I switched between vim,
+&lt;a href=&#34;http://spacemacs.org/&#34;&gt;spacemacs&lt;/a&gt; (which is great, I highly recommend you give
+it a spin), IntelliJ IDEA, Visual Studio, and a whole plethora of others.&lt;/p&gt;
+&lt;p&gt;But now I’m back on the vim train. And I’ve discovered the leader key.&lt;/p&gt;
+&lt;h2 id=&#34;what-does-a-leader-do&#34;&gt;What does a leader do?&lt;/h2&gt;
+&lt;p&gt;The leader key is essentially a prefix that you can set for remapping keys/key
+sequences in vim. The notion is strongly implemented in spacemacs where almost
+every command is started by pressing &lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt;. In, vim, this means that you can
+remap a whole bunch of commands that you can run easily by pressing the leader
+key followed by your mapping.&lt;/p&gt;
+&lt;p&gt;For example, if my leader key is &lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt; and I can have vim exit whenever I
+press &lt;code&gt;&amp;lt;Space&amp;gt;q&lt;/code&gt; by mapping it to the vim command &lt;code&gt;:q&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This means that you can set custom key sequences (not just keys) to execute any
+kind of vim command. Literally any command you can execute in vim.&lt;/p&gt;
+&lt;p&gt;Any. Command.&lt;/p&gt;
+&lt;h2 id=&#34;how-to-use-the-leader-key&#34;&gt;How to use the leader key&lt;/h2&gt;
+&lt;p&gt;In your &lt;code&gt;.vimrc&lt;/code&gt; file you first designate which key to set as the leader key
+with:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;let mapleader=&amp;quot;{key here}&amp;quot;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Personally, I would recommend the &lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt; key as it is really comfortable to
+use.&lt;/p&gt;
+&lt;p&gt;Then you can remap any sequence to a command in the form of:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[nnore]map &amp;lt;leader&amp;gt;{key sequence} :{vim command}&amp;lt;CR&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example, if I want to exit vim, saving all the files before I do so I would
+have the following:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nnoremap &amp;lt;leader&amp;gt;qq :wqa&amp;lt;CR&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Why are you using &lt;code&gt;nnoremap&lt;/code&gt; and not just &lt;code&gt;map&lt;/code&gt;?&lt;/p&gt;
+&lt;p&gt;Using &lt;code&gt;nnoremap&lt;/code&gt; instead of &lt;code&gt;map&lt;/code&gt; just means that the sequences you’ve set in your
+&lt;code&gt;.vimrc&lt;/code&gt; file will be mapped explicitly as is for the normal mode in vim. By
+setting it for normal mode only I’m making sure that the leader key only works
+in the normal mode for vim and not the insert or visual modes.&lt;/p&gt;
+&lt;p&gt;And that’s it for my knowledge of vim leader key use. I’ll leave a list of my
+current remappings below for you to use should you wish. This has been a very
+brief and shallow dip into the abyss that is vim and vim customization. If you
+want me to do a whole series on getting into vim and my experiences please let
+me know either here or on twitter!&lt;/p&gt;
+&lt;h2 id=&#34;remappings&#34;&gt;Remappings&lt;/h2&gt;
+&lt;p&gt;Set the leader key&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;let mapleader=&amp;quot;&amp;lt;Space&amp;gt;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Quit and save all files&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nnoremap &amp;lt;leader&amp;gt;qq :wqa&amp;lt;CR&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Edit &lt;code&gt;.vimrc&lt;/code&gt; file&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nnoremap &amp;lt;leader&amp;gt;fed :e $MYVIMRC&amp;lt;CR&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Reload &lt;code&gt;.vimrc&lt;/code&gt; file&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nnoremap &amp;lt;leader&amp;gt;fer :source $MYVIMRC&amp;lt;CR&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+      </content>
     </item>
     
   </channel>

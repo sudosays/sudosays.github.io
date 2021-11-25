@@ -14,15 +14,21 @@
       
       <guid>http://sudosays.github.io/categories/app/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
-      <title>productivity</title>
+      <title>productivity,</title>
       <link>http://sudosays.github.io/categories/productivity/</link>
       <pubDate>Thu, 08 Apr 2021 11:57:28 +0200</pubDate>
       
       <guid>http://sudosays.github.io/categories/productivity/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -32,6 +38,9 @@
       
       <guid>http://sudosays.github.io/categories/development/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -41,6 +50,9 @@
       
       <guid>http://sudosays.github.io/categories/tools/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -50,6 +62,9 @@
       
       <guid>http://sudosays.github.io/categories/general/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -59,6 +74,9 @@
       
       <guid>http://sudosays.github.io/categories/life/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -68,6 +86,9 @@
       
       <guid>http://sudosays.github.io/categories/funny/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -77,6 +98,9 @@
       
       <guid>http://sudosays.github.io/categories/misc/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -86,6 +110,9 @@
       
       <guid>http://sudosays.github.io/categories/devops/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -95,6 +122,9 @@
       
       <guid>http://sudosays.github.io/categories/adventure/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -104,6 +134,9 @@
       
       <guid>http://sudosays.github.io/categories/android/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -113,6 +146,9 @@
       
       <guid>http://sudosays.github.io/categories/vim/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
     <item>
@@ -122,6 +158,9 @@
       
       <guid>http://sudosays.github.io/categories/opinion/</guid>
       <description></description>
+      <content>
+        
+      </content>
     </item>
     
   </channel>

@@ -19,9 +19,9 @@
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
-            
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
             
@@ -57,7 +57,7 @@ is there is not really a nice overview of the posts on the site and the
 management of the posts is a bit tedious<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>. Hugo has the <code>hugo list</code> subcommand,
 but the options are: <code>all</code>, <code>drafts</code>, <code>expired</code>, and <code>future</code>. Selecting <code>all</code>
 dumps detailed CSV data of all the posts:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">path,slug,title,date,expiryDate,publishDate,draft,permalink
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">path,slug,title,date,expiryDate,publishDate,draft,permalink
 content/blog/devlog-pneuma.md,,Devlog:
 Pneuma,2021-01-22T09:40:42+02:00,0001-01-01T00:00:00Z,2021-01-22T09:40:42+02:00,true,http://sudosays.github.io/blog/devlog-pneuma/
 ...
@@ -83,7 +83,7 @@ promotes an event-driven approach to creating a TUI<sup id="fnref:2"><a href="#f
 <p>What followed was a tight iteration loop, gradually building out a UI system.
 Each iteration built upon the last and the API would abstract away from lower
 level functions. This resulted in the following data structure for a UI:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">cursor</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">cursor</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
 	<span style="color:#000">X</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Y</span> <span style="color:#204a87;font-weight:bold">int</span>
 <span style="color:#000;font-weight:bold">}</span>
 
@@ -96,7 +96,7 @@ level functions. This resulted in the following data structure for a UI:</p>
 <span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>The most basic functionality is achieved with two functions: <code>putRune</code> and
 <code>MoveCursor</code>:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">ui</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">PneumaUI</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">MoveCursor</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">y</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">error</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">ui</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">PneumaUI</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">MoveCursor</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">y</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">error</span> <span style="color:#000;font-weight:bold">{</span>
 	<span style="color:#000">w</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">h</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Screen</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Size</span><span style="color:#000;font-weight:bold">()</span>
 	<span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">x</span> <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#0000cf;font-weight:bold">0</span> <span style="color:#ce5c00;font-weight:bold">||</span> <span style="color:#000">x</span> <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000">w</span> <span style="color:#ce5c00;font-weight:bold">||</span> <span style="color:#000">y</span> <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#0000cf;font-weight:bold">0</span> <span style="color:#ce5c00;font-weight:bold">||</span> <span style="color:#000">y</span> <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000">h</span> <span style="color:#000;font-weight:bold">{</span>
 		<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">errors</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">New</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;cursor out of bounds&#34;</span><span style="color:#000;font-weight:bold">)</span>
@@ -116,7 +116,7 @@ boxes. However, as our UI became more sophisticated, drawing and managing the
 content on the screen became more complex. It was serviceable, but
 tedious.</p>
 <p>For example, drawing a UI with some text labels would be as follows:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MoveCursor</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">,</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MoveCursor</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">,</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">PutStr</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;A string of text&#34;</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MoveCursor</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">PutStr</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Another string&#34;</span><span style="color:#000;font-weight:bold">)</span>
@@ -135,7 +135,7 @@ structs that share the interface together. Now, our UI can contain a slice of
 <code>Drawable</code> items that we iterate through and call their individual <code>Draw</code>
 methods on.</p>
 <p>For eaxmple, a <code>Label</code> widget is defined as follows:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Drawable</span> <span style="color:#204a87;font-weight:bold">interface</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Drawable</span> <span style="color:#204a87;font-weight:bold">interface</span> <span style="color:#000;font-weight:bold">{</span>
 	<span style="color:#000">Draw</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ui</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">PneumaUI</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000;font-weight:bold">}</span>
 
@@ -149,7 +149,7 @@ methods on.</p>
 	<span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">putString</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">l</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Content</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>Now all we need to do to draw our entire UI is the following:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">ui</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">PneumaUI</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">Draw</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">ui</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">PneumaUI</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">Draw</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
 	<span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">_</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">drawable</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#204a87;font-weight:bold">range</span> <span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Content</span> <span style="color:#000;font-weight:bold">{</span>
 		<span style="color:#000">drawable</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Draw</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ui</span><span style="color:#000;font-weight:bold">)</span>
 	<span style="color:#000;font-weight:bold">}</span>
@@ -177,7 +177,7 @@ called. Then when the UI polls for events, it checks if any of the key events
 in the commands list has happened and then call the appropriate function.</p>
 <p>For my implementation I made use of Go&rsquo;s <code>map</code> data structure which has a
 lookup time of O(1). The end result looks something like this:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">CommandKey</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">CommandKey</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
 	<span style="color:#000">Key</span>  <span style="color:#000">tcell</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Key</span>
 	<span style="color:#000">Rune</span> <span style="color:#204a87;font-weight:bold">rune</span>
 	<span style="color:#000">Mod</span>  <span style="color:#000">tcell</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">ModMask</span>
@@ -191,7 +191,7 @@ lookup time of O(1). The end result looks something like this:</p>
 the unnecessary information.</p>
 <p>Using this approach the event polling in the TUI is much, much simpler while
 also being dynamically configurable.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">ui</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">PneumaUI</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">Tick</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">ui</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">PneumaUI</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">Tick</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
 	<span style="color:#204a87;font-weight:bold">switch</span> <span style="color:#000">ev</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Screen</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">PollEvent</span><span style="color:#000;font-weight:bold">().(</span><span style="color:#204a87;font-weight:bold">type</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 	<span style="color:#204a87;font-weight:bold">case</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">tcell</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">EventKey</span><span style="color:#000;font-weight:bold">:</span>
         <span style="color:#000">cmd</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">CommandKey</span><span style="color:#000;font-weight:bold">{</span><span style="color:#000">Key</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">ev</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Key</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">Rune</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">ev</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Rune</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">Mod</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">ev</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Modifiers</span><span style="color:#000;font-weight:bold">()}</span>
@@ -203,7 +203,7 @@ also being dynamically configurable.</p>
 <span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>This means that in our main program we can dynamically configure the commands
 as needed, passing the callback functions we want.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000">editPost</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#204a87;font-weight:bold">func</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000">editPost</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#204a87;font-weight:bold">func</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
     <span style="color:#000">path</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">posts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">table</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Index</span><span style="color:#000;font-weight:bold">].</span><span style="color:#000">Path</span>
     <span style="color:#000">startEditor</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">path</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000;font-weight:bold">}</span>
@@ -216,7 +216,7 @@ as needed, passing the callback functions we want.</p>
 
 <span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">SetCommands</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">cmds</span><span style="color:#000;font-weight:bold">)</span>
 </code></pre></div><p>Once the commands are set, we simply loop and tick the UI.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">{</span>
     <span style="color:#000">ui</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Tick</span><span style="color:#000;font-weight:bold">()</span>
 <span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>It is interesting to note that we make use of an anonymous function when we
@@ -227,7 +227,7 @@ and more complicated functionality that is passed as a single command.</p>
 <h3 id="issue-input-capture-and-control">Issue: Input Capture and Control</h3>
 <p>One of the persistent issues I am currently facing is when I want to edit
 files. Currently, my code is as follows:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">startEditor</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">path</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">startEditor</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">path</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 	<span style="color:#000">editorCmd</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">exec</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Command</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;vim&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">path</span><span style="color:#000;font-weight:bold">)</span>
 	<span style="color:#000">editorCmd</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Stdin</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">editorCmd</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Stdout</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">editorCmd</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Stderr</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">os</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Stdin</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">os</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Stdout</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">os</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Stderr</span>
 	<span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">editorCmd</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Start</span><span style="color:#000;font-weight:bold">()</span>
@@ -251,11 +251,11 @@ check out the project page <a href="http://sudosays.github.io/projects/pneuma/">
 <hr>
 <ol>
 <li id="fn:1" role="doc-endnote">
-<p>As of Hugo version 0.80.0 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>As of Hugo version 0.80.0&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:2" role="doc-endnote">
 <p>From the <code>tcell</code> documentation regarding <code>PollEvent</code>: &ldquo;Main application
-loops must spin on this to prevent the application from stalling.&rdquo; <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+loops must spin on this to prevent the application from stalling.&rdquo;&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>

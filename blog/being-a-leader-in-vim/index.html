@@ -19,9 +19,9 @@
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
-            
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
             
@@ -66,15 +66,15 @@ kind of vim command. Literally any command you can execute in vim.</p>
 <h2 id="how-to-use-the-leader-key">How to use the leader key</h2>
 <p>In your <code>.vimrc</code> file you first designate which key to set as the leader key
 with:</p>
-<pre><code>let mapleader=&quot;{key here}&quot;
+<pre tabindex="0"><code>let mapleader=&quot;{key here}&quot;
 
 </code></pre><p>Personally, I would recommend the <code>&lt;Space&gt;</code> key as it is really comfortable to
 use.</p>
 <p>Then you can remap any sequence to a command in the form of:</p>
-<pre><code>[nnore]map &lt;leader&gt;{key sequence} :{vim command}&lt;CR&gt;
+<pre tabindex="0"><code>[nnore]map &lt;leader&gt;{key sequence} :{vim command}&lt;CR&gt;
 </code></pre><p>For example, if I want to exit vim, saving all the files before I do so I would
 have the following:</p>
-<pre><code>nnoremap &lt;leader&gt;qq :wqa&lt;CR&gt;
+<pre tabindex="0"><code>nnoremap &lt;leader&gt;qq :wqa&lt;CR&gt;
 </code></pre><p>Why are you using <code>nnoremap</code> and not just <code>map</code>?</p>
 <p>Using <code>nnoremap</code> instead of <code>map</code> just means that the sequences you’ve set in your
 <code>.vimrc</code> file will be mapped explicitly as is for the normal mode in vim. By
@@ -87,13 +87,13 @@ want me to do a whole series on getting into vim and my experiences please let
 me know either here or on twitter!</p>
 <h2 id="remappings">Remappings</h2>
 <p>Set the leader key</p>
-<pre><code>let mapleader=&quot;&lt;Space&gt;&quot;
+<pre tabindex="0"><code>let mapleader=&quot;&lt;Space&gt;&quot;
 </code></pre><p>Quit and save all files</p>
-<pre><code>nnoremap &lt;leader&gt;qq :wqa&lt;CR&gt;
+<pre tabindex="0"><code>nnoremap &lt;leader&gt;qq :wqa&lt;CR&gt;
 </code></pre><p>Edit <code>.vimrc</code> file</p>
-<pre><code>nnoremap &lt;leader&gt;fed :e $MYVIMRC&lt;CR&gt;
+<pre tabindex="0"><code>nnoremap &lt;leader&gt;fed :e $MYVIMRC&lt;CR&gt;
 </code></pre><p>Reload <code>.vimrc</code> file</p>
-<pre><code>nnoremap &lt;leader&gt;fer :source $MYVIMRC&lt;CR&gt;
+<pre tabindex="0"><code>nnoremap &lt;leader&gt;fer :source $MYVIMRC&lt;CR&gt;
 </code></pre>
 
     </div>

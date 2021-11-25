@@ -13,7 +13,90 @@
       <pubDate>Thu, 08 Apr 2021 11:57:28 +0200</pubDate>
       
       <guid>http://sudosays.github.io/projects/tempo/</guid>
-      <description>This is my personal productivity app. It started from trying to merge the Pomodoro technique with a to-do list so that I could budget and plan my time. Other productivity apps I had used in the past featured either a timer only, or a to-do list, but not both. Furthermore, I use this to help keep me in a flow state by reducing the amount of effort I need to structure my work hours.</description>
+      <description>This is my personal productivity app. It started from trying to merge the Pomodoro technique with a to-do list so that I could budget and plan my time. Other productivity apps I had used in the past featured either a timer only, or a to-do list, but not both.</description>
+      <content>
+        
+&lt;p&gt;
+This is my personal productivity app. It started from trying to merge
+the Pomodoro technique with a to-do list so that I could budget and plan
+my time. Other productivity apps I had used in the past featured either
+a timer only, or a to-do list, but not both. Furthermore, I use this to
+help keep me in a flow state by reducing the amount of effort I need to
+structure my work hours.&lt;/p&gt;
+&lt;p&gt;
+With the app I can build a list of everything I want to do, assign an
+amount of time to it and then get going while leaving the &amp;#34;planning&amp;#34; to
+the app. This way I can hopefully achieve the state of being &amp;#34;blissfully
+lost&amp;#34; in my work.&lt;/p&gt;
+&lt;p&gt;
+In the future, Tempo will be able to sync remotely and also feature
+analytics/reports, and SSO.&lt;/p&gt;
+&lt;p&gt;
+At first, I decided to write it in Kotlin for Android and it has really
+opened my eyes to how easy and accessible it is to build my own tools
+and personal software. Currently, Tempo is being rebuilt using React
+with a live demo version here: &lt;a href=&#34;https://sudosays-tempo.netlify.app/&#34;&gt;https://sudosays-tempo.netlify.app/&lt;/a&gt;.&lt;/p&gt;
+&lt;div id=&#34;outline-container-lessons-learned-so-far&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;lessons-learned-so-far&#34;&gt;
+Lessons Learned (So Far)
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-lessons-learned-so-far&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Use your own app regularly&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;You will quickly realise any improvements that can be made&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You will find bugs. Lots of bugs&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Writing up devlogs helps remind you of what you learned&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Make small iterative cycles with a basic user loop first&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-details&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;details&#34;&gt;
+Details
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-details&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Section&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Target Platform&lt;/td&gt;
+&lt;td&gt;All browsers&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Language(s)&lt;/td&gt;
+&lt;td&gt;JSX, Sass&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Status&lt;/td&gt;
+&lt;td&gt;Unreleased alpha&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Version&lt;/td&gt;
+&lt;td&gt;0.3.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+      </content>
     </item>
     
     <item>
@@ -23,7 +106,86 @@
       
       <guid>http://sudosays.github.io/projects/pneuma/</guid>
       <description>Pneuma (stylised as pneuma) is an interactive terminal frontend for managing a Hugo blog. As with Tempo, I built it for myself with the features I would like in it.
-The aim of the project is to provide a slick, minimal frontend for managing posts in a Hugo blog including the ability to edit and create new posts, as well as publish drafts.</description>
+ The aim of the project is to provide a slick, minimal frontend for managing posts in a Hugo blog including the ability to edit and create new posts, as well as publish drafts.</description>
+      <content>
+        
+&lt;p&gt;
+Pneuma (stylised as pneuma) is an interactive terminal frontend for
+managing a Hugo blog. As with Tempo, I built it for myself with the
+features I would like in it.&lt;/p&gt;
+&lt;p&gt;
+The aim of the project is to provide a slick, minimal frontend for
+managing posts in a Hugo blog including the ability to edit and create
+new posts, as well as publish drafts.&lt;/p&gt;
+&lt;p&gt;
+It is written purely in Go, which marks my first big project in the
+language. The text-ui is built using the wonderful
+&lt;a href=&#34;https://github.com/gdamore/tcell&#34;&gt;tcell&lt;/a&gt; package by Garrett D&amp;#39;Amore.&lt;/p&gt;
+&lt;div id=&#34;outline-container-lessons-learned-so-far&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;lessons-learned-so-far&#34;&gt;
+Lessons Learned (So far)
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-lessons-learned-so-far&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Go is a great language&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Building TUIs can become a massive rabbit-hole/timesink&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Callback functions and anonymous functions go well together&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-details&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;details&#34;&gt;
+Details
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-details&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Section&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Target Platform(s)&lt;/td&gt;
+&lt;td&gt;Linux/Unix&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Language&lt;/td&gt;
+&lt;td&gt;Go&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Status&lt;/td&gt;
+&lt;td&gt;Pre-alpha&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Version&lt;/td&gt;
+&lt;td&gt;n/a&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-downloads-and-links&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;downloads-and-links&#34;&gt;
+Downloads and Links
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-downloads-and-links&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/sudosays/pneuma&#34;&gt;Github repo&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+      </content>
     </item>
     
   </channel>

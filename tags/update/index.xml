@@ -14,6 +14,41 @@
       
       <guid>http://sudosays.github.io/blog/hindsight-2020/</guid>
       <description>What a year this has been. I am sure many are starting their end of the year posts like this, but if it wasn&amp;rsquo;t appropriate now, it never will be. This year I set out my goals/resolutions with the theme of growth, specifically I chose things that were always deferred and, well, if this year was not almost deferred itself.</description>
+      <content>
+        &lt;p&gt;What a year this has been. I am sure many are starting their end of the year
+posts like this, but if it wasn&amp;rsquo;t appropriate now, it never will be. This year
+I set out my goals/resolutions with the theme of growth, specifically I chose
+things that were always deferred and, well, if this year was not almost
+deferred itself.&lt;/p&gt;
+&lt;p&gt;Out of the 5 goals I set, 2 have been completed entirely: contribute to an open
+source initiative, and donate blood. These were binary in nature, either I did
+them or did not. For the others (yoga/flexibility, writing, and personal
+project) it was less clear cut. These goals required continuous and even
+effort. As the posts on this blog make clear, the effort was continuous, but
+sporadic.&lt;/p&gt;
+&lt;p&gt;I did in fact write more, but perhaps it was off target for what I had
+envisioned. I also became more flexible, for a while. Finally, I worked on, but
+did not complete a personal project. Considering the tumultuous year, I am not
+overly disappointed. I made inroads into the goals I had set, and for others I
+achieved them. That is enough for me and enough about me.&lt;/p&gt;
+&lt;p&gt;This year will definitely be one for the history books. Wracked by a pandemic,
+society was torn apart and recombined. As the virus swept around the globe,
+countries went into various stages of lockdown. South Africa, for one went into
+a total lock down for a long time before a phased return to a new normal. Even
+now, 2021 is gearing up for another year of pandemic protocols and social
+upheaval.&lt;/p&gt;
+&lt;p&gt;Throughout all of this, we have been given the display of the best of humanity
+and the worst of humanity. Though separated through social distancing, we
+connected through the internet. We drew closer together to immediate family. We
+took, hopefully, a step back and noted the things we missed, and those we could
+probably live without.&lt;/p&gt;
+&lt;p&gt;Undoubtedly, the economic and social devastation has not even begun to rear its
+ugly head. The bell has tolled ceaselessly and will continue to do so. By all
+indications, this virus is here to stay for a long time.&lt;/p&gt;
+&lt;p&gt;While the metaphorical night will grow ever darker over the next few years, but
+hopefully we can remain huddled around a flicker of light, together.&lt;/p&gt;
+
+      </content>
     </item>
     
     <item>
@@ -23,6 +58,35 @@
       
       <guid>http://sudosays.github.io/blog/status-update-august-2020/</guid>
       <description>Yet again it is time for another update. The past month I have been incredibly busy. I have recently taken up a lecturing position for a Java course at a local university. While entirely online/remote, the work is quite time consuming if not overly difficult. I have found it interesting to develop an effective workflow and schedule, and to find the relevant tools that allow me to do so.</description>
+      <content>
+        &lt;p&gt;Yet again it is time for another update. The past month I have been incredibly
+busy. I have recently taken up a lecturing position for a Java course at a
+local university. While entirely online/remote, the work is quite time
+consuming if not overly difficult. I have found it interesting to develop an
+effective workflow and schedule, and to find the relevant tools that allow me
+to do so.&lt;/p&gt;
+&lt;p&gt;For those interested, my current &amp;ldquo;stack&amp;rdquo;/workflow for lectures is:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Writing all slides and notes in Markdown&lt;/li&gt;
+&lt;li&gt;Compiling to Beamer slides with &lt;a href=&#34;https://pandoc.org/&#34;&gt;pandoc&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Recording of lecture videos material with &lt;a href=&#34;https://obsproject.com/&#34;&gt;OBS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://junit.org/junit5/&#34;&gt;JUnit 5&lt;/a&gt; for automated assignment marking and testing&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.sakailms.org/&#34;&gt;Sakai&lt;/a&gt; for student interaction and assessments&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I have also found myself using &lt;a href=&#34;https://taskwarrior.org/&#34;&gt;Taskwarrior&lt;/a&gt; quite a
+bit, but I&amp;rsquo;m not sure if I really like it. Something about the usage seems to
+rub at me. For a while I was considering adding Taskwarrior support to Tempo,
+but I will probably hold off for now.&lt;/p&gt;
+&lt;p&gt;Other than that, I am currently preparing a paper for the SACAIR conference as
+part of my MSc work. It is proving an intense process, but I expected it would
+be.&lt;/p&gt;
+&lt;p&gt;In what free time I have left, I find myself surfing, playing chess, and
+playing Bloodborne (although not that often).&lt;/p&gt;
+&lt;p&gt;I find myself itching to work on Tempo as well as a plethora of other personal
+project ideas (mostly in Go). For now though, they will have to remain on the
+backburner. Until the next update, keep well in these interesting times.&lt;/p&gt;
+
+      </content>
     </item>
     
     <item>
@@ -32,6 +96,38 @@
       
       <guid>http://sudosays.github.io/blog/status-update-july-2020/</guid>
       <description>It is time again for me to fill you in with another status update. I have been incredibly busy with my academics this past while which has left little time for side-projects (despite how much I would like to work on them). What little time I have free I have been surfing, meditating, doing yoga, and sleeping to try and recover and recoup.</description>
+      <content>
+        &lt;p&gt;It is time again for me to fill you in with another status update. I have been
+incredibly busy with my academics this past while which has left little time
+for side-projects (despite how much I would like to work on them). What little
+time I have free I have been surfing, meditating, doing yoga, and sleeping to
+try and recover and recoup.&lt;/p&gt;
+&lt;p&gt;To give you an idea of what my workload looks like I mapped it with
+Matplotlib+Numpy using &lt;a href=&#34;https://stackoverflow.com/questions/32485907/matplotlib-and-numpy-create-a-calendar-heatmap&#34;&gt;Joe
+Kinton&amp;rsquo;s
+answer&lt;/a&gt;
+on Stack Overflow as a starting point.&lt;/p&gt;
+&lt;figure&gt;&lt;a href=&#34;http://sudosays.github.io/imgs/workload_heatmap.png&#34;&gt;&lt;img src=&#34;http://sudosays.github.io/imgs/workload_heatmap.png&#34;/&gt;&lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;My productivity app Tempo has seen some slight changes as I have tinkered away
+at it and I have been using it relentlessly to keep myself focused and maintain
+my work momentum. A lot has been changed and improved since the last devlog and
+frankly another one is long overdue. Yet again, I have found that using my app
+constantly really brings to light any issues or quirks that annoy me which has
+been a great way to know what things I need to change or polish first.&lt;/p&gt;
+&lt;p&gt;Finally, I have been writing more Go in my spare time &amp;mdash; mostly with toy
+projects &amp;mdash; and I have to say that I am quickly falling in love with it. I had
+expected my self to prefer Rust, but somehow Go pleasantly surprised me with
+the dev tools. In some way I feel that Go has been a lot easier for me to grok
+than Rust.&lt;/p&gt;
+&lt;p&gt;That does not mean that I have abandoned learning Rust, but rather
+that I have shelved it for now in favour of focusing on mastering Go. I am
+still especially interested in adding Rust to my repertoire especially since
+there is talk of including &lt;a href=&#34;https://lore.kernel.org/lkml/CAKwvOdmuYc8rW_H4aQG4DsJzho=F+djd68fp7mzmBp3-wY--Uw@mail.gmail.com/T/#u&#34;&gt;in-tree Rust
+support&lt;/a&gt;.&lt;/p&gt;
+
+      </content>
     </item>
     
     <item>
@@ -41,6 +137,24 @@
       
       <guid>http://sudosays.github.io/blog/status-update-june-2020/</guid>
       <description>This post is inspired by the status updates of Drew DeVault (who remains a large inspiration for keeping this blog as a whole). This entry is a bit late, but better than never. In future I think I will also try to update at the middle of each month. This is also a chance to add updates from my life that do not warrant a full post here or may seem unrelated to the spirit of this blog.</description>
+      <content>
+        &lt;p&gt;This post is inspired by the status updates of Drew DeVault (who remains a
+large inspiration for keeping this blog as a whole). This entry is a bit late,
+but better than never. In future I think I will also try to update at the
+middle of each month. This is also a chance to add updates from my life that do
+not warrant a full post here or may seem unrelated to the spirit of this blog.&lt;/p&gt;
+&lt;p&gt;My last post to this blog was &amp;ldquo;&lt;a href=&#34;http://sudosays.github.io/blog/be-static-to-go-faster/&#34;&gt;Be Static To Go Faster&lt;/a&gt;&amp;rdquo; which dates back to the 25th of February
+this year. In the intervening months, many, many things have happened. I have
+been working towards the completion of my Master&amp;rsquo;s degree, drafted a whole
+bunch of posts only to abandon them later. These last few months of quarantine
+and lockdown have been incredibly turbulent and the time slipped by in the
+blink of an eye.&lt;/p&gt;
+&lt;p&gt;I do not have much else to report as of now. There are a few things in the
+works especially with respect to Tempo and other projects. However, I will be
+focusing mainly on my degree for the next while.&lt;/p&gt;
+&lt;p&gt;Until then, study hard and, stay evil.&lt;/p&gt;
+
+      </content>
     </item>
     
   </channel>

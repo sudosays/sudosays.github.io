@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>source on Evil Inc.</title>
+    <link>http://sudosays.github.io/tags/source/</link>
+    <description>Recent content in source on Evil Inc.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Jan 2021 09:22:16 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/tags/source/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pneuma</title>
+      <link>http://sudosays.github.io/projects/pneuma/</link>
+      <pubDate>Fri, 22 Jan 2021 09:22:16 +0200</pubDate>
+      
+      <guid>http://sudosays.github.io/projects/pneuma/</guid>
+      <description>Pneuma (stylised as pneuma) is an interactive terminal frontend for managing a Hugo blog. As with Tempo, I built it for myself with the features I would like in it.
+ The aim of the project is to provide a slick, minimal frontend for managing posts in a Hugo blog including the ability to edit and create new posts, as well as publish drafts.</description>
+      <content>
+        
+&lt;p&gt;
+Pneuma (stylised as pneuma) is an interactive terminal frontend for
+managing a Hugo blog. As with Tempo, I built it for myself with the
+features I would like in it.&lt;/p&gt;
+&lt;p&gt;
+The aim of the project is to provide a slick, minimal frontend for
+managing posts in a Hugo blog including the ability to edit and create
+new posts, as well as publish drafts.&lt;/p&gt;
+&lt;p&gt;
+It is written purely in Go, which marks my first big project in the
+language. The text-ui is built using the wonderful
+&lt;a href=&#34;https://github.com/gdamore/tcell&#34;&gt;tcell&lt;/a&gt; package by Garrett D&amp;#39;Amore.&lt;/p&gt;
+&lt;div id=&#34;outline-container-lessons-learned-so-far&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;lessons-learned-so-far&#34;&gt;
+Lessons Learned (So far)
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-lessons-learned-so-far&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Go is a great language&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Building TUIs can become a massive rabbit-hole/timesink&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Callback functions and anonymous functions go well together&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-details&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;details&#34;&gt;
+Details
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-details&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Section&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Target Platform(s)&lt;/td&gt;
+&lt;td&gt;Linux/Unix&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Language&lt;/td&gt;
+&lt;td&gt;Go&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Status&lt;/td&gt;
+&lt;td&gt;Pre-alpha&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Version&lt;/td&gt;
+&lt;td&gt;n/a&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-downloads-and-links&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;downloads-and-links&#34;&gt;
+Downloads and Links
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-downloads-and-links&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/sudosays/pneuma&#34;&gt;Github repo&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+      </content>
+    </item>
+    
+  </channel>
+</rss>

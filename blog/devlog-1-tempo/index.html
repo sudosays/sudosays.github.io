@@ -19,9 +19,9 @@
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
-            
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/blog/">Blog</a>
+            
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
             
@@ -51,7 +51,7 @@ state”. With Kotlin as my choice for this project I used a MutableList that
 holds my custom Task objects.</p>
 <p>Creating the MutableList was easy enough by adding the following to the top of
 the MainActivity class:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">private</span> <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">taskMutableList</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">mutableListOf</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;()</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">private</span> <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">taskMutableList</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">mutableListOf</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;()</span>
 </code></pre></div><p>In this case <code>taskMutableList</code> is a <code>val</code> because we are creating the
 MutableList object itself only once and then using its methods to modify it.
 This way it ensures that we will not keep re-creating, replacing, or throwing
@@ -65,10 +65,9 @@ manages/controls access to a specific data source. In my case, I wanted to
 allow the ListView to display the contents of my taskMutableList and handle all
 of the layout and spacing for me. Naïvely, I added the ListView to my
 MainActivity and said something along the lines of:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">taskListView</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addView</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">TaskView</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">))</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">taskListView</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addView</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">TaskView</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">))</span>
 </code></pre></div><p>After which the project, unsurprisingly, failed to compile.</p>
-<figure>
-    <img src="/imgs/meme-surprisedpikachu.png" height="250px"/> <figcaption>
+<figure><img src="/imgs/meme-surprisedpikachu.png" height="250px"/><figcaption>
             <p>
                     <a href="https://knowyourmeme.com/memes/surprised-pikachu">Courtesy of knowyourmeme.com</a></p>
         </figcaption>
@@ -78,7 +77,7 @@ MainActivity and said something along the lines of:</p>
 ArrayAdapter and overrides the <code>getView()</code> method in order to return my own
 TaskView to be displayed in the ListView. The actual TaskArrayAdapter’s
 <code>getView</code> looks something like this:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">getView</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">position</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">convertView</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">View</span><span style="color:#000;font-weight:bold">?,</span> <span style="color:#000">parent</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">ViewGroup</span><span style="color:#000;font-weight:bold">?):</span> <span style="color:#000">View</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">getView</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">position</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">convertView</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">View</span><span style="color:#000;font-weight:bold">?,</span> <span style="color:#000">parent</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">ViewGroup</span><span style="color:#000;font-weight:bold">?):</span> <span style="color:#000">View</span> <span style="color:#000;font-weight:bold">{</span>
     <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">taskView</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">TaskView</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">parent</span><span style="color:#ce5c00;font-weight:bold">!!</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">context</span><span style="color:#000;font-weight:bold">)</span>
     <span style="color:#000">taskView</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">populate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">getItem</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">position</span><span style="color:#000;font-weight:bold">))</span>
     <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">taskView</span>
@@ -87,16 +86,15 @@ TaskView to be displayed in the ListView. The actual TaskArrayAdapter’s
 <p>After creating the adapter, all that was left was to connect it to the ListView
 in the MainActivity by first creating the adapter, and then setting the
 ListView’s adapter:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">listViewAdapter</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">TaskArrayAdapter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">R</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">layout</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">view_task</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">listViewAdapter</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">TaskArrayAdapter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">R</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">layout</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">view_task</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000">taskListView</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">adapter</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">listViewAdapter</span>
 </code></pre></div><p>Now all we need to do when we want to update the list is to call
 <code>notifyDataSetChanged()</code> on our <code>listViewAdapter</code> and the view should automatically
 update itself. With the new system in place I stress tested it by adding a
 bunch of tasks and was pleasantly surprised by how nicely it works using
 Adapters. You can see how it looks below.</p>
-<figure><a href="/imgs/devlog1-tempo-screenshot-tasklist.png">
-    <img src="/imgs/devlog1-tempo-screenshot-tasklist.png"
-         alt="Screenshot showing a list of tasks that is scrollable." height="250px"/> </a><figcaption>
+<figure><a href="/imgs/devlog1-tempo-screenshot-tasklist.png"><img src="/imgs/devlog1-tempo-screenshot-tasklist.png"
+         alt="Screenshot showing a list of tasks that is scrollable." height="250px"/></a><figcaption>
             <p>Screenshot showing a list of tasks that is scrollable.</p>
         </figcaption>
 </figure>
