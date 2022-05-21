@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>app on Evil Inc.</title>
+    <title>app on Fellowship of Evil Supervillains</title>
     <link>http://sudosays.github.io/categories/app/</link>
-    <description>Recent content in app on Evil Inc.</description>
+    <description>Recent content in app on Fellowship of Evil Supervillains</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 08 Apr 2021 11:57:28 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/app/index.xml" rel="self" type="application/rss+xml" />
@@ -45,20 +45,12 @@ Lessons Learned (So Far)
 &lt;li&gt;
 &lt;p&gt;Use your own app regularly&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;You will quickly realise any improvements that can be made&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;You will find bugs. Lots of bugs&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;You will quickly realise any improvements that can be made&lt;/li&gt;
+&lt;li&gt;You will find bugs. Lots of bugs&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Writing up devlogs helps remind you of what you learned&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Make small iterative cycles with a basic user loop first&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;Writing up devlogs helps remind you of what you learned&lt;/li&gt;
+&lt;li&gt;Make small iterative cycles with a basic user loop first&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;

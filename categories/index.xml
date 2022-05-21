@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Evil Inc.</title>
+    <title>Categories on Fellowship of Evil Supervillains</title>
     <link>http://sudosays.github.io/categories/</link>
-    <description>Recent content in Categories on Evil Inc.</description>
+    <description>Recent content in Categories on Fellowship of Evil Supervillains</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 08 Apr 2021 11:57:28 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
@@ -56,30 +56,6 @@
     </item>
     
     <item>
-      <title>general</title>
-      <link>http://sudosays.github.io/categories/general/</link>
-      <pubDate>Wed, 20 Jan 2021 15:39:06 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/categories/general/</guid>
-      <description></description>
-      <content>
-        
-      </content>
-    </item>
-    
-    <item>
-      <title>life</title>
-      <link>http://sudosays.github.io/categories/life/</link>
-      <pubDate>Wed, 20 Jan 2021 15:39:06 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/categories/life/</guid>
-      <description></description>
-      <content>
-        
-      </content>
-    </item>
-    
-    <item>
       <title>funny</title>
       <link>http://sudosays.github.io/categories/funny/</link>
       <pubDate>Mon, 31 Aug 2020 15:33:54 +0200</pubDate>
@@ -116,18 +92,6 @@
     </item>
     
     <item>
-      <title>adventure</title>
-      <link>http://sudosays.github.io/categories/adventure/</link>
-      <pubDate>Mon, 16 Dec 2019 18:45:21 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/categories/adventure/</guid>
-      <description></description>
-      <content>
-        
-      </content>
-    </item>
-    
-    <item>
       <title>android</title>
       <link>http://sudosays.github.io/categories/android/</link>
       <pubDate>Sat, 10 Aug 2019 10:29:37 +0200</pubDate>
@@ -140,11 +104,11 @@
     </item>
     
     <item>
-      <title>vim</title>
-      <link>http://sudosays.github.io/categories/vim/</link>
-      <pubDate>Tue, 14 Nov 2017 00:03:12 +0200</pubDate>
+      <title>general</title>
+      <link>http://sudosays.github.io/categories/general/</link>
+      <pubDate>Wed, 23 Aug 2017 15:52:31 +0200</pubDate>
       
-      <guid>http://sudosays.github.io/categories/vim/</guid>
+      <guid>http://sudosays.github.io/categories/general/</guid>
       <description></description>
       <content>
         

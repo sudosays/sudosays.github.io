@@ -28,6 +28,30 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Source';
+    src: url('/fonts/source-serif/WOFF/OTF/SourceSerif4-Regular.otf.woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Colors  */
+:root {
+    /* Colors */
+    --text-default: #000000;
+    --bg-color:  #fefdfd;
+    --link-default: #4169E1;
+    --title-link-hover: #FF1c1c;
+    --link-visited: #5D8AA8;
+    --faded-text: #333;
+    --bg-dark-grey: #f3f3f3;
+    /* Font sizes */
+    --default-font-size: 18px;
+    --default-font-width: 80ch;
+    --title-font: 'Chomsky';
+}
+
 .header-parallax {
 
   /* Set a specific height */
@@ -44,16 +68,17 @@
 
 html {
     padding: 0px;
-    background-color: #FFF;
+    background-color: var(--bg-color);
     line-height:1.6em;
-    font-family: "Atkinson", serif;
+    font-family: "Source", serif;
 }
 
 body {
     margin: 0 auto;
     padding: 0;
-    background-color: #fefdfd;
-    color:#404040;
+    background-color: var(--bg-color);
+    color:var(--text-default);
+    font-size: var(--default-font-size);
 }
 
 header {
@@ -65,39 +90,41 @@ header {
 
 header h1 {
     
-    font-family: "Chomsky", serif;
+    font-family: var(--title-font), serif;
     font-size: xx-large;
-    font-weight: 400;
+    font-weight: 700;
 
 }
 
 header a {
-    
+    text-decoration: none;
     color:inherit;
-
 }
 
 header a:visited {
     color: inherit;
 }
 
+header h1 a:hover {
+    color: var(--title-link-hover);
+}
+
 header a:hover {
-    color: #cc1100;
+    color: var(--link-default);
 }
 
 h1 h2 h3 {
 
-    font-family: "Atkinson", serif;
+    font-family: "Source", serif;
 }
 
 a:visited {
-    color: #3b88b8;
+    color: var(--link-visited);
 
 }
 
 a {
-    color: #1DA1F2;
-    text-decoration: none;
+    /*color: var(--link-default);*/
 }
 
 blockquote {
@@ -123,19 +150,9 @@ figure img {
 
 figure figcaption {
     text-align:center;
-    color: #a3a3a3;
-
-}
-
-p {
-    margin: 0 auto;
-    max-width: 72ch;
-    overflow-wrap:break-word;
-    margin-top:1.2em;
-    text-align: left;
-    hyphens: auto;
-    line-height:1.6;
-    font-size: 14pt;
+    color: var(--faded-text);
+    font-size: 15px;
+    font-style: italic;
 }
 
 table {
@@ -145,15 +162,15 @@ table {
 
 table, th, td {
     padding: 5px;    
-    border-bottom: 1px solid #f3f3f3;
+    border-bottom: 1px solid var(--bg-dark-grey);
 }
 
 tr:nth-child(even) {
-    background-color: #f3f3f3;
+    background-color: var(--bg-dark-grey);
 }
 
 tr {
-    border: 1px solid #f3f3f3;
+    border: 1px solid var(--bg-dark-grey);
 }
 
 th {
@@ -164,7 +181,7 @@ th {
 
 hr{
     margin-top:1em;
-	border-top: 1px dashed #8c8b8b;
+	border-top: 1px dashed var(--faded-text);
 	border-bottom: 1px dashed #fff;
 }
 
@@ -177,14 +194,15 @@ ul li {
 
 
 .top-nav-list {
-
     display: inline-block;
     list-style-type: none;
     text-align:center;
 }
 
 .top-nav-list a {
-    font-family: "Atkinson", serif;
+    font-family: "Source", serif;
+    text-decoration: none;
+    font-weight: 700;
 }
 
 
@@ -208,13 +226,22 @@ ul li {
     max-width: 700px; 
     height:inherit;
     padding: 5px 20px;
-    font-family: "Atkinson", serif;
+    font-family: "Source", serif;
 }
 
 .post-title {
+    max-width: 50ch;
+    text-align: center;
+    font-family: "Source", serif;
+}
 
-    font-family: "Atkinson", serif;
+.post-title a {
+    text-decoration: none;
+    color: var(--text-default);
+}
 
+.post-title a:hover {
+    color: var(--link-default);
 }
 
 .post-title a:visited {
@@ -222,22 +249,30 @@ ul li {
 }
 
 .post-date {
+    text-align: right;
     color: #a0a0a0;
-    font-family: "Atkinson", serif;
+    font-family: "Source", serif;
 }
 
 .post-content {
-    font-family: "Atkinson", serif;
+    font-family: "Source", serif;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
 .post-content p {
-    font-size: 14pt;
-    line-height: 1.9;
+    margin: 0 auto;
+    max-width: 72ch;
+    overflow-wrap:break-word;
+    margin-top:1.2em;
+    text-align: left;
+    hyphens: auto;
+    line-height:1.6;
+    font-size: 18px;
 }
 
 .post-content a {
     text-decoration: underline;
-    color: #1DA1F2;
 }
 
 .post-content ul li {
@@ -255,8 +290,8 @@ ul li {
 }
 
 .post-footer a {
-    font-size: smaller;
-    font-family: "Atkinson", serif;
+    //font-size: smaller;
+    font-family: "Source", serif;
     height: 150px;
 }
 
@@ -269,9 +304,7 @@ ul li {
 }
 
 .post-nav:hover {
-
-    background-color: #f3f3f3;
-
+    background-color: var(--bg-dark-grey);
 }
 
 .left {
@@ -286,7 +319,7 @@ ul li {
 }
 
 .read-more {
-    background-color: #fff;
+    background-color: var(--bg-default);
     border: none;
     border-radius: 8px ;
     padding:3px 5px;
@@ -294,16 +327,48 @@ ul li {
     font-family: inherit; 
 }
 
+.read-more:hover {
+    background-color: var(--bg-dark-grey);
+}
+
 .homepage-title {
 
-    font-family:"Atkinson", serif;
-
+    font-family:"Source", serif;
+    text-align: center;
 }
 
 .panorama img{
 
     transform: rotate(-90deg);
 
+}
+
+.footnotes {
+
+}
+
+.footnote-definition {
+    display: block;
+    margin: 0;
+}
+.footnote-definition sup {
+    margin: 0 auto;
+    display: inline;
+    vertical-align: text-top;
+}
+
+.footnote-body {
+    display: inline;
+}
+
+.footnote-body p {
+    line-height: unset;
+    margin: unset;
+    display: inline;
+}
+
+.summary {
+    text-align: justify;
 }
 
 pre,
@@ -316,12 +381,6 @@ code {
     padding: .2em;
     margin: 0;
     font-size: 95%;
-    background-color: #f8f8f8;
+    background-color: var(--bg-dark-grey);
     border-radius: 3px;
-}
-
-div.post-content div.footnotes div.footnote-definitions div.footnote-definition sup {
-    vertical-align: top;
-    position: relative;
-    float: left;
 }

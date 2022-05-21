@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>devops on Evil Inc.</title>
+    <title>devops on Fellowship of Evil Supervillains</title>
     <link>http://sudosays.github.io/categories/devops/</link>
-    <description>Recent content in devops on Evil Inc.</description>
+    <description>Recent content in devops on Fellowship of Evil Supervillains</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 25 Feb 2020 16:50:02 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/categories/devops/index.xml" rel="self" type="application/rss+xml" />

@@ -14,7 +14,7 @@
 
     <header class="header-parallax">
     
-        <h1><a href="http://sudosays.github.io/">Evil Inc.</a></h1>
+        <h1><a href="http://sudosays.github.io/">Fellowship of Evil Supervillains</a></h1>
 
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
@@ -23,7 +23,7 @@
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About</a>
             
         </nav>
 
@@ -34,8 +34,7 @@
 
     <h1 class="post-title">Devlog #3: Tempo</h1>
 
-    <span class="post-date">Thursday, Jun 13, 2019</span>
-
+    
     
     <div class="post-content">
     <p>At the end of the <a href="http://sudosays.github.io/blog/devlog-2-tempo/"> previous devlog </a> I used
@@ -73,17 +72,17 @@ fullscreen activity, either method worked for me, however if you were to have a
 Fragment come into the foreground (with your activity visible in the
 background) there would be a difference in when <code>onPause</code> and <code>onStop</code> are called.</p>
 <p>The code in my MainActivity ended up looking something like this:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">onResume</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
-    <span style="color:#204a87;font-weight:bold">super</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">onResume</span><span style="color:#000;font-weight:bold">()</span>
-    <span style="color:#000">reloadTasks</span><span style="color:#000;font-weight:bold">()</span>
-<span style="color:#000;font-weight:bold">}</span>
-
-<span style="color:#204a87;font-weight:bold">private</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">reloadTasks</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
-    <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">clear</span><span style="color:#000;font-weight:bold">()</span>
-    <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addAll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">TaskFetchASync</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">db</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">execute</span><span style="color:#000;font-weight:bold">().</span><span style="color:#204a87;font-weight:bold">get</span><span style="color:#000;font-weight:bold">())</span>
-    <span style="color:#000">listViewAdapter</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">notifyDataSetChanged</span><span style="color:#000;font-weight:bold">()</span>
-<span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>This means that every time I returned to the MainActivity after moving to a new
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">onResume</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">super</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">onResume</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">reloadTasks</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">private</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">reloadTasks</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">clear</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addAll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">TaskFetchASync</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">db</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">execute</span><span style="color:#000;font-weight:bold">().</span><span style="color:#204a87;font-weight:bold">get</span><span style="color:#000;font-weight:bold">())</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">listViewAdapter</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">notifyDataSetChanged</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>This means that every time I returned to the MainActivity after moving to a new
 activity, the TaskList would be updated with the latest state of the database.
 A cool side effect of this is that should the database be updated in the
 background (or synchronised with an online one) the new changes will be
@@ -129,13 +128,14 @@ fixed the bugs described above.</p>
         <hr>
         <button class="post-nav left">
             
-            <a href="http://sudosays.github.io/blog/devlog-2-tempo/">&larr;&nbsp;&nbsp;previous Devlog #2: Tempo</a>
+            <a href="http://sudosays.github.io/blog/devlog-2-tempo/"> Devlog #2: Tempo&nbsp;&nbsp;&larr;previous</a>
             
         </button>
 
         <button class="post-nav right">
             
-                <a href="http://sudosays.github.io/blog/devlog-4-tempo/">next Devlog #4: Tempo&nbsp&nbsp&rarr;</a>
+                <a href="http://sudosays.github.io/blog/devlog-4-tempo/">next &rarr;&nbsp;&nbsp;Devlog #4: Tempo</a>
+
             
         </button>
 

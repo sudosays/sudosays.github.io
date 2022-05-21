@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>open source on Evil Inc.</title>
+    <title>open source on Fellowship of Evil Supervillains</title>
     <link>http://sudosays.github.io/tags/open-source/</link>
-    <description>Recent content in open source on Evil Inc.</description>
+    <description>Recent content in open source on Fellowship of Evil Supervillains</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 18 Mar 2021 16:21:07 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
@@ -58,134 +58,6 @@ it breaks then repair it. Grow accustomed to the weight and feel.&lt;/p&gt;
 your intent becomes easier. The knowledge of your chosen trade/specialty
 broadens and strengthens your foundations. Complete mastery of your tools will
 enable you to build a lasting and robust evil empire.&lt;/p&gt;
-
-      </content>
-    </item>
-    
-    <item>
-      <title>Commitunism</title>
-      <link>http://sudosays.github.io/blog/commitunism/</link>
-      <pubDate>Wed, 12 Feb 2020 15:20:38 +0200</pubDate>
-      
-      <guid>http://sudosays.github.io/blog/commitunism/</guid>
-      <description>In my 2020 vision, I mentioned that this year I wanted to contribute to an open source project and I am happy to announce that my first ever pull request was merged. This post mainly concerns my experience of the contribution process and my thoughts throughout rather than an in depth technical report.</description>
-      <content>
-        &lt;p&gt;In my &lt;a href=&#34;http://sudosays.github.io/blog/2020-vision/&#34;&gt;2020 vision&lt;/a&gt;, I mentioned that this year I wanted to contribute to an
-open source project and I am happy to announce that my first ever pull
-request was &lt;a href=&#34;https://github.com/sylabs/singularity/commit/efeb67deb1519b792d021e6c305069701c5fe9a6&#34;&gt;merged&lt;/a&gt;.
-This post mainly concerns my experience of the contribution process and my
-thoughts throughout rather than an in depth technical report.&lt;/p&gt;
-&lt;p&gt;When I embarked on this journey I had a few criteria that I was looking for in
-my contribution. Specifically, I wanted to contribute something meaningful to
-both me and others which meant that I wanted:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;to contribute to a project I use or found interesting&lt;/li&gt;
-&lt;li&gt;to add value to others&#39; experience&lt;/li&gt;
-&lt;li&gt;to add value to the project&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;With those parameters I went through the Github issues of projects I liked and
-checked the &amp;ldquo;good first issue&amp;rdquo; labels until I stumbled upon &lt;a href=&#34;https://github.com/sylabs/singularity/issues/3502&#34;&gt;this one&lt;/a&gt;
-in the repository for Singularity (a containerisation tool for high performance
-computing on Linux). The issue stood out to me, because I had also stumbled
-into the same headache as the author and it seemed to me to be a very
-achievable thing to fix.&lt;/p&gt;
-&lt;p&gt;At first, I was tempted to comment on the issue that I could look into it, but
-a teacher of mine once told me, &amp;ldquo;talk is cheap&amp;rdquo;, and so I decided to instead
-produce a solution first.&lt;/p&gt;
-&lt;h2 id=&#34;doing-my-homework&#34;&gt;Doing My Homework&lt;/h2&gt;
-&lt;p&gt;Although I had a vague idea of what the process was for contributing to
-open source projects, I also know that each project might have a subtly
-different workflow for contributions. As a result, I made sure to read the
-contribution guidelines for the project, and forked the repo.&lt;/p&gt;
-&lt;p&gt;The first thing to do was to ensure that I was able to actually compile the
-project from source, which meant understanding the build system and
-dependencies. Luckily, working with lots of build systems (and even writing my
-own makefiles) meant that it went smoothly and soon I had a workflow figured
-out.&lt;/p&gt;
-&lt;h2 id=&#34;finding-the-problem&#34;&gt;Finding the Problem&lt;/h2&gt;
-&lt;p&gt;At this point, I had reached the limit of my comfort zone. The project is
-written in Go which I had very little experience with having only completed
-the Tour of Go previously. Furthermore, I was not at all familiar with the
-codebase and so my first issue was finding where the problem could actually be
-solved.&lt;/p&gt;
-&lt;p&gt;Thankfully, I am a bit lazy and instead of reading through each and every file
-to find something I ended up using a recursive &lt;code&gt;grep&lt;/code&gt; search to find the
-specific occurrence of the sanity check prompt.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ grep -r &amp;quot;Build target already exists&amp;quot;
-
-cmd/internal/cli/build.go: question := &amp;quot;Build target already exists. Do you want to overwrite? [N/y] &amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So I dove into the &lt;code&gt;build.go&lt;/code&gt; file and found the line where the prompt was
-being served, but if I was really clever I would have added the &lt;code&gt;-n&lt;/code&gt; option to
-&lt;code&gt;grep&lt;/code&gt; which would spit out the line number as well as the file it was in.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ grep -rn &amp;quot;Build target already exists&amp;quot;
-
-cmd/internal/cli/build.go:268: question := &amp;quot;Build target already exists. Do you want to overwrite? [N/y] &amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;initial-solve&#34;&gt;Initial Solve&lt;/h2&gt;
-&lt;p&gt;My first thought about solving this was to check if the build target file had
-the &lt;code&gt;.def&lt;/code&gt; extension that denotes it as a build file. However, there were two
-big issues with this approach: it depended on the name of the file rather than
-the content, it required introducing the &lt;code&gt;os&lt;/code&gt; package to the file which I
-thought was unnecessary.&lt;/p&gt;
-&lt;p&gt;Looking through the file for tools I could use I came across the following
-method &lt;code&gt;parser.IsValidDefinition(path string)&lt;/code&gt; which would judge a build target
-file on its content rather than its name. Furthermore, it incorporated the
-internally built tools to check definition files. This lead me to the following
-diff:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-diff&#34; data-lang=&#34;diff&#34;&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;diff --git a/cmd/internal/cli/build.go b/cmd/internal/cli/build.go
-&lt;/span&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;index fe02643162..558a7a2bfc 100644
-&lt;/span&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;--- a/cmd/internal/cli/build.go
-&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+++ b/cmd/internal/cli/build.go
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#800080;font-weight:bold&#34;&gt;@@ -265,7 +265,17 @@ func checkBuildTarget(path string) error {
-&lt;/span&gt;&lt;span style=&#34;color:#800080;font-weight:bold&#34;&gt;&lt;/span&gt; 			return fmt.Errorf(&amp;#34;only sandbox update is supported: %s is not a directory&amp;#34;, path)
- 		}
- 		if !buildArgs.update &amp;amp;&amp;amp; !forceOverwrite {
-&lt;span style=&#34;color:#a40000&#34;&gt;-			question := &amp;#34;Build target already exists. Do you want to overwrite? [N/y] &amp;#34;
-&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			var question string
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			isDefFile, _ := parser.IsValidDefinition(path)
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			if isDefFile {
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+				question = &amp;#34;Build target is a valid definition file that will be overwritten. Do you still want to overwrite? [N/y]&amp;#34;
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			} else {
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+				question = &amp;#34;Build target already exists. Do you want to overwrite? [N/y] &amp;#34;
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+			}
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;+
-&lt;/span&gt;&lt;span style=&#34;color:#00a000&#34;&gt;&lt;/span&gt; 			input, err := interactive.AskYNQuestion(&amp;#34;n&amp;#34;, question)
- 			if err != nil {
- 				return fmt.Errorf(&amp;#34;while reading the input: %s&amp;#34;, err)
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;What followed was a bit strange for me. I pushed the new commit/branch to my
-fork with the commit message &amp;ldquo;Add build command sanity check to close #3502&amp;rdquo;
-with &amp;ldquo;#3502&amp;rdquo; being the reference to the issue in the main repo. I did not
-expect this to immediately reflect on the issue in the main upstream
-repository. So when I amended my commit because I forgot to ensure all the test
-cases, and builds passed, it also reflected multiple commits on the main issue
-conversation. Although unexpected, this is very useful for connecting commits
-to issues automagically.&lt;/p&gt;
-&lt;p&gt;Excited and thrilled, I opened a pull request and waited for a review.&lt;/p&gt;
-&lt;h2 id=&#34;feedback-loop&#34;&gt;Feedback Loop&lt;/h2&gt;
-&lt;p&gt;The pull review process was also a novel experience for me. Initially I was
-worried that my changes would be outright rejected, and my PR tanked. Instead,
-there was a back and forth discussion between myself and &lt;a href=&#34;https://github.com/dctrud&#34;&gt;David
-Trudgian&lt;/a&gt; &amp;mdash; a maintainer for the project.&lt;/p&gt;
-&lt;p&gt;The conversation about how to address the problem resulted &amp;mdash; at least in my
-view &amp;mdash; in a solution that was greater than something I could have achieved by
-myself. I would incorporate suggested changes and neaten up my code which ended
-up in a total of three commits for the pull request. The review process felt
-very welcoming and collaborative.&lt;/p&gt;
-&lt;h2 id=&#34;victory&#34;&gt;Victory&lt;/h2&gt;
-&lt;p&gt;With all suggestions incorporated, continuous integration and build tests
-passed, my PR finally passed review and was merged into the master branch.&lt;/p&gt;
-&lt;p&gt;While I believe that the contribution I made was definitely beneficial to
-future users of the software, I definitely walked away from this experience
-with a lot more insight. I experienced the power of the review process, and
-that contributing to open source is not only achievable, but exciting and
-enjoyable.&lt;/p&gt;
-&lt;p&gt;I definitely plan on making more contributions to Singularity in the future,
-although I suspect not all of them will warrant a full blog post.&lt;/p&gt;
 
       </content>
     </item>

@@ -14,7 +14,7 @@
 
     <header class="header-parallax">
     
-        <h1><a href="http://sudosays.github.io/">Evil Inc.</a></h1>
+        <h1><a href="http://sudosays.github.io/">Fellowship of Evil Supervillains</a></h1>
 
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
@@ -23,7 +23,7 @@
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About</a>
             
         </nav>
 
@@ -34,8 +34,7 @@
 
     <h1 class="post-title">Devlog: Tempo</h1>
 
-    <span class="post-date">Friday, Oct 26, 2018</span>
-
+    
     
     <div class="post-content">
     <p>As a supervillain, I would like to ensure that my minions and peons are working
@@ -64,11 +63,10 @@ This is where I fell in love with Kotlin.</p>
 <p>Kotlin Android Extensions allows you to use “view binding” which completely
 eliminates the need for using “findViewById()”. This is done by importing the
 views in a layout using the following code:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">
-<span style="color:#8f5902;font-style:italic">// Using R.layout.activity_main from the &#39;main&#39; source set
-</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">kotlinx.android.synthetic.main.activity_main.*</span>
-
-</code></pre></div><p>However, when I started this I was unaware of how wonderful Kotlin is. In fact,
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Using R.layout.activity_main from the &#39;main&#39; source set
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">kotlinx.android.synthetic.main.activity_main.*</span>
+</span></span></code></pre></div><p>However, when I started this I was unaware of how wonderful Kotlin is. In fact,
 I was completely new to Kotlin, and had forgotten most of my Android knowledge
 as well. So this meant learning Android using Kotlin from pretty much the
 beginning. If you are looking into starting Android development, I would highly
@@ -82,7 +80,7 @@ information for a single task.</p>
 its own separate layout resource and could be imported as a single unit into
 any other layout using:</p>
 <pre tabindex="0"><code>&lt;com.sudosays.tempo.TaskView
-        android:id=&quot;...
+        android:id=&#34;...
 /&gt;
 </code></pre><p>By adding  a “populate” function that took a Task as an argument, I could
 dynamically create and add my custom TaskView. The way to do this is
@@ -106,8 +104,8 @@ added TaskView below.</p>
 adding it to the main ConstraintLayout of the activity. However, I was not
 setting the LayoutParams of the view once it was inflated. All I needed was to
 add the following line to my TaskView’s constructor (right after inflating it):</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">    <span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">layoutParams</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">LayoutParams</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ViewGroup</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">LayoutParams</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MATCH_PARENT</span><span style="color:#000;font-weight:bold">,</span><span style="color:#000">ViewGroup</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">LayoutParams</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">WRAP_CONTENT</span><span style="color:#000;font-weight:bold">)</span>
-</code></pre></div><p>Now, when I added a new TaskView from code it looked like the following:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">layoutParams</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">LayoutParams</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ViewGroup</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">LayoutParams</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MATCH_PARENT</span><span style="color:#000;font-weight:bold">,</span><span style="color:#000">ViewGroup</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">LayoutParams</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">WRAP_CONTENT</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>Now, when I added a new TaskView from code it looked like the following:</p>
 <figure><a href="/imgs/devlog-tempo-screenshot-taskview-fixed.png"><img src="/imgs/devlog-tempo-screenshot-taskview-fixed.png"
          alt="Screenshot showing the somewhat fixed TaskViews." height="250px"/></a><figcaption>
             <p>Screenshot showing the somewhat fixed TaskViews.</p>
@@ -136,13 +134,14 @@ as soon as I can. Till then, stay evil.</p>
         <hr>
         <button class="post-nav left">
             
-            <a href="http://sudosays.github.io/blog/vim-leadership-revisited/">&larr;&nbsp;&nbsp;previous Vim Leadership Revisited</a>
+            <a href="http://sudosays.github.io/blog/arming-henchmen-hacking-guns/"> Arming Henchmen: Hacking Guns&nbsp;&nbsp;&larr;previous</a>
             
         </button>
 
         <button class="post-nav right">
             
-                <a href="http://sudosays.github.io/blog/devlog-1-tempo/">next Devlog #1: Tempo&nbsp&nbsp&rarr;</a>
+                <a href="http://sudosays.github.io/blog/devlog-1-tempo/">next &rarr;&nbsp;&nbsp;Devlog #1: Tempo</a>
+
             
         </button>
 

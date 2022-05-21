@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>source on Evil Inc.</title>
+    <title>source on Fellowship of Evil Supervillains</title>
     <link>http://sudosays.github.io/tags/source/</link>
-    <description>Recent content in source on Evil Inc.</description>
+    <description>Recent content in source on Fellowship of Evil Supervillains</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 22 Jan 2021 09:22:16 +0200</lastBuildDate><atom:link href="http://sudosays.github.io/tags/source/index.xml" rel="self" type="application/rss+xml" />
@@ -35,15 +35,9 @@ Lessons Learned (So far)
 &lt;/h3&gt;
 &lt;div id=&#34;outline-text-lessons-learned-so-far&#34; class=&#34;outline-text-3&#34;&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Go is a great language&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Building TUIs can become a massive rabbit-hole/timesink&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Callback functions and anonymous functions go well together&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;Go is a great language&lt;/li&gt;
+&lt;li&gt;Building TUIs can become a massive rabbit-hole/timesink&lt;/li&gt;
+&lt;li&gt;Callback functions and anonymous functions go well together&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -86,9 +80,7 @@ Downloads and Links
 &lt;/h3&gt;
 &lt;div id=&#34;outline-text-downloads-and-links&#34; class=&#34;outline-text-3&#34;&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/sudosays/pneuma&#34;&gt;Github repo&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/sudosays/pneuma&#34;&gt;Github repo&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;

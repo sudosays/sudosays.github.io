@@ -14,7 +14,7 @@
 
     <header class="header-parallax">
     
-        <h1><a href="http://sudosays.github.io/">Evil Inc.</a></h1>
+        <h1><a href="http://sudosays.github.io/">Fellowship of Evil Supervillains</a></h1>
 
         <nav class="top-nav-list"> 
             <a href="http://sudosays.github.io/ ">Home</a> 
@@ -23,7 +23,7 @@
             
                &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/projects/">Projects</a>
             
-               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About me</a>
+               &nbsp;&phi;&nbsp; <a href="http://sudosays.github.io/about/">About</a>
             
         </nav>
 
@@ -34,8 +34,7 @@
 
     <h1 class="post-title">Devlog #2: Tempo</h1>
 
-    <span class="post-date">Thursday, Feb 21, 2019</span>
-
+    
     
     <div class="post-content">
     <p>At this stage the first major functionality of the app has been implemented.</p>
@@ -58,24 +57,24 @@ from the SQLite database and increasing your chances of mucking something up
 </blockquote>
 <p>I found implementing Room deceptively straightforward since I add only had to
 add annotations to my already existing Task object like so:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#5c35cc;font-weight:bold">@Entity</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">tableName</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#4e9a06">&#34;tasks&#34;</span><span style="color:#000;font-weight:bold">)</span>
-<span style="color:#204a87;font-weight:bold">data</span> <span style="color:#204a87;font-weight:bold">class</span> <span style="color:#000">Task</span><span style="color:#000;font-weight:bold">(</span><span style="color:#5c35cc;font-weight:bold">@PrimaryKey</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">autoGenerate</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">true</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">var</span> <span style="color:#000">uid</span> <span style="color:#000;font-weight:bold">:</span><span style="color:#000">Int</span><span style="color:#000;font-weight:bold">,</span>
-                <span style="color:#5c35cc;font-weight:bold">@ColumnInfo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">name</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#4e9a06">&#34;task_name&#34;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">var</span> <span style="color:#000">name</span><span style="color:#000;font-weight:bold">:</span><span style="color:#000">String</span><span style="color:#000;font-weight:bold">,</span>
-                <span style="color:#5c35cc;font-weight:bold">@ColumnInfo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">name</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#4e9a06">&#34;task_duration&#34;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">var</span> <span style="color:#000">duration</span><span style="color:#000;font-weight:bold">:</span><span style="color:#000">Float</span><span style="color:#000;font-weight:bold">)</span>
-</code></pre></div><p>Then I needed only to make a data access object (for interfacing with the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#5c35cc;font-weight:bold">@Entity</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">tableName</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#4e9a06">&#34;tasks&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">data</span> <span style="color:#204a87;font-weight:bold">class</span> <span style="color:#000">Task</span><span style="color:#000;font-weight:bold">(</span><span style="color:#5c35cc;font-weight:bold">@PrimaryKey</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">autoGenerate</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">true</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">var</span> <span style="color:#000">uid</span> <span style="color:#000;font-weight:bold">:</span><span style="color:#000">Int</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#5c35cc;font-weight:bold">@ColumnInfo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">name</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#4e9a06">&#34;task_name&#34;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">var</span> <span style="color:#000">name</span><span style="color:#000;font-weight:bold">:</span><span style="color:#000">String</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#5c35cc;font-weight:bold">@ColumnInfo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">name</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#4e9a06">&#34;task_duration&#34;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">var</span> <span style="color:#000">duration</span><span style="color:#000;font-weight:bold">:</span><span style="color:#000">Float</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>Then I needed only to make a data access object (for interfacing with the
 database) and extend the Room database into a TaskDatabase. The task data
 access object (DAO) contains the query annotations for accessing the database
 in specific, controlled ways. For example, I wanted to be able to pull all the
 tasks in the task database at once into a MutableList which meant that one of
 the functions looked something like this:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#5c35cc;font-weight:bold">@Dao</span>
-<span style="color:#204a87;font-weight:bold">interface</span> <span style="color:#000">TaskDao</span> <span style="color:#000;font-weight:bold">{</span>
-
-    <span style="color:#5c35cc;font-weight:bold">@Query</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;SELECT * FROM tasks&#34;</span><span style="color:#000;font-weight:bold">)</span>
-    <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">getAll</span><span style="color:#000;font-weight:bold">():</span> <span style="color:#000">MutableList</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;</span>
-
-    <span style="color:#8f5902;font-style:italic">//Other functions here...
-</span></code></pre></div><p>After that I thought I was all set, but alas it was not to be. Turns out I ran
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#5c35cc;font-weight:bold">@Dao</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">interface</span> <span style="color:#000">TaskDao</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5c35cc;font-weight:bold">@Query</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;SELECT * FROM tasks&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">getAll</span><span style="color:#000;font-weight:bold">():</span> <span style="color:#000">MutableList</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//Other functions here...
+</span></span></span></code></pre></div><p>After that I thought I was all set, but alas it was not to be. Turns out I ran
 into two different compile-time problems: one regarding my annotations, and the
 other when trying to build the database instance at runtime.</p>
 <p>The first error was that my annotations were not generating the correct classes
@@ -92,24 +91,24 @@ my inability to heed the following warning at the bottom of the documentation:</
 of the MainActivity, I needed to pass the applicationContext somehow, but the
 problem was that the applicationContext did not yet exist when I tried to build
 the database using:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">db</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">Room</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">databaseBuilder</span><span style="color:#000;font-weight:bold">(</span>
-            <span style="color:#000">context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">applicationContext</span><span style="color:#000;font-weight:bold">,</span>
-            <span style="color:#000">TaskDatabase</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#204a87;font-weight:bold">class</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">java</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;taskdb&#34;</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">build</span><span style="color:#000;font-weight:bold">()</span> 
-</code></pre></div><p>My aim was to have one db instance that I could then access the data from
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">db</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">Room</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">databaseBuilder</span><span style="color:#000;font-weight:bold">(</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">applicationContext</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">TaskDatabase</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#204a87;font-weight:bold">class</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">java</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;taskdb&#34;</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">build</span><span style="color:#000;font-weight:bold">()</span> 
+</span></span></code></pre></div><p>My aim was to have one db instance that I could then access the data from
 repeatedly instead of creating a new TaskDatabase instance everytime I wanted
 to access data. Enter the companion object.</p>
 <p>In Kotlin, a companion object is a singleton tied to the class rather than the
 instances of that class. This meant that I can declare a companion object for
 the TaskDatabase and only need to pass the applicationContext when I want to
 get the singleton instance. So I added the following to the TaskDatabase:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">companion</span> <span style="color:#204a87;font-weight:bold">object</span> <span style="color:#000;font-weight:bold">{</span>
-    <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">getInstance</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">context</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Context</span><span style="color:#000;font-weight:bold">):</span> <span style="color:#000">TaskDatabase</span> <span style="color:#000;font-weight:bold">=</span>
-            <span style="color:#000">Room</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">databaseBuilder</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">applicationContext</span><span style="color:#000;font-weight:bold">,</span>   
-            <span style="color:#000">TaskDatabase</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#204a87;font-weight:bold">class</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">java</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;taskdb&#34;</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">build</span><span style="color:#000;font-weight:bold">()</span>
-<span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>Thereafter, I could access the instance of the database easily (and more cleanly) with the following:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">db</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">TaskDatabase</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInstance</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">)</span>
-</code></pre></div><p>In the line above, this is the activity context itself from which we extract
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">companion</span> <span style="color:#204a87;font-weight:bold">object</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">getInstance</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">context</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Context</span><span style="color:#000;font-weight:bold">):</span> <span style="color:#000">TaskDatabase</span> <span style="color:#000;font-weight:bold">=</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">Room</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">databaseBuilder</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">context</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">applicationContext</span><span style="color:#000;font-weight:bold">,</span>   
+</span></span><span style="display:flex;"><span>            <span style="color:#000">TaskDatabase</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#204a87;font-weight:bold">class</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">java</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;taskdb&#34;</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">build</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>Thereafter, I could access the instance of the database easily (and more cleanly) with the following:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#000">db</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">TaskDatabase</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getInstance</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">this</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>In the line above, this is the activity context itself from which we extract
 the applicationContext.</p>
 <p>With this done, I thought it would be smooth sailing from here on out, but yet
 again…</p>
@@ -135,25 +134,25 @@ short tasks (for long running tasks you should be looking at Services). So, for
 example, I wanted to fetch all the tasks from the database and return it in a
 MutableList. For this I extended AsyncTask and created TaskFetchAsync with the
 following:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">class</span> <span style="color:#000">TaskFetchAsync</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">db</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">TaskDatabase</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000">AsyncTask</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Void</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Void</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">MutableList</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#000;font-weight:bold">(){</span>
-
-    <span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">doInBackground</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">vararg</span> <span style="color:#000">p0</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Void</span><span style="color:#000;font-weight:bold">?):</span> <span style="color:#000">MutableList</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;?</span> <span style="color:#000;font-weight:bold">{</span>
-        <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">taskList</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">db</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">taskDao</span><span style="color:#000;font-weight:bold">().</span><span style="color:#000">getAll</span><span style="color:#000;font-weight:bold">()</span>
-        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">taskList</span>
-    <span style="color:#000;font-weight:bold">}</span>
-
-    <span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">onPostExecute</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">result</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">MutableList</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;?)</span> <span style="color:#000;font-weight:bold">{</span>
-        <span style="color:#204a87;font-weight:bold">super</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">onPostExecute</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">result</span><span style="color:#000;font-weight:bold">)</span>
-    <span style="color:#000;font-weight:bold">}</span>
-<span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>In the class declaration, you can see that the TaskFetchAsync takes a database
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">class</span> <span style="color:#000">TaskFetchAsync</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">db</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">TaskDatabase</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000">AsyncTask</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Void</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Void</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">MutableList</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#000;font-weight:bold">(){</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">doInBackground</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">vararg</span> <span style="color:#000">p0</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Void</span><span style="color:#000;font-weight:bold">?):</span> <span style="color:#000">MutableList</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;?</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">taskList</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">db</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">taskDao</span><span style="color:#000;font-weight:bold">().</span><span style="color:#000">getAll</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">taskList</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">onPostExecute</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">result</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">MutableList</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">&gt;?)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">super</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">onPostExecute</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">result</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>In the class declaration, you can see that the TaskFetchAsync takes a database
 instance in the constructor, while we also mention that it returns a
 MutableList containing Task objects.</p>
 <p>Next, we fetch the tasks using our database instance’s taskDao and finally
 return the result. Using the AsyncTask was really straightforward since all we
 would need to do is:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addAll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">TaskFetchASync</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">db</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">execute</span><span style="color:#000;font-weight:bold">().</span><span style="color:#204a87;font-weight:bold">get</span><span style="color:#000;font-weight:bold">())</span>
-</code></pre></div><p>That said, one thing I did do was give the db instance as a constructor
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addAll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">TaskFetchASync</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">db</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">execute</span><span style="color:#000;font-weight:bold">().</span><span style="color:#204a87;font-weight:bold">get</span><span style="color:#000;font-weight:bold">())</span>
+</span></span></code></pre></div><p>That said, one thing I did do was give the db instance as a constructor
 variable instead of declaring it as a parameter. This is because the parameters
 (taken in whenever <code>TaskFetchAsync.execute()</code> is called are generally something
 that needs to be acted on, or may change the task execution in some way. This
@@ -168,15 +167,15 @@ listViewAdapter I mentioned in my <a href="http://sudosays.github.io/blog/devlog
 our newly added task.</p>
 <p>In order to save the new task to the database I also used an AsyncTask that I
 called TaskInsertAsync that looked like the following:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">class</span> <span style="color:#000">TaskInsertAsync</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">db</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">TaskDatabase</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000">AsyncTask</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Void</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Boolean</span><span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000;font-weight:bold">(){</span>
-
-    <span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">doInBackground</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">vararg</span> <span style="color:#000">p0</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Task</span><span style="color:#000;font-weight:bold">):</span> <span style="color:#000">Boolean</span> <span style="color:#000;font-weight:bold">{</span>
-        <span style="color:#000">db</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">taskDao</span><span style="color:#000;font-weight:bold">().</span><span style="color:#000">insertAll</span><span style="color:#000;font-weight:bold">(*</span><span style="color:#000">p0</span><span style="color:#000;font-weight:bold">)</span>
-        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">true</span>
-    <span style="color:#000;font-weight:bold">}</span>
-    <span style="color:#8f5902;font-style:italic">// Other stuff...
-</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>What is notable here is that <code>taskDao().insertAll()</code> takes <code>vararg task: Task</code>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">class</span> <span style="color:#000">TaskInsertAsync</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">val</span> <span style="color:#000">db</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">TaskDatabase</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000">AsyncTask</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000">Task</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Void</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Boolean</span><span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000;font-weight:bold">(){</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">doInBackground</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">vararg</span> <span style="color:#000">p0</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Task</span><span style="color:#000;font-weight:bold">):</span> <span style="color:#000">Boolean</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">db</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">taskDao</span><span style="color:#000;font-weight:bold">().</span><span style="color:#000">insertAll</span><span style="color:#000;font-weight:bold">(*</span><span style="color:#000">p0</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Other stuff...
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>What is notable here is that <code>taskDao().insertAll()</code> takes <code>vararg task: Task</code>
 which <code>p0</code> is. Unfortunately, <code>p0</code> is actually viewed as an array, while the
 method is looking for a distinct, separate Task objects to pass to
 <code>insertAll()</code> and so we needed to use <a href="https://kotlinlang.org/docs/reference/functions.html#variable-number-of-arguments-varargs">Kotlin’s spread
@@ -186,19 +185,19 @@ successfully. Enter startActivityForResult.</p>
 <p>With startActivityForResult, we needed to declare a request code (a simple Int)
 and then implement <code>onActivityResult</code> to handle the result. This was simple
 enough and ended up looking something like this:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">onActivityResult</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">requestCode</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">resultCode</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">data</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Intent</span><span style="color:#000;font-weight:bold">)</span>
-<span style="color:#000;font-weight:bold">{</span>
-    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">requestCode</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000">ADD_TASK_REQUEST</span><span style="color:#000;font-weight:bold">)</span>
-    <span style="color:#000;font-weight:bold">{</span>
-        <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">resultCode</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000">Activity</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">RESULT_OK</span><span style="color:#000;font-weight:bold">)</span>
-        <span style="color:#000;font-weight:bold">{</span>
-            <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">clear</span><span style="color:#000;font-weight:bold">()</span>
-            <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addAll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">TaskFetchASync</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">db</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">execute</span><span style="color:#000;font-weight:bold">().</span><span style="color:#204a87;font-weight:bold">get</span><span style="color:#000;font-weight:bold">())</span>
-            <span style="color:#000">listViewAdapter</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">notifyDataSetChanged</span><span style="color:#000;font-weight:bold">()</span>
-        <span style="color:#000;font-weight:bold">}</span>
-    <span style="color:#000;font-weight:bold">}</span>
-<span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>It is to be noted that our AddTask activity did not need to handle the request
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">override</span> <span style="color:#204a87;font-weight:bold">fun</span> <span style="color:#000">onActivityResult</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">requestCode</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">resultCode</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">data</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">Intent</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">requestCode</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000">ADD_TASK_REQUEST</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">resultCode</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000">Activity</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">RESULT_OK</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">clear</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">taskMutableList</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addAll</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">TaskFetchASync</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">db</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">execute</span><span style="color:#000;font-weight:bold">().</span><span style="color:#204a87;font-weight:bold">get</span><span style="color:#000;font-weight:bold">())</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">listViewAdapter</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">notifyDataSetChanged</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>It is to be noted that our AddTask activity did not need to handle the request
 code. Only our MainActivity had the request code declared and would handle it
 when the activity returned.</p>
 <p>With all that done, the app could now persist data, fetch it, and add new tasks
@@ -221,13 +220,14 @@ Teach a man to program, frustrate him for a lifetime.&rsquo;</p>
         <hr>
         <button class="post-nav left">
             
-            <a href="http://sudosays.github.io/blog/devlog-1-tempo/">&larr;&nbsp;&nbsp;previous Devlog #1: Tempo</a>
+            <a href="http://sudosays.github.io/blog/devlog-1-tempo/"> Devlog #1: Tempo&nbsp;&nbsp;&larr;previous</a>
             
         </button>
 
         <button class="post-nav right">
             
-                <a href="http://sudosays.github.io/blog/devlog-3-tempo/">next Devlog #3: Tempo&nbsp&nbsp&rarr;</a>
+                <a href="http://sudosays.github.io/blog/devlog-3-tempo/">next &rarr;&nbsp;&nbsp;Devlog #3: Tempo</a>
+
             
         </button>
 
